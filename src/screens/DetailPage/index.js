@@ -11,7 +11,7 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
-const DetailPage = () => {
+const DetailPage = ({navigation}) => {
   return (
     <>
       <ScrollView scrollEnabled={true} vertical={true}>
@@ -37,7 +37,7 @@ const DetailPage = () => {
             elastication. Elasticated seam under the bust and short puff sleeves
             with a small frill trim.
           </Text>
-          <ListBar />
+          <ListBar nav={navigation} />
           <View style={styles.text}>
             <Text style={{fontFamily: FONT_BOLD, fontSize: 18}}>
               You can also like this

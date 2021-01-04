@@ -14,6 +14,8 @@ import {
   ShippingAddress,
   SettingsProfile,
   DetailPage,
+  ReviewPage,
+  Review,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -54,6 +56,7 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen name="DetailPage" component={DetailPage} />
+      <Stack.Screen name="ReviewPage" component={Review} />
     </Stack.Navigator>
   );
 };

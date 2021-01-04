@@ -12,6 +12,7 @@ import IconBack from './back.svg';
 import IconStarAct from './StarAct.svg';
 import IconStar from './Star.svg';
 import IconLove from './Love.svg';
+import IconRatingLine from './rating line.svg';
 
 export {
   IconHomeAct,
@@ -28,4 +29,5 @@ export {
   IconStarAct,
   IconStar,
   IconLove,
+  IconRatingLine,
 };

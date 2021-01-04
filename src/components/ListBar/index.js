@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_DISABLE, FONT_LIGHT} from '../../utils/constans';
 
-const ListBar = () => {
+const ListBar = ({nav}) => {
   return (
     <>
       <View style={{marginTop: 20}}>
@@ -12,9 +13,14 @@ const ListBar = () => {
         <View style={styles.ListBar}>
           <Text style={styles.text}>Support</Text>
         </View>
-        <View style={styles.ListBarLast}>
-          <Text style={styles.text}>Rating & Reviews</Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            nav.navigate('ReviewPage');
+          }}>
+          <View style={styles.ListBarLast}>
+            <Text style={styles.text}>Rating & Reviews</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </>
   );
