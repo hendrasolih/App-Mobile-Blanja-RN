@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IconLove} from '../../assets';
-import {COLOR_MAIN} from '../../utils/constans';
+import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
 
 const SelectColorPicker = () => {
   return (
@@ -50,5 +50,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: '#fff',
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLOR_DISABLE,
+    paddingHorizontal: 5,
   },
 });
