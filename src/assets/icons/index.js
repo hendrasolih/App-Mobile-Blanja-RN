@@ -13,6 +13,8 @@ import IconStarAct from './StarAct.svg';
 import IconStar from './Star.svg';
 import IconLove from './Love.svg';
 import IconRatingLine from './rating line.svg';
+import IconPlus from './plus.svg';
+import IconMin from './min.svg';
 
 export {
   IconHomeAct,
@@ -30,4 +32,6 @@ export {
   IconStar,
   IconLove,
   IconRatingLine,
+  IconPlus,
+  IconMin,
 };
