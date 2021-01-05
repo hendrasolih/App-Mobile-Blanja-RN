@@ -1,15 +1,80 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('token', value);
+  } catch (e) {
+    // saving error
+  }
+};
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('token');
+    const userid = await AsyncStorage.getItem('userid');
+    if (value !== null) {
+      // value previously stored
+      console.log(value);
+      console.log(userid);
+    }
+  } catch (e) {
+    // error reading value
+  }
+};
+
 const Login = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleSubmit = () => {
+    const data = {
+      email: email,
+      user_password: password,
+    };
+    axios
+      .post('http://192.168.100.2:8000/auth/login', data)
+      .then(async (res) => {
+        console.log(res.data.data.token);
+        console.log(res.data.data.user_id);
+        const token = res.data.data.token;
+        const id = res.data.data.user_id;
+        const userid = id.toString();
+        console.log(typeof userid);
+
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('userid', userid);
+        console.log('done');
+        await getData();
+        navigation.navigate('ForgotPass');
+        console.log('done2');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('erro disini');
+      });
+  };
   return (
     <View style={styles.container}>
+      <Text>{email}</Text>
+      <Text>{password}</Text>
       <Text style={styles.title}>Login</Text>
       <View>
-        <TextInput style={styles.form} placeholder="Email" />
-        <TextInput style={styles.form} placeholder="Password" />
+        <TextInput
+          style={styles.form}
+          placeholder="Email"
+          defaultValue={email}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.form}
+          placeholder="Password"
+          defaultValue={password}
+          onChangeText={(password) => setPassword(password)}
+        />
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('ForgotPass');
@@ -17,7 +82,7 @@ const Login = ({navigation}) => {
           <Text style={styles.forgotPas}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>Login</Text>
         </View>

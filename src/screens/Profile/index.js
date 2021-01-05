@@ -3,11 +3,34 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ProfilePict} from '../../assets';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ProfileMenu} from '../../components';
-import {COLOR_DISABLE, FONT_BOLD, FONT_LIGHT} from '../../utils/constans';
+import {
+  COLOR_DISABLE,
+  COLOR_MAIN,
+  FONT_BOLD,
+  FONT_LIGHT,
+} from '../../utils/constans';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 
 const Profile = ({navigation}) => {
+  const logout = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      axios.delete('http://192.168.100.2:8000/auth/logout', {
+        headers: {
+          'x-access-token': 'Bearer ' + token,
+        },
+      });
+      await AsyncStorage.removeItem('token');
+      console.log('remove');
+      navigation.navigate('MyOrder');
+    } catch (e) {
+      // remove error
+      console.log(e);
+    }
+  };
   return (
     <>
       <View style={styles.titlewrap}>
@@ -37,6 +60,11 @@ const Profile = ({navigation}) => {
           navigation.navigate('SettingsProfile');
         }}>
         <ProfileMenu title={'Settings'} detail={`Notifications, password`} />
+      </TouchableOpacity>
+      <TouchableOpacity style={{marginTop: 50}} onPress={logout}>
+        <View style={{backgroundColor: COLOR_MAIN}}>
+          <Text style={{color: '#fff'}}>Logout</Text>
+        </View>
       </TouchableOpacity>
     </>
   );

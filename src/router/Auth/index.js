@@ -5,7 +5,7 @@ import {Login, Register, ForgotPass, Otp, ResetPass} from '../../screens';
 
 const Stack = createStackNavigator();
 
-const Auth = () => {
+const Auth = ({navigation}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Register" component={Register} />
@@ -20,7 +20,7 @@ const Auth = () => {
         options={{title: ''}}
       />
       <Stack.Screen name="otp" component={Otp} />
-      <Stack.Screen name="ResetPass" component={ResetPass} />
+      <Stack.Screen name="ResetPass" component={ResetPass} nav={navigation} />
     </Stack.Navigator>
   );
 };
