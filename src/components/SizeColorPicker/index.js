@@ -1,20 +1,70 @@
-import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  Dimensions,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {set} from 'react-native-reanimated';
+import {ColorItem, SizeItem} from '..';
 import {IconLove} from '../../assets';
 import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
 
-const SelectColorPicker = () => {
+const url = 'http://192.168.100.2:8000';
+
+const SelectColorPicker = ({id}) => {
+  const [size, setSize] = useState([]);
+  const [color, setColor] = useState([]);
+  const [modalVisibleSize, setModalVisibleSize] = useState(false);
+  const [modalVisibleColor, setModalVisibleColor] = useState(false);
+  const [pickSize, setPickSize] = useState(0);
+  const [pickColor, setPickColor] = useState('color');
+  useEffect(() => {
+    // code to run on component mount
+    getSize();
+    getColor();
+  }, []);
+  const getSize = () => {
+    axios
+      .get(url + '/size/' + id)
+      .then((res) => {
+        setSize(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getColor = () => {
+    axios
+      .get(url + '/color/' + id)
+      .then((res) => {
+        setColor(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisibleSize(!modalVisibleSize);
+        }}>
         <View style={styles.size}>
-          <Text>Size</Text>
+          <Text>{pickSize == 0 ? 'Size' : pickSize}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisibleColor(!modalVisibleColor);
+        }}>
         <View style={styles.size}>
-          <Text>Color</Text>
+          <Text>{pickColor == 'color' ? 'Color' : pickColor}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
@@ -22,6 +72,72 @@ const SelectColorPicker = () => {
           <IconLove />
         </View>
       </TouchableOpacity>
+      {/* Modal Size*/}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleSize}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {size.map(({size_id, size_prd}) => {
+              return (
+                <SizeItem
+                  key={size_id}
+                  size={size_prd}
+                  changeSize={(pickSize) => setPickSize(pickSize)}
+                />
+              );
+            })}
+
+            <TouchableHighlight
+              style={{...styles.openButton, backgroundColor: '#2196F3'}}
+              onPress={() => {
+                setModalVisibleSize(!modalVisibleSize);
+              }}>
+              <View>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+      {/* Modal Size*/}
+      {/* Modal Color*/}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleColor}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {color.map(({id, color_type}) => {
+              return (
+                <ColorItem
+                  key={id}
+                  color={color_type}
+                  changeColor={(pickColor) => setPickColor(pickColor)}
+                />
+              );
+            })}
+
+            <TouchableHighlight
+              style={{...styles.openButton, backgroundColor: '#2196F3'}}
+              onPress={() => {
+                setModalVisibleColor(!modalVisibleColor);
+              }}>
+              <View>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+      {/* Modal Color*/}
     </View>
   );
 };
@@ -54,4 +170,54 @@ const styles = StyleSheet.create({
     borderColor: COLOR_DISABLE,
     paddingHorizontal: 5,
   },
+  //modal
+  sizeModal: {
+    width: windowWidth * 0.1,
+    height: 40,
+    paddingVertical: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLOR_DISABLE,
+    paddingHorizontal: 5,
+    marginBottom: 20,
+    marginHorizontal: 3,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  //modal
 });

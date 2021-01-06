@@ -67,7 +67,7 @@ const DetailPage = ({navigation, route}) => {
       <ScrollView scrollEnabled={true} vertical={true}>
         <ImageGallery image={pictures} />
         <View style={styles.container}>
-          <SizeColorPicker />
+          <SizeColorPicker id={itemId} />
           <View style={styles.wraptitle}>
             <Text style={styles.title}>{product.prd_brand}</Text>
             <Text style={styles.title}>Rp.{product.prd_price}</Text>

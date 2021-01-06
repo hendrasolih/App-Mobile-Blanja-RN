@@ -6,6 +6,8 @@ import SizeColorPicker from './SizeColorPicker';
 import ListBar from './ListBar';
 import ReviewSection from './ReviewSection';
 import CardMyBag from './CardMyBag';
+import SizeItem from './SizeItem';
+import ColorItem from './ColorItem';
 
 export {
   BottomNavigator,
@@ -16,4 +18,6 @@ export {
   ListBar,
   ReviewSection,
   CardMyBag,
+  SizeItem,
+  ColorItem,
 };
