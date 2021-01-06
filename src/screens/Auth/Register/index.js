@@ -10,7 +10,7 @@ const Register = ({navigation}) => {
       <View>
         <TextInput style={styles.form} placeholder="Name" />
         <TextInput style={styles.form} placeholder="Email" />
-        <TextInput style={styles.form} placeholder="Password" />
+        <TextInput secureTextEntry style={styles.form} placeholder="Password" />
         <TouchableOpacity>
           <Text
             style={styles.forgotPas}

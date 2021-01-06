@@ -59,8 +59,6 @@ const Login = ({navigation}) => {
   };
   return (
     <View style={styles.container}>
-      <Text>{email}</Text>
-      <Text>{password}</Text>
       <Text style={styles.title}>Login</Text>
       <View>
         <TextInput
