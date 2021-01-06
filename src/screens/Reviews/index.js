@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconRatingLine, IconStar, IconStarAct} from '../../assets';
@@ -11,7 +12,43 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
-const Review = () => {
+const url = 'http://192.168.100.2:8000';
+
+const Review = ({route}) => {
+  const {itemId} = route.params;
+  useEffect(() => {
+    // code to run on component mount
+    getRating();
+    getReview();
+  }, []);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState([]);
+  const getRating = () => {
+    axios
+      .get(url + '/review/rating/' + itemId)
+      .then((res) => {
+        console.log(res.data.ratings);
+        setRating(res.data.ratings);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getReview = () => {
+    axios
+      .get(url + '/review/' + itemId)
+      .then((res) => {
+        console.log(res.data.data);
+        const review = res.data.data;
+        setReview(review);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  console.log(review[0]);
+
   return (
     <>
       <ScrollView scrollEnabled={true} vertical={true}>
@@ -19,7 +56,7 @@ const Review = () => {
           <Text style={styles.title}>Rating&Reviews</Text>
           <View style={styles.wrap}>
             <View style={{marginBottom: 26}}>
-              <Text style={styles.rating}>4.3</Text>
+              <Text style={styles.rating}>{rating}</Text>
               <Text style={styles.infrating}>23 ratings</Text>
             </View>
             <View style={styles.wrapstar}>
@@ -51,18 +88,16 @@ const Review = () => {
               With photo
             </Text>
           </View>
-          <ReviewSection
-            userName="Helene Moore"
-            reviewText={`The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.`}
-          />
-          <ReviewSection
-            userName="Helene Moore"
-            reviewText={`The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.`}
-          />
-          <ReviewSection
-            userName="Helene Moore"
-            reviewText={`The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.`}
-          />
+          {review.length !== 0 &&
+            review.map(({id_review, rating, review, user_name}) => {
+              return (
+                <ReviewSection
+                  key={id_review}
+                  userName={user_name}
+                  reviewText={review}
+                />
+              );
+            })}
         </View>
         <View style={{height: 50}}></View>
       </ScrollView>

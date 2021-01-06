@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -6,13 +7,30 @@ import {
   Text,
   View,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {screensEnabled} from 'react-native-screens';
 import {HomePict} from '../../assets';
 import {Card} from '../../components';
 import {COLOR_DISABLE, FONT_BOLD, FONT_LIGHT} from '../../utils/constans';
 
 const Home = ({navigation}) => {
+  const [card, setCard] = useState([]);
+  useEffect(() => {
+    // code to run on component mount
+    getData();
+  }, []);
+
+  const getData = () => {
+    axios
+      .get('http://192.168.100.2:8000/products?filter=update&limit=3')
+      .then((res) => {
+        const card = res.data.data.products;
+        setCard(card);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <ImageBackground source={HomePict} style={styles.header}>
@@ -21,15 +39,31 @@ const Home = ({navigation}) => {
       <View style={styles.container}>
         <ScrollView vertical={true}>
           <View>
-            <Text style={styles.title}>New</Text>
+            <TouchableOpacity>
+              <Text style={styles.title} onPress={getData}>
+                New
+              </Text>
+            </TouchableOpacity>
             <Text style={styles.view}>View all</Text>
             <Text style={styles.text}>You’ve never seen it before!</Text>
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              <Card nav={navigation} />
-              <Card nav={navigation} />
-              <Card nav={navigation} />
+              {card.map(
+                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+                  return (
+                    <Card
+                      nav={navigation}
+                      key={prd_id}
+                      id={prd_id}
+                      name={prd_name}
+                      brand={prd_brand}
+                      price={prd_price}
+                      image={JSON.parse(prd_image)}
+                    />
+                  );
+                },
+              )}
             </View>
           </ScrollView>
           <View>
@@ -39,9 +73,20 @@ const Home = ({navigation}) => {
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              <Card />
-              <Card />
-              <Card />
+              {card.map(
+                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+                  return (
+                    <Card
+                      nav={navigation}
+                      key={prd_id}
+                      name={prd_name}
+                      brand={prd_brand}
+                      price={prd_price}
+                      image={JSON.parse(prd_image)}
+                    />
+                  );
+                },
+              )}
             </View>
           </ScrollView>
           <View style={styles.gap}></View>

@@ -16,15 +16,18 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
-const Card = ({nav}) => {
+const Card = ({nav, name, brand, price, image, id}) => {
+  const url = image[0];
+  const img = {uri: `${url}`};
+  console.log(typeof image);
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          nav.navigate('DetailPage');
+          nav.navigate('DetailPage', {itemId: id});
         }}>
         <ImageBackground
-          source={CardPictNew}
+          source={img}
           style={styles.carpict}
           imageStyle={styles.cardstyle}></ImageBackground>
         <View style={styles.star}>
@@ -38,9 +41,11 @@ const Card = ({nav}) => {
             </>
           )}
         </View>
-        <Text style={styles.brand}>Uniqlo</Text>
-        <Text style={styles.nameProd}>White Dress V.1</Text>
-        <Text style={styles.price}>30$</Text>
+        <Text style={styles.brand}>{brand}</Text>
+        <View style={{width: 148}}>
+          <Text style={styles.nameProd}>{name}</Text>
+        </View>
+        <Text style={styles.price}>Rp.{price}</Text>
       </TouchableOpacity>
     </View>
   );

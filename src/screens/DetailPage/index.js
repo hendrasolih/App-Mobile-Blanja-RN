@@ -1,6 +1,9 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {Button, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {set} from 'react-native-reanimated';
 import {IconStar, IconStarAct} from '../../assets';
 import {Card, ImageGallery, ListBar, SizeColorPicker} from '../../components';
 import {
@@ -11,18 +14,65 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
-const DetailPage = ({navigation}) => {
+const getUrl = 'http://192.168.100.2:8000';
+
+const DetailPage = ({navigation, route}) => {
+  const {itemId} = route.params;
+  const [product, setProduct] = useState({});
+  const [pictures, setPictures] = useState([]);
+  const [card, setCard] = useState([]);
+  useEffect(() => {
+    // code to run on component mount
+    console.log(itemId);
+    getProduct(itemId);
+    getDataCard();
+  }, []);
+  const getProduct = async (itemId) => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + (await AsyncStorage.getItem('token')),
+      },
+    };
+    axios
+      .get(`${getUrl}/product/` + itemId, config)
+      .then(({data}) => {
+        console.log(data.data[0]);
+        const img = data.data[0].prd_image;
+        const imgg = JSON.parse(img);
+        console.log(imgg);
+        console.log(typeof imgg);
+        setProduct(data.data[0]);
+        setPictures(imgg);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getDataCard = () => {
+    axios
+      .get('http://192.168.100.2:8000/products?filter=update&limit=3')
+      .then((res) => {
+        const card = res.data.data.products;
+        setCard(card);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  console.log(`here is ${pictures}`);
+  console.log(typeof product.prd_image);
+
   return (
     <>
       <ScrollView scrollEnabled={true} vertical={true}>
-        <ImageGallery />
+        <ImageGallery image={pictures} />
         <View style={styles.container}>
           <SizeColorPicker />
           <View style={styles.wraptitle}>
-            <Text style={styles.title}>H&M</Text>
-            <Text style={styles.title}>$19.99</Text>
+            <Text style={styles.title}>{product.prd_brand}</Text>
+            <Text style={styles.title}>Rp.{product.prd_price}</Text>
           </View>
-          <Text style={styles.PrdName}>Short black dress</Text>
+          <Text style={styles.PrdName}>{product.prd_name}</Text>
           <View style={styles.rating}>
             <IconStarAct />
             <IconStarAct />
@@ -31,13 +81,8 @@ const DetailPage = ({navigation}) => {
             <IconStar />
             <Text style={styles.PrdName}> (10)</Text>
           </View>
-          <Text style={styles.desc}>
-            Short dress in soft cotton jersey with decorative buttons down the
-            front and a wide, frill-trimmed square neckline with concealed
-            elastication. Elasticated seam under the bust and short puff sleeves
-            with a small frill trim.
-          </Text>
-          <ListBar nav={navigation} />
+          <Text style={styles.desc}>{product.prd_description}</Text>
+          <ListBar nav={navigation} id={itemId} />
           <View style={styles.text}>
             <Text style={{fontFamily: FONT_BOLD, fontSize: 18}}>
               You can also like this
@@ -53,9 +98,21 @@ const DetailPage = ({navigation}) => {
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              <Card />
-              <Card />
-              <Card />
+              {card.map(
+                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+                  return (
+                    <Card
+                      nav={navigation}
+                      key={prd_id}
+                      id={prd_id}
+                      name={prd_name}
+                      brand={prd_brand}
+                      price={prd_price}
+                      image={JSON.parse(prd_image)}
+                    />
+                  );
+                },
+              )}
             </View>
           </ScrollView>
           <View style={{height: 75}}></View>
