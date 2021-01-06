@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {set} from 'react-native-reanimated';
 import {ColorItem, SizeItem} from '..';
 import {IconLove} from '../../assets';
 import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';

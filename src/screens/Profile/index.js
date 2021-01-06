@@ -62,7 +62,15 @@ const Profile = ({navigation}) => {
         <ProfileMenu title={'Settings'} detail={`Notifications, password`} />
       </TouchableOpacity>
       <TouchableOpacity style={{marginTop: 50}} onPress={logout}>
-        <View style={{backgroundColor: COLOR_MAIN}}>
+        <View
+          style={{
+            backgroundColor: COLOR_MAIN,
+            width: 75,
+            height: 20,
+            borderRadius: 5,
+            marginLeft: 10,
+            paddingHorizontal: 15,
+          }}>
           <Text style={{color: '#fff'}}>Logout</Text>
         </View>
       </TouchableOpacity>

@@ -18,7 +18,7 @@ const ListBar = ({nav, id}) => {
             nav.navigate('ReviewPage', {itemId: id});
           }}>
           <View style={styles.ListBarLast}>
-            <Text style={styles.text}>Rating & Reviews {id}</Text>
+            <Text style={styles.text}>Rating & Reviews</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -70,6 +70,7 @@ const Login = ({navigation}) => {
           onChangeText={(email) => setEmail(email)}
         />
         <TextInput
+          secureTextEntry
           style={styles.form}
           placeholder="Password"
           defaultValue={password}
