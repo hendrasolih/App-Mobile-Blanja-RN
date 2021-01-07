@@ -1,4 +1,4 @@
-# App-Mobile-Blanja-RN
+# Blanja - React Native Apps
 Mobile Application Blanja, Build with React Native
 
 ## Techonology
