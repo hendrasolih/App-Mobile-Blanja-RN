@@ -1,9 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import {Button, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {set} from 'react-native-reanimated';
 import {IconStar, IconStarAct} from '../../assets';
 import {Card, ImageGallery, ListBar, SizeColorPicker} from '../../components';
 import {
@@ -14,9 +13,13 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
+// Redux
+import {connect} from 'react-redux';
+import {addToCart} from '../../utils/redux/action/cartAction';
+
 const getUrl = 'http://192.168.100.2:8000';
 
-const DetailPage = ({navigation, route}) => {
+const DetailPage = ({navigation, route, addToCart}) => {
   const {itemId} = route.params;
   const [product, setProduct] = useState({});
   const [pictures, setPictures] = useState([]);
@@ -120,7 +123,11 @@ const DetailPage = ({navigation, route}) => {
       </ScrollView>
 
       <View style={styles.addcart}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            addToCart(itemId, pictures[0], product.prd_price, product.prd_name);
+            console.log('on Press');
+          }}>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>ADD TO CART</Text>
           </View>
@@ -130,7 +137,13 @@ const DetailPage = ({navigation, route}) => {
   );
 };
 
-export default DetailPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (id, img, prc, name) => dispatch(addToCart(id, img, prc, name)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(DetailPage);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

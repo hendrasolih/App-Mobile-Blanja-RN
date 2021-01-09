@@ -9,7 +9,11 @@ import {
   FONT_LIGHT,
 } from '../../utils/constans';
 
-const Bag = () => {
+//redux
+import {connect} from 'react-redux';
+
+const Bag = ({cart}) => {
+  console.log(cart);
   return (
     <>
       <View style={styles.container}>
@@ -22,7 +26,16 @@ const Bag = () => {
           }}>
           My Bag
         </Text>
-        <CardMyBag />
+        {cart.map((item) => {
+          return (
+            <CardMyBag
+              key={item.id}
+              name={item.name}
+              img={item.img}
+              price={item.prc}
+            />
+          );
+        })}
       </View>
       <View style={styles.addcart}>
         <View
@@ -48,7 +61,13 @@ const Bag = () => {
   );
 };
 
-export default Bag;
+const mapStateToProps = (state) => {
+  return {
+    cart: state.cart.cart,
+  };
+};
+
+export default connect(mapStateToProps)(Bag);
 
 const windowWidth = Dimensions.get('window').width;
 

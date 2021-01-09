@@ -1,17 +1,22 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardPictNew, IconMin, IconPlus} from '../../assets';
 import {COLOR_DISABLE, FONT_BOLD} from '../../utils/constans';
 
-const CardMyBag = () => {
+const CardMyBag = ({name, img, price}) => {
+  const imgs = {uri: `${img}`};
   return (
     <View style={styles.container}>
-      <Image source={CardPictNew} style={styles.img} />
+      <Image source={imgs} style={styles.img} />
       <View style={styles.infobag}>
-        <Text>T-Shirt</Text>
+        <Text>{name}</Text>
         <View style={{flexDirection: 'row'}}>
           <Text style={{marginRight: 16}}>Color: Gray</Text>
           <Text>Size: L</Text>
+          <TouchableOpacity>
+            <Text>Delete</Text>
+          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', marginTop: 14}}>
           <View style={styles.btn}>
@@ -22,7 +27,9 @@ const CardMyBag = () => {
             <IconPlus />
           </View>
           <View style={styles.price}>
-            <Text style={{fontFamily: FONT_BOLD, fontSize: 20}}>30$</Text>
+            <Text style={{fontFamily: FONT_BOLD, fontSize: 11}}>
+              Rp. {price}
+            </Text>
           </View>
         </View>
       </View>
@@ -35,10 +42,11 @@ export default CardMyBag;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    marginTop: 10,
   },
   price: {
     marginTop: 7,
-    marginLeft: 50,
+    marginLeft: 20,
   },
   btn: {
     width: 36,
