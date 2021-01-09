@@ -1,9 +1,31 @@
-import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import React, {useState} from 'react';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
 const ForgotPass = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const handleSubmit = () => {
+    const data = {
+      email: email,
+    };
+    axios
+      .post('http://192.168.100.2:8000/auth/sendemailuser', data)
+      .then(async (res) => {
+        Alert.alert(
+          'Forgot Password',
+          'Kode OTP Berhasil Dikirim',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+        navigation.navigate('otp');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('error disini');
+      });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot password</Text>
@@ -11,11 +33,13 @@ const ForgotPass = ({navigation}) => {
         Please, enter your email address. You will receive a otp code to create
         a new password via email.
       </Text>
-      <TextInput style={styles.form} placeholder="Email" />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('otp');
-        }}>
+      <TextInput
+        style={styles.form}
+        placeholder="Email"
+        defaultValue={email}
+        onChangeText={(email) => setEmail(email)}
+      />
+      <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>SEND</Text>
         </View>

@@ -1,16 +1,61 @@
+import axios from 'axios';
 import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import {useState} from 'react/cjs/react.development';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
 const Register = ({navigation}) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleSubmit = () => {
+    const data = {
+      user_name: name,
+      email: email,
+      user_password: password,
+      level_id: 1,
+    };
+    axios
+      .post('http://192.168.100.2:8000/auth/signup', data)
+      .then(async (res) => {
+        console.log(res);
+        Alert.alert(
+          'Register',
+          'Register Berhasil',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+        navigation.navigate('Login');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('erro disini');
+      });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign up</Text>
       <View>
-        <TextInput style={styles.form} placeholder="Name" />
-        <TextInput style={styles.form} placeholder="Email" />
-        <TextInput secureTextEntry style={styles.form} placeholder="Password" />
+        <TextInput
+          style={styles.form}
+          placeholder="Name"
+          defaultValue={name}
+          onChangeText={(name) => setName(name)}
+        />
+        <TextInput
+          style={styles.form}
+          placeholder="Email"
+          defaultValue={email}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          secureTextEntry
+          style={styles.form}
+          placeholder="Password"
+          defaultValue={password}
+          onChangeText={(password) => setPassword(password)}
+        />
         <TouchableOpacity>
           <Text
             style={styles.forgotPas}
@@ -21,7 +66,7 @@ const Register = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>SIGN UP</Text>
         </View>

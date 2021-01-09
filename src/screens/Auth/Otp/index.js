@@ -1,18 +1,44 @@
-import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import React, {useState} from 'react';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
+//navigation.navigate('ResetPass');
+
 const Otp = ({navigation}) => {
+  const [otp, setOtp] = useState('');
+  const handleSubmit = () => {
+    const data = {
+      otp: otp,
+    };
+    axios
+      .post('http://192.168.100.2:8000/auth/otp', data)
+      .then(async (res) => {
+        Alert.alert(
+          'OTP',
+          'Kode OTP Valid',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+        navigation.navigate('ResetPass');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('error disini');
+      });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>OTP</Text>
       <Text>Please, enter your OTP code. You received from your email.</Text>
-      <TextInput style={styles.form} placeholder="OTP" />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('ResetPass');
-        }}>
+      <TextInput
+        style={styles.form}
+        placeholder="OTP"
+        defaultValue={otp}
+        onChangeText={(otp) => setOtp(otp)}
+      />
+      <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>SEND</Text>
         </View>

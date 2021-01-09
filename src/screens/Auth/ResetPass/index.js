@@ -1,9 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
 const ResetPass = ({navigation}) => {
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const handleSubmit = () => {
+    const data = {
+      user_password: password,
+    };
+    axios
+      .post('http://192.168.100.2:8000/auth/signup', data)
+      .then(async (res) => {
+        console.log(res);
+        Alert.alert(
+          'Register',
+          'Register Berhasil',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+        navigation.navigate('Login');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('erro disini');
+      });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reset Password</Text>
@@ -11,10 +34,21 @@ const ResetPass = ({navigation}) => {
         <Text style={{color: '#F01F0E'}}>
           You need to change your password to activate your account
         </Text>
-        <TextInput style={styles.form} placeholder="New Password" />
         <TextInput
+          secureTextEntry
+          style={styles.form}
+          placeholder="New Password"
+          defaultValue={password}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TextInput
+          secureTextEntry
           style={styles.form}
           placeholder="Confirmation New Password"
+          defaultValue={confirmPassword}
+          onChangeText={(confirmPassword) =>
+            setConfirmPassword(confirmPassword)
+          }
         />
         <TouchableOpacity
           onPress={() => {
