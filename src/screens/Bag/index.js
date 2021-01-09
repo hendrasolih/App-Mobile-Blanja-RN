@@ -33,6 +33,8 @@ const Bag = ({cart}) => {
               name={item.name}
               img={item.img}
               price={item.prc}
+              size={item.size}
+              color={item.color}
             />
           );
         })}

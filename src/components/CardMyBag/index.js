@@ -4,18 +4,18 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardPictNew, IconMin, IconPlus} from '../../assets';
 import {COLOR_DISABLE, FONT_BOLD} from '../../utils/constans';
 
-const CardMyBag = ({name, img, price}) => {
+const CardMyBag = ({name, img, price, size, color}) => {
   const imgs = {uri: `${img}`};
   return (
     <View style={styles.container}>
       <Image source={imgs} style={styles.img} />
       <View style={styles.infobag}>
         <Text>{name}</Text>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{marginRight: 16}}>Color: Gray</Text>
-          <Text>Size: L</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={{marginRight: 16}}>Color: {color}</Text>
+          <Text>Size: {size}</Text>
           <TouchableOpacity>
-            <Text>Delete</Text>
+            <Text style={{color: '#c71a0e'}}>Delete</Text>
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', marginTop: 14}}>

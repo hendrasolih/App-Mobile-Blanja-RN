@@ -1,6 +1,7 @@
+import {color} from 'react-native-reanimated';
 import * as actionTypes from '../actionTypes';
 
-export const addToCart = (itemID, image, price, name) => {
+export const addToCart = (itemID, image, price, name, size, color) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
@@ -8,6 +9,8 @@ export const addToCart = (itemID, image, price, name) => {
       img: image,
       prc: price,
       name: name,
+      size: size,
+      color: color,
     },
   };
 };

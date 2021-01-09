@@ -16,13 +16,17 @@ import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
 
 const url = 'http://192.168.100.2:8000';
 
-const SelectColorPicker = ({id}) => {
+const SelectColorPicker = ({
+  id,
+  changeSize,
+  pickSize,
+  changeColor,
+  pickColor,
+}) => {
   const [size, setSize] = useState([]);
   const [color, setColor] = useState([]);
   const [modalVisibleSize, setModalVisibleSize] = useState(false);
   const [modalVisibleColor, setModalVisibleColor] = useState(false);
-  const [pickSize, setPickSize] = useState(0);
-  const [pickColor, setPickColor] = useState('color');
   useEffect(() => {
     // code to run on component mount
     getSize();
@@ -86,7 +90,8 @@ const SelectColorPicker = ({id}) => {
                 <SizeItem
                   key={size_id}
                   size={size_prd}
-                  changeSize={(pickSize) => setPickSize(pickSize)}
+                  //changeSize={(pickSize) => setPickSize(pickSize)}
+                  changeSize={changeSize}
                 />
               );
             })}
@@ -119,7 +124,7 @@ const SelectColorPicker = ({id}) => {
                 <ColorItem
                   key={id}
                   color={color_type}
-                  changeColor={(pickColor) => setPickColor(pickColor)}
+                  changeColor={changeColor}
                 />
               );
             })}

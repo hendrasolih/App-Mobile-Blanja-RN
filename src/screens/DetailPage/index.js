@@ -24,6 +24,8 @@ const DetailPage = ({navigation, route, addToCart}) => {
   const [product, setProduct] = useState({});
   const [pictures, setPictures] = useState([]);
   const [card, setCard] = useState([]);
+  const [pickSize, setPickSize] = useState(0);
+  const [pickColor, setPickColor] = useState('color');
   useEffect(() => {
     // code to run on component mount
     console.log(itemId);
@@ -64,13 +66,21 @@ const DetailPage = ({navigation, route, addToCart}) => {
   };
   console.log(`here is ${pictures}`);
   console.log(typeof product.prd_image);
+  console.log(`ini size: ${pickSize}`);
+  console.log(`ini color: ${pickColor}`);
 
   return (
     <>
       <ScrollView scrollEnabled={true} vertical={true}>
         <ImageGallery image={pictures} />
         <View style={styles.container}>
-          <SizeColorPicker id={itemId} />
+          <SizeColorPicker
+            id={itemId}
+            changeSize={(pickSize) => setPickSize(pickSize)}
+            pickSize={pickSize}
+            changeColor={(pickColor) => setPickColor(pickColor)}
+            pickColor={pickColor}
+          />
           <View style={styles.wraptitle}>
             <Text style={styles.title}>{product.prd_brand}</Text>
             <Text style={styles.title}>Rp.{product.prd_price}</Text>
@@ -125,7 +135,14 @@ const DetailPage = ({navigation, route, addToCart}) => {
       <View style={styles.addcart}>
         <TouchableOpacity
           onPress={() => {
-            addToCart(itemId, pictures[0], product.prd_price, product.prd_name);
+            addToCart(
+              itemId,
+              pictures[0],
+              product.prd_price,
+              product.prd_name,
+              pickSize,
+              pickColor,
+            );
             console.log('on Press');
           }}>
           <View style={styles.btn}>
@@ -139,7 +156,8 @@ const DetailPage = ({navigation, route, addToCart}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id, img, prc, name) => dispatch(addToCart(id, img, prc, name)),
+    addToCart: (id, img, prc, name, size, color) =>
+      dispatch(addToCart(id, img, prc, name, size, color)),
   };
 };
 
