@@ -8,6 +8,9 @@ import ReviewSection from './ReviewSection';
 import CardMyBag from './CardMyBag';
 import SizeItem from './SizeItem';
 import ColorItem from './ColorItem';
+import NavBar from './NavBar';
+import ListCategory from './ListCategory';
+import CardCatalog from './CardCatalog';
 
 export {
   BottomNavigator,
@@ -20,4 +23,7 @@ export {
   CardMyBag,
   SizeItem,
   ColorItem,
+  NavBar,
+  ListCategory,
+  CardCatalog,
 };

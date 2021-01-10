@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {screensEnabled} from 'react-native-screens';
-import {HomePict} from '../../assets';
+import {HomePict, IconBell} from '../../assets';
 import {Card} from '../../components';
 import {COLOR_DISABLE, FONT_BOLD, FONT_LIGHT} from '../../utils/constans';
 
@@ -35,6 +35,10 @@ const Home = ({navigation}) => {
     <>
       <ImageBackground source={HomePict} style={styles.header}>
         <Text style={styles.banner}>Street clothes</Text>
+        <IconBell
+          style={styles.notif}
+          onPress={() => navigation.navigate('Notification')}
+        />
       </ImageBackground>
       <View style={styles.container}>
         <ScrollView vertical={true}>
@@ -121,6 +125,7 @@ const styles = StyleSheet.create({
   header: {
     width: windowWidth,
     height: windowHeight * 0.24,
+    flexDirection: 'row',
   },
   banner: {
     fontFamily: FONT_BOLD,
@@ -131,6 +136,10 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: 'row',
+  },
+  notif: {
+    marginLeft: 35,
+    marginVertical: 50,
   },
   gap: {
     height: 200,

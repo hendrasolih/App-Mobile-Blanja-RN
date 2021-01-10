@@ -6,6 +6,7 @@ import CardPictNew from './cardimage2.jpg';
 import PictDetail from './pictdetail1.png';
 import PictDetail2 from './pictdetail2.png';
 import PictCardBag from './cardbag.png';
+import PictNotif from './NoNotif.png';
 
 export {
   SplashLogo,
@@ -16,4 +17,5 @@ export {
   PictDetail,
   PictDetail2,
   PictCardBag,
+  PictNotif,
 };

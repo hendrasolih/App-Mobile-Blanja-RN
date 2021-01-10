@@ -15,6 +15,10 @@ import IconLove from './Love.svg';
 import IconRatingLine from './rating line.svg';
 import IconPlus from './plus.svg';
 import IconMin from './min.svg';
+import IconChevron from './Chevron.svg';
+import IconBell from './bell.svg';
+import IconSearch from './search.svg';
+import IconFilter from './filter.svg';
 
 export {
   IconHomeAct,
@@ -34,4 +38,8 @@ export {
   IconRatingLine,
   IconPlus,
   IconMin,
+  IconChevron,
+  IconBell,
+  IconSearch,
+  IconFilter,
 };

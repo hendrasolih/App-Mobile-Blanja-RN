@@ -14,6 +14,8 @@ import Otp from './Auth/Otp';
 import ResetPass from './Auth/ResetPass';
 import DetailPage from './DetailPage';
 import Review from './Reviews';
+import Catalog from './Catalog';
+import Search from './Search';
 
 export {
   Splash,
@@ -32,4 +34,6 @@ export {
   ResetPass,
   DetailPage,
   Review,
+  Catalog,
+  Search,
 };

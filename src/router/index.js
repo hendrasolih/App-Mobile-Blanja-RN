@@ -6,23 +6,20 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   Splash,
   Home,
-  Shop,
   Bag,
   Favorites,
-  Profile,
-  MyOrder,
-  ShippingAddress,
-  SettingsProfile,
   DetailPage,
-  ReviewPage,
   Review,
+  Search,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
 
+import Shop from './Shop';
 import Auth from './Auth';
 import MainProfile from './Profile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Notification from '../screens/Notification';
 
 const getToken = async () => {
   try {
@@ -52,12 +49,16 @@ const MainApp = () => {
   return (
     <Tab.Navigator tabBar={(props) => <BottomNavigator {...props} />}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Shop" component={Shop} />
+      <Tab.Screen name="Shop" component={ShopPage} />
       <Tab.Screen name="Bag" component={Bag} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
+};
+
+const ShopPage = () => {
+  return <Shop />;
 };
 
 const ProfileScreen = ({navigation}) => {
@@ -86,12 +87,23 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        headerMode="none"
         name="MainApp"
         component={MainApp}
         options={{headerShown: false}}
       />
       <Stack.Screen name="DetailPage" component={DetailPage} />
       <Stack.Screen name="ReviewPage" component={Review} />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
