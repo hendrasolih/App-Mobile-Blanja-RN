@@ -11,6 +11,7 @@ import {
   DetailPage,
   Review,
   Search,
+  Filter,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -104,6 +105,7 @@ const Router = () => {
         component={Search}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="Filter" component={Filter} />
     </Stack.Navigator>
   );
 };

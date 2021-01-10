@@ -12,7 +12,9 @@ const Catalog = ({navigation}) => {
       <View style={styles.head}>
         <NavBar navigation={navigation} title="Catalog" />
         <View style={styles.wrapfilter}>
-          <TouchableOpacity style={styles.filter}>
+          <TouchableOpacity
+            style={styles.filter}
+            onPress={() => navigation.navigate('Filter')}>
             <IconFilter style={{marginRight: 10}} />
             <Text style={{fontFamily: FONT_LIGHT}}>Filter</Text>
           </TouchableOpacity>

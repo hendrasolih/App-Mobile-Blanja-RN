@@ -16,6 +16,7 @@ import DetailPage from './DetailPage';
 import Review from './Reviews';
 import Catalog from './Catalog';
 import Search from './Search';
+import Filter from './Filter';
 
 export {
   Splash,
@@ -36,4 +37,5 @@ export {
   Review,
   Catalog,
   Search,
+  Filter,
 };
