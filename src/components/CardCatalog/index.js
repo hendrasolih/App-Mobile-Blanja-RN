@@ -1,16 +1,22 @@
 import React from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IconStar, IconStarAct} from '../../assets';
 import {COLOR_DISABLE} from '../../utils/constans';
 
-const CardCatalog = () => {
-  const imgs = {uri: `https://i.imgur.com/OsyDmHm.jpg`};
+const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
+  console.log(image[0]);
+  const imgs = {uri: image[0]};
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('DetailPage', {itemId: itemId});
+      }}>
       <Image source={imgs} style={styles.img} />
       <View style={styles.infobag}>
-        <Text>Pullover</Text>
-        <Text>Mango</Text>
+        <Text>{name}</Text>
+        <Text>{brand}</Text>
         <View style={{flexDirection: 'row'}}>
           <IconStarAct />
           <IconStarAct />
@@ -18,9 +24,9 @@ const CardCatalog = () => {
           <IconStarAct />
           <IconStar />
         </View>
-        <Text>51$</Text>
+        <Text>Rp.{price}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

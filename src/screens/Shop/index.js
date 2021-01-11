@@ -36,7 +36,9 @@ const Shop = ({navigation}) => {
       <NavBar title="Categories" navigation={navigation} />
       <TouchableOpacity
         style={styles.viewAll}
-        onPress={() => navigation.navigate('Catalog')}>
+        onPress={() =>
+          navigation.navigate('Catalog', {title: 'View All Items'})
+        }>
         <Text style={{color: '#ffffff'}}>VIEW ALL ITEMS</Text>
       </TouchableOpacity>
       <Text style={styles.text}>Choose category</Text>
