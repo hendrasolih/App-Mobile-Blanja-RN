@@ -12,6 +12,8 @@ import NavBar from './NavBar';
 import ListCategory from './ListCategory';
 import CardCatalog from './CardCatalog';
 import ColorFilter from './ColorFilter';
+import SizeFilter from './SizeFilter';
+import CategoryFilter from './CategoryFilter';
 
 export {
   BottomNavigator,
@@ -28,4 +30,6 @@ export {
   ListCategory,
   CardCatalog,
   ColorFilter,
+  SizeFilter,
+  CategoryFilter,
 };

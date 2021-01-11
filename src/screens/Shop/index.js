@@ -1,6 +1,7 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {ListCategory, NavBar} from '../../components';
 import {
   COLOR_DISABLE,
@@ -9,7 +10,27 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 
+const getUrl = 'http://192.168.100.2:8000';
+
 const Shop = ({navigation}) => {
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    // code to run on component mount
+    getCategory();
+  }, []);
+  const getCategory = () => {
+    axios
+      .get(`${getUrl}/category`)
+      .then(({data}) => {
+        //console.log(data.data);
+        setCategory(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //console.log(category);
   return (
     <View style={styles.container}>
       <NavBar title="Categories" navigation={navigation} />
@@ -19,10 +40,20 @@ const Shop = ({navigation}) => {
         <Text style={{color: '#ffffff'}}>VIEW ALL ITEMS</Text>
       </TouchableOpacity>
       <Text style={styles.text}>Choose category</Text>
-      <ListCategory title={`Shoes`} navigation={navigation} />
-      <ListCategory title={`T-Shirt`} navigation={navigation} />
-      <ListCategory title={`Watch`} navigation={navigation} />
-      <View style={{borderTopColor: COLOR_DISABLE, borderTopWidth: 1}}></View>
+      <ScrollView vertical={true}>
+        {category.length !== 0 &&
+          category.map(({ctg_id, ctg_name}) => {
+            return (
+              <ListCategory
+                key={ctg_id}
+                title={ctg_name}
+                navigation={navigation}
+              />
+            );
+          })}
+        <View style={{borderTopColor: COLOR_DISABLE, borderTopWidth: 1}}></View>
+        <View style={styles.gap} />
+      </ScrollView>
     </View>
   );
 };
@@ -49,5 +80,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 16,
     marginHorizontal: windowWidth * 0.04,
+  },
+  gap: {
+    height: 170,
   },
 });

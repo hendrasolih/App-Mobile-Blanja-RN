@@ -12,7 +12,8 @@ const ColorFilter = ({title}) => {
           width: 36,
           borderRadius: 36 / 2,
           backgroundColor: `${title}`,
-        }}></View>
+        }}
+      />
     </View>
   );
 };

@@ -93,7 +93,7 @@ const Home = ({navigation}) => {
               )}
             </View>
           </ScrollView>
-          <View style={styles.gap}></View>
+          <View style={styles.gap} />
         </ScrollView>
       </View>
     </>
