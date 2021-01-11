@@ -5,7 +5,7 @@ import {IconStar, IconStarAct} from '../../assets';
 import {COLOR_DISABLE} from '../../utils/constans';
 
 const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
-  console.log(image[0]);
+  //console.log(image[0]);
   const imgs = {uri: image[0]};
   return (
     <TouchableOpacity

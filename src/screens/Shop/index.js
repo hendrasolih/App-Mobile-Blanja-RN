@@ -37,7 +37,7 @@ const Shop = ({navigation}) => {
       <TouchableOpacity
         style={styles.viewAll}
         onPress={() =>
-          navigation.navigate('Catalog', {title: 'View All Items'})
+          navigation.navigate('Catalog', {title: 'View All Items', keyword: ''})
         }>
         <Text style={{color: '#ffffff'}}>VIEW ALL ITEMS</Text>
       </TouchableOpacity>

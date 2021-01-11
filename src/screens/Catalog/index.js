@@ -10,19 +10,20 @@ import {FONT_LIGHT} from '../../utils/constans';
 const getUrl = 'http://192.168.100.2:8000';
 
 const Catalog = ({navigation, route}) => {
-  let {title} = route.params;
+  let {title, keyword} = route.params;
   const [viewall, setViewall] = useState([]);
   useEffect(() => {
     // code to run on component mount
     getViewAll();
-  }, []);
+  }, [keyword]);
   const getViewAll = () => {
-    if (title === 'View All Items') {
+    if (title === 'View All Items' || title === '' || title === undefined) {
       title = '';
     }
     console.log(title);
+    console.log(keyword);
     axios
-      .get(`${getUrl}/products?limit=10&category=${title}`)
+      .get(`${getUrl}/products?limit=10&category=${title}&search=${keyword}`)
       .then(({data}) => {
         //console.log(data.data.products);
         setViewall(data.data.products);
@@ -32,7 +33,8 @@ const Catalog = ({navigation, route}) => {
       });
   };
 
-  console.log(viewall[0]);
+  //console.log(viewall[0]);
+  //console.log(`ini ${keyword}`);
   return (
     <>
       <View style={styles.head}>

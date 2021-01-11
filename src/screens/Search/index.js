@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, TextInput, View} from 'react-native';
 import {IconChevron} from '../../assets';
 
 const Search = ({navigation}) => {
+  const [keyword, setKeyword] = useState('');
+  //console.log(keyword);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -10,7 +12,15 @@ const Search = ({navigation}) => {
           style={{marginRight: 20}}
           onPress={() => navigation.goBack()}
         />
-        <TextInput placeholder="    Search" style={styles.searchBar} />
+        <TextInput
+          placeholder="    Search"
+          style={styles.searchBar}
+          defaultValue={keyword}
+          onChangeText={(text) => setKeyword(text)}
+          onSubmitEditing={() =>
+            navigation.navigate('Catalog', {title: '', keyword: keyword})
+          }
+        />
       </View>
     </View>
   );
