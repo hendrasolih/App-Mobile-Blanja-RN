@@ -14,6 +14,8 @@ import CardCatalog from './CardCatalog';
 import ColorFilter from './ColorFilter';
 import SizeFilter from './SizeFilter';
 import CategoryFilter from './CategoryFilter';
+import CardAddress from './CardAddress';
+import CheckboxPayments from './CheckboxPayments';
 
 export {
   BottomNavigator,
@@ -32,4 +34,6 @@ export {
   ColorFilter,
   SizeFilter,
   CategoryFilter,
+  CardAddress,
+  CheckboxPayments,
 };

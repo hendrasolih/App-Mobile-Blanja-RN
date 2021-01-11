@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardMyBag} from '../../components';
@@ -12,7 +12,11 @@ import {
 //redux
 import {connect} from 'react-redux';
 
-const Bag = ({cart}) => {
+const Bag = ({cart, navigation}) => {
+  //const [totalPrice, setTotalPrice] = useState(0);
+  const price = [...cart.map((item) => item.prc)];
+  const totalPrice = price.reduce((a, b) => a + b, 0);
+  console.log(price);
   console.log(cart);
   return (
     <>
@@ -51,9 +55,9 @@ const Bag = ({cart}) => {
           <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
             Total amount:
           </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>112$</Text>
+          <Text style={{fontFamily: FONT_BOLD}}>{totalPrice}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>CHECK OUT</Text>
           </View>
