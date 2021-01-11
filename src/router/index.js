@@ -13,6 +13,7 @@ import {
   Search,
   Filter,
   Checkout,
+  Success,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -108,6 +109,11 @@ const Router = () => {
       />
       <Stack.Screen name="Filter" component={Filter} />
       <Stack.Screen name="Checkout" component={Checkout} />
+      <Stack.Screen
+        name="Success"
+        component={Success}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

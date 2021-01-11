@@ -18,6 +18,7 @@ import Catalog from './Catalog';
 import Search from './Search';
 import Filter from './Filter';
 import Checkout from './Checkout';
+import Success from './SuccessTransaction';
 
 export {
   Splash,
@@ -40,4 +41,5 @@ export {
   Search,
   Filter,
   Checkout,
+  Success,
 };

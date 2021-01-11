@@ -19,6 +19,9 @@ import IconChevron from './Chevron.svg';
 import IconBell from './bell.svg';
 import IconSearch from './search.svg';
 import IconFilter from './filter.svg';
+import IconMasterCard from './mastercard.svg';
+import IconPos from './Pos.svg';
+import IconGopay from './Gopay.svg';
 
 export {
   IconHomeAct,
@@ -42,4 +45,7 @@ export {
   IconBell,
   IconSearch,
   IconFilter,
+  IconMasterCard,
+  IconPos,
+  IconGopay,
 };
