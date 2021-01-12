@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
@@ -30,20 +31,23 @@ import {
   FONT_MED,
   FONT_REG,
 } from '../../utils/constans';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const url = 'http://192.168.100.2:8000';
 
 const Review = ({route}) => {
   const {itemId} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState([]);
   const [newReview, setNewReview] = useState('');
+  const [newRating, setNewRating] = useState(0);
   useEffect(() => {
     // code to run on component mount
     getRating();
     getReview();
   }, []);
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState([]);
+
   const getRating = () => {
     axios
       .get(url + '/review/rating/' + itemId)
@@ -69,8 +73,36 @@ const Review = ({route}) => {
       });
   };
 
-  //console.log(review[0]);
-  console.log(`text review: ${newReview}`);
+  const ratingCompleted = (rating) => {
+    console.log('Rating is: ' + rating);
+    setNewRating(rating);
+  };
+
+  const postReview = async () => {
+    const user_id = await AsyncStorage.getItem('userid');
+    console.log('itemid: ' + itemId);
+    console.log('userid: ' + user_id);
+    console.log('review: ' + newReview);
+    console.log('rating: ' + newRating);
+    const data = {
+      review: newReview,
+      user_id: user_id,
+      rating: newRating,
+    };
+    axios
+      .post(`${url}/review/${itemId}`, data)
+      .then((res) => {
+        console.log(res.data);
+        getRating();
+        getReview();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // console.log(`rating here : ${newRating}`);
+  // console.log(`text review: ${newReview}`);
 
   return (
     <>
@@ -146,13 +178,16 @@ const Review = ({route}) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>What is you rate?</Text>
-            <View style={{flexDirection: 'row', marginBottom: 20}}>
-              <IconStarActBig />
-              <IconStarActBig />
-              <IconStarActBig />
-              <IconStarActBig />
-              <IconStarBig />
-            </View>
+            {/* Rating */}
+            <AirbnbRating
+              count={5}
+              reviews={['Bad', 'OK', 'Good', 'Very Good', 'Amazing']}
+              defaultRating={4}
+              size={33}
+              showRating={true}
+              onFinishRating={ratingCompleted}
+            />
+            {/* Rating */}
             <View style={{width: 227}}>
               <Text style={styles.modalText}>
                 Please share your opinion about the product
@@ -170,6 +205,7 @@ const Review = ({route}) => {
               style={{...styles.openButton, backgroundColor: COLOR_MAIN}}
               onPress={() => {
                 setModalVisible(!modalVisible);
+                postReview();
               }}>
               <Text style={styles.textStyle}>SEND REVIEW</Text>
             </TouchableHighlight>
