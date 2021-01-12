@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconStar, IconStarAct} from '../../assets';
 import {Card, ImageGallery, ListBar, SizeColorPicker} from '../../components';
@@ -144,6 +144,12 @@ const DetailPage = ({navigation, route, addToCart}) => {
               pickColor,
             );
             console.log('on Press');
+            Alert.alert(
+              `${product.prd_name} Berhasil ditambahkan !!!`,
+              'Ayo Belanja Lagi :)',
+              [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+              {cancelable: false},
+            );
           }}>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>ADD TO CART</Text>
