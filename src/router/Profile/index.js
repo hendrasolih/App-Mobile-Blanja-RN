@@ -40,21 +40,6 @@ const MainProfile = () => {
           },
         }}
       />
-      <Stack.Screen
-        name="SettingsProfile"
-        component={SettingsProfile}
-        options={{
-          title: '',
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTintColor: 'black',
-          headerTitleStyle: {
-            fontFamily: FONT_BOLD,
-            fontSize: 18,
-          },
-        }}
-      />
     </Stack.Navigator>
   );
 };

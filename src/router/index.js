@@ -14,6 +14,7 @@ import {
   Filter,
   Checkout,
   Success,
+  SettingsProfile,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -94,6 +95,21 @@ const Router = () => {
         name="MainApp"
         component={MainApp}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SettingsProfile"
+        component={SettingsProfile}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: FONT_BOLD,
+            fontSize: 18,
+          },
+        }}
       />
       <Stack.Screen name="DetailPage" component={DetailPage} />
       <Stack.Screen name="ReviewPage" component={Review} />

@@ -16,6 +16,7 @@ import SizeFilter from './SizeFilter';
 import CategoryFilter from './CategoryFilter';
 import CardAddress from './CardAddress';
 import CheckboxPayments from './CheckboxPayments';
+import NotifSetting from './NotifSetting';
 
 export {
   BottomNavigator,
@@ -36,4 +37,5 @@ export {
   CategoryFilter,
   CardAddress,
   CheckboxPayments,
+  NotifSetting,
 };

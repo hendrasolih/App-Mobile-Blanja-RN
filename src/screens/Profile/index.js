@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ProfilePict} from '../../assets';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,13 +11,26 @@ import {
 } from '../../utils/constans';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {useLinkProps} from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
+const url = 'http://192.168.100.2:8000';
+
 const Profile = ({navigation}) => {
+  const [userid, setUserid] = useState(0);
+  const [profile, setProfile] = useState({});
+  useEffect(() => {
+    // code to run on component mount
+    getUserId();
+    if (userid !== 0) {
+      getProfile();
+    }
+  }, [userid]);
   const logout = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
+      console.log(`ini token: ${token}`);
       axios.delete('http://192.168.100.2:8000/auth/logout', {
         headers: {
           'x-access-token': 'Bearer ' + token,
@@ -31,16 +44,45 @@ const Profile = ({navigation}) => {
       console.log(e);
     }
   };
+  const getProfile = async () => {
+    axios
+      .get(`${url}/user/${userid}`)
+      .then((res) => {
+        console.log(res.data.data[0]);
+        setProfile(res.data.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getUserId = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userid');
+
+      if (value !== null) {
+        // value previously stored
+        console.log(value);
+        setUserid(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  const {user_name, email, photo_user} = profile;
+  const img = {uri: photo_user};
   return (
     <>
       <View style={styles.titlewrap}>
         <Text style={styles.title}>My Profile</Text>
       </View>
       <View style={styles.profile}>
-        <Image style={styles.img} source={ProfilePict} />
+        <Image
+          style={styles.img}
+          source={photo_user !== null ? img : ProfilePict}
+        />
         <View>
-          <Text style={styles.main}>Matilda Brown</Text>
-          <Text style={styles.second}>matildabrown@mail.com</Text>
+          <Text style={styles.main}>{user_name}</Text>
+          <Text style={styles.second}>{email}</Text>
         </View>
       </View>
       <TouchableOpacity

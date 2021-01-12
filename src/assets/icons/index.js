@@ -22,6 +22,10 @@ import IconFilter from './filter.svg';
 import IconMasterCard from './mastercard.svg';
 import IconPos from './Pos.svg';
 import IconGopay from './Gopay.svg';
+import IconStarActBig from './StarActBig.svg';
+import IconStarBig from './StarBig.svg';
+import IconOn from './On.svg';
+import IconOff from './Off.svg';
 
 export {
   IconHomeAct,
@@ -48,4 +52,8 @@ export {
   IconMasterCard,
   IconPos,
   IconGopay,
+  IconStarActBig,
+  IconStarBig,
+  IconOn,
+  IconOff,
 };
