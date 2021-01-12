@@ -14,3 +14,12 @@ export const addToCart = (itemID, image, price, name, size, color) => {
     },
   };
 };
+
+export const removeFromCart = (itemID) => {
+  return {
+    type: actionTypes.REMOVE_FROM_CART,
+    payload: {
+      id: itemID,
+    },
+  };
+};

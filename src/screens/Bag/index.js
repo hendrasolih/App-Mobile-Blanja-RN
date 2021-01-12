@@ -39,6 +39,7 @@ const Bag = ({cart, navigation}) => {
               price={item.prc}
               size={item.size}
               color={item.color}
+              id={item.id}
             />
           );
         })}

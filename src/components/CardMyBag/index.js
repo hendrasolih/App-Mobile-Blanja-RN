@@ -4,7 +4,11 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardPictNew, IconMin, IconPlus} from '../../assets';
 import {COLOR_DISABLE, FONT_BOLD} from '../../utils/constans';
 
-const CardMyBag = ({name, img, price, size, color}) => {
+import {connect} from 'react-redux';
+
+import {removeFromCart} from '../../utils/redux/action/cartAction';
+
+const CardMyBag = ({name, img, price, size, color, id, removeFromCart}) => {
   const imgs = {uri: `${img}`};
   return (
     <View style={styles.container}>
@@ -14,7 +18,7 @@ const CardMyBag = ({name, img, price, size, color}) => {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{marginRight: 16}}>Color: {color}</Text>
           <Text>Size: {size}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => removeFromCart(id)}>
             <Text style={{color: '#c71a0e'}}>Delete</Text>
           </TouchableOpacity>
         </View>
@@ -37,7 +41,13 @@ const CardMyBag = ({name, img, price, size, color}) => {
   );
 };
 
-export default CardMyBag;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeFromCart: (id) => dispatch(removeFromCart(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CardMyBag);
 
 const styles = StyleSheet.create({
   container: {
