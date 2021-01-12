@@ -40,6 +40,7 @@ const Bag = ({cart, navigation}) => {
               size={item.size}
               color={item.color}
               id={item.id}
+              qty={item.qty}
             />
           );
         })}

@@ -8,7 +8,16 @@ import {connect} from 'react-redux';
 
 import {removeFromCart} from '../../utils/redux/action/cartAction';
 
-const CardMyBag = ({name, img, price, size, color, id, removeFromCart}) => {
+const CardMyBag = ({
+  name,
+  img,
+  price,
+  size,
+  color,
+  id,
+  qty,
+  removeFromCart,
+}) => {
   const imgs = {uri: `${img}`};
   return (
     <View style={styles.container}>
@@ -26,7 +35,7 @@ const CardMyBag = ({name, img, price, size, color, id, removeFromCart}) => {
           <View style={styles.btn}>
             <IconMin />
           </View>
-          <Text style={{marginTop: 7, marginHorizontal: 10}}>1</Text>
+          <Text style={{marginTop: 7, marginHorizontal: 10}}>{qty}</Text>
           <View style={styles.btn}>
             <IconPlus />
           </View>
