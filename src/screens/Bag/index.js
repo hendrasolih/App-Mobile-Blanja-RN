@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardMyBag} from '../../components';
@@ -14,10 +14,26 @@ import {connect} from 'react-redux';
 
 const Bag = ({cart, navigation}) => {
   //const [totalPrice, setTotalPrice] = useState(0);
-  const price = [...cart.map((item) => item.prc)];
-  const totalPrice = price.reduce((a, b) => a + b, 0);
-  console.log(price);
-  console.log(cart);
+  // const price = [...cart.map((item) => item.prc)];
+  // const totalPrice = price.reduce((a, b) => a + b, 0);
+  // console.log(price);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+  useEffect(() => {
+    let items = 0;
+    let price = 0;
+
+    cart.forEach((item) => {
+      items += item.qty;
+      price += item.qty * item.prc;
+    });
+
+    setTotalItems(items);
+    setTotalPrice(price);
+  }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
+  console.log('price here ' + totalPrice);
+  console.log('item here' + totalItems);
   return (
     <>
       <View style={styles.container}>
@@ -57,9 +73,12 @@ const Bag = ({cart, navigation}) => {
           <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
             Total amount:
           </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>{totalPrice}</Text>
+          <Text style={{fontFamily: FONT_BOLD}}>Rp. {totalPrice}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Checkout', {totalPrice, totalItems})
+          }>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>CHECK OUT</Text>
           </View>
