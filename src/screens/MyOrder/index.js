@@ -1,5 +1,7 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {
   COLOR_DISABLE,
   FONT_BOLD,
@@ -8,33 +10,64 @@ import {
   FONT_THIN,
 } from '../../utils/constans';
 
+const url = 'http://192.168.100.2:8000';
+
 const MyOrder = () => {
+  const [history, setHistory] = useState([]);
+  useEffect(() => {
+    // code to run on component mount
+    getHistory();
+  }, []);
+
+  const getHistory = async () => {
+    const user_id = await AsyncStorage.getItem('userid');
+    console.log('userid: ' + user_id);
+    axios
+      .get(url + '/history/' + user_id)
+      .then((res) => {
+        //console.log(res.data.data);
+        const history = res.data.data;
+        setHistory(history);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  console.log(history);
   return (
     <>
       <View style={styles.titlewrap}>
         <Text style={styles.title}>My Orders</Text>
       </View>
-      <View style={styles.cardOrders}>
-        <View style={styles.noOrders}>
-          <Text style={styles.titleOrder}>Order No 1947034</Text>
-          <Text style={styles.date}>05-12-2019</Text>
-        </View>
-        <View style={styles.infOrders}>
-          <Text style={styles.textKey}>Tracking number:</Text>
-          <Text style={styles.textValue}>IW3475453455</Text>
-        </View>
-        <View style={styles.infOrders}>
-          <Text style={styles.textKey}>Quantity:</Text>
-          <Text style={styles.textValue}>3</Text>
-        </View>
-        <View style={styles.infOrders}>
-          <Text style={styles.textKey}>Total Amount:</Text>
-          <Text style={styles.textValue}>112$</Text>
-        </View>
-        <View style={styles.delivStat}>
-          <Text style={styles.deliv}>Delivered</Text>
-        </View>
-      </View>
+      <ScrollView vertical={true}>
+        {history.length !== 0 &&
+          history.map(({id, invoice_id, price, qty}) => {
+            return (
+              <View style={styles.cardOrders} key={id}>
+                <View style={styles.noOrders}>
+                  <Text style={styles.titleOrder}>Order No: {invoice_id}</Text>
+                  <Text style={styles.date}>05-12-2019</Text>
+                </View>
+                <View style={styles.infOrders}>
+                  <Text style={styles.textKey}>Tracking number:</Text>
+                  <Text style={styles.textValue}>IW3475453455</Text>
+                </View>
+                <View style={styles.infOrders}>
+                  <Text style={styles.textKey}>Quantity:</Text>
+                  <Text style={styles.textValue}>{qty}</Text>
+                </View>
+                <View style={styles.infOrders}>
+                  <Text style={styles.textKey}>Total Amount:</Text>
+                  <Text style={styles.textValue}>Rp. {price}</Text>
+                </View>
+                <View style={styles.delivStat}>
+                  <Text style={styles.deliv}>Delivered</Text>
+                </View>
+              </View>
+            );
+          })}
+        <View style={{height: 25}} />
+      </ScrollView>
     </>
   );
 };
@@ -47,8 +80,8 @@ const styles = StyleSheet.create({
     color: COLOR_DISABLE,
   },
   titleOrder: {
-    fontSize: 16,
-    fontFamily: FONT_BOLD,
+    fontSize: 14,
+    fontFamily: FONT_MED,
   },
   delivStat: {
     alignItems: 'flex-end',
