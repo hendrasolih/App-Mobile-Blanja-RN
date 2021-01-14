@@ -9,8 +9,7 @@ import {
   FONT_MED,
   FONT_THIN,
 } from '../../utils/constans';
-
-const url = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const MyOrder = () => {
   const [history, setHistory] = useState([]);
@@ -23,7 +22,7 @@ const MyOrder = () => {
     const user_id = await AsyncStorage.getItem('userid');
     console.log('userid: ' + user_id);
     axios
-      .get(url + '/history/' + user_id)
+      .get(API_URL + '/history/' + user_id)
       .then((res) => {
         //console.log(res.data.data);
         const history = res.data.data;

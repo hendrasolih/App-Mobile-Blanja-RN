@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
+import {API_URL} from '@env';
 
 const ForgotPass = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const ForgotPass = ({navigation}) => {
       email: email,
     };
     axios
-      .post('http://192.168.100.2:8000/auth/sendemailuser', data)
+      .post(`${API_URL}/auth/sendemailuser`, data)
       .then(async (res) => {
         Alert.alert(
           'Forgot Password',

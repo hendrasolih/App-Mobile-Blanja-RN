@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {screensEnabled} from 'react-native-screens';
 import {HomePict, IconBell} from '../../assets';
 import {Card} from '../../components';
 import {COLOR_DISABLE, FONT_BOLD, FONT_LIGHT} from '../../utils/constans';
+import {API_URL} from '@env';
 
 const Home = ({navigation}) => {
   const [card, setCard] = useState([]);
@@ -22,7 +22,7 @@ const Home = ({navigation}) => {
 
   const getData = () => {
     axios
-      .get('http://192.168.100.2:8000/products?filter=update&limit=3')
+      .get(`${API_URL}/products?filter=update&limit=3`)
       .then((res) => {
         const card = res.data.data.products;
         setCard(card);

@@ -16,8 +16,7 @@ import {
 // Redux
 import {connect} from 'react-redux';
 import {addToCart} from '../../utils/redux/action/cartAction';
-
-const getUrl = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const DetailPage = ({navigation, route, addToCart}) => {
   const {itemId} = route.params;
@@ -39,7 +38,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
       },
     };
     axios
-      .get(`${getUrl}/product/` + itemId, config)
+      .get(`${API_URL}/product/` + itemId, config)
       .then(({data}) => {
         console.log(data.data[0]);
         const img = data.data[0].prd_image;
@@ -55,7 +54,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
   };
   const getDataCard = () => {
     axios
-      .get('http://192.168.100.2:8000/products?filter=update&limit=3')
+      .get(`${API_URL}/products?filter=update&limit=3`)
       .then((res) => {
         const card = res.data.data.products;
         setCard(card);

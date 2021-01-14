@@ -11,8 +11,7 @@ import {
   FONT_LIGHT,
   FONT_MED,
 } from '../../utils/constans';
-
-const url = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const Checkout = ({navigation, route}) => {
   //const userid = await AsyncStorage.getItem('userid');
@@ -30,7 +29,7 @@ const Checkout = ({navigation, route}) => {
       price: totalPrice,
     };
     axios
-      .post(`${url}/history`, data)
+      .post(`${API_URL}/history`, data)
       .then((res) => {
         console.log(res.data.msg);
         Alert.alert(

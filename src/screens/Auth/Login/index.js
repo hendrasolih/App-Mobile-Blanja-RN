@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
+import {API_URL} from '@env';
 
 const storeData = async (value) => {
   try {
@@ -36,7 +37,7 @@ const Login = ({navigation}) => {
       user_password: password,
     };
     axios
-      .post('http://192.168.100.2:8000/auth/login', data)
+      .post(`${API_URL}/auth/login`, data)
       .then(async (res) => {
         console.log(res.data.data.token);
         console.log(res.data.data.user_id);

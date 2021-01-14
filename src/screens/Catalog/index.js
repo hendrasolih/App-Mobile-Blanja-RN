@@ -6,8 +6,7 @@ import {IconFilter} from '../../assets';
 import {NavBar} from '../../components';
 import CardCatalog from '../../components/CardCatalog';
 import {FONT_LIGHT} from '../../utils/constans';
-
-const getUrl = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const Catalog = ({navigation, route}) => {
   let {title, keyword} = route.params;
@@ -23,7 +22,7 @@ const Catalog = ({navigation, route}) => {
     console.log(title);
     console.log(keyword);
     axios
-      .get(`${getUrl}/products?limit=10&category=${title}&search=${keyword}`)
+      .get(`${API_URL}/products?limit=10&category=${title}&search=${keyword}`)
       .then(({data}) => {
         //console.log(data.data.products);
         setViewall(data.data.products);

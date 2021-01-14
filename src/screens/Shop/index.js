@@ -9,8 +9,7 @@ import {
   FONT_LIGHT,
   FONT_REG,
 } from '../../utils/constans';
-
-const getUrl = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const Shop = ({navigation}) => {
   const [category, setCategory] = useState([]);
@@ -20,7 +19,7 @@ const Shop = ({navigation}) => {
   }, []);
   const getCategory = () => {
     axios
-      .get(`${getUrl}/category`)
+      .get(`${API_URL}/category`)
       .then(({data}) => {
         //console.log(data.data);
         setCategory(data.data);

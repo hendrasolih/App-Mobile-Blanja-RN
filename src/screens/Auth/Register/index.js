@@ -4,6 +4,7 @@ import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {useState} from 'react/cjs/react.development';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
+import {API_URL} from '@env';
 
 const Register = ({navigation}) => {
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ const Register = ({navigation}) => {
       level_id: 1,
     };
     axios
-      .post('http://192.168.100.2:8000/auth/signup', data)
+      .post(`${API_URL}/auth/signup`, data)
       .then(async (res) => {
         console.log(res);
         Alert.alert(

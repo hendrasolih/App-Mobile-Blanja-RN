@@ -13,8 +13,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {ColorItem, SizeItem} from '..';
 import {IconLove} from '../../assets';
 import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
-
-const url = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const SelectColorPicker = ({
   id,
@@ -34,7 +33,7 @@ const SelectColorPicker = ({
   }, []);
   const getSize = () => {
     axios
-      .get(url + '/size/' + id)
+      .get(API_URL + '/size/' + id)
       .then((res) => {
         setSize(res.data.data);
       })
@@ -44,7 +43,7 @@ const SelectColorPicker = ({
   };
   const getColor = () => {
     axios
-      .get(url + '/color/' + id)
+      .get(API_URL + '/color/' + id)
       .then((res) => {
         setColor(res.data.data);
       })

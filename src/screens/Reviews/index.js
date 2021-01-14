@@ -32,8 +32,7 @@ import {
   FONT_REG,
 } from '../../utils/constans';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const url = 'http://192.168.100.2:8000';
+import {API_URL} from '@env';
 
 const Review = ({route}) => {
   const {itemId} = route.params;
@@ -50,7 +49,7 @@ const Review = ({route}) => {
 
   const getRating = () => {
     axios
-      .get(url + '/review/rating/' + itemId)
+      .get(API_URL + '/review/rating/' + itemId)
       .then((res) => {
         console.log(res.data.ratings);
         setRating(res.data.ratings);
@@ -62,7 +61,7 @@ const Review = ({route}) => {
 
   const getReview = () => {
     axios
-      .get(url + '/review/' + itemId)
+      .get(API_URL + '/review/' + itemId)
       .then((res) => {
         console.log(res.data.data);
         const review = res.data.data;
@@ -90,7 +89,7 @@ const Review = ({route}) => {
       rating: newRating,
     };
     axios
-      .post(`${url}/review/${itemId}`, data)
+      .post(`${API_URL}/review/${itemId}`, data)
       .then((res) => {
         console.log(res.data);
         getRating();

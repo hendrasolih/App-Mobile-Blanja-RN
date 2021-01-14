@@ -11,11 +11,9 @@ import {
 } from '../../utils/constans';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {useLinkProps} from '@react-navigation/native';
 
+import {API_URL} from '@env';
 const Stack = createStackNavigator();
-
-const url = 'http://192.168.100.2:8000';
 
 const Profile = ({navigation}) => {
   const [userid, setUserid] = useState(0);
@@ -31,7 +29,7 @@ const Profile = ({navigation}) => {
     try {
       const token = await AsyncStorage.getItem('token');
       console.log(`ini token: ${token}`);
-      axios.delete('http://192.168.100.2:8000/auth/logout', {
+      axios.delete(`${API_URL}/auth/logout`, {
         headers: {
           'x-access-token': 'Bearer ' + token,
         },
@@ -46,7 +44,7 @@ const Profile = ({navigation}) => {
   };
   const getProfile = async () => {
     axios
-      .get(`${url}/user/${userid}`)
+      .get(`${API_URL}/user/${userid}`)
       .then((res) => {
         console.log(res.data.data[0]);
         setProfile(res.data.data[0]);

@@ -5,6 +5,7 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 
 //navigation.navigate('ResetPass');
+import {API_URL} from '@env';
 
 const Otp = ({navigation}) => {
   const [otp, setOtp] = useState('');
@@ -13,7 +14,7 @@ const Otp = ({navigation}) => {
       otp: otp,
     };
     axios
-      .post('http://192.168.100.2:8000/auth/otp', data)
+      .post(`${API_URL}/auth/otp`, data)
       .then(async (res) => {
         Alert.alert(
           'OTP',

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
+import {API_URL} from '@env';
 
 const ResetPass = ({navigation}) => {
   const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ const ResetPass = ({navigation}) => {
       user_password: password,
     };
     axios
-      .post('http://192.168.100.2:8000/auth/signup', data)
+      .post(`${API_URL}/auth/signup`, data)
       .then(async (res) => {
         console.log(res);
         Alert.alert(
