@@ -8,11 +8,18 @@ import Router from '../src/router';
 import {Provider} from 'react-redux';
 import store from './utils/redux/store';
 
+// Redux-persist
+import {PersistGate} from 'redux-persist/es/integration/react';
+import {persistStore} from 'redux-persist';
+const persistedStore = persistStore(store);
+
 const App = () => {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        <Router />
+        <PersistGate persistor={persistedStore} loading={null}>
+          <Router />
+        </PersistGate>
       </Provider>
     </NavigationContainer>
   );
