@@ -12,12 +12,17 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+//redux
+import {connect} from 'react-redux';
+import {login, logout} from '../../utils/redux/action/authAction';
+
 import {API_URL} from '@env';
 const Stack = createStackNavigator();
 
-const Profile = ({navigation}) => {
+const Profile = ({navigation, login, logoutRedux, isLogin}) => {
   const [userid, setUserid] = useState(0);
   const [profile, setProfile] = useState({});
+  console.log(isLogin);
   useEffect(() => {
     // code to run on component mount
     getUserId();
@@ -114,11 +119,41 @@ const Profile = ({navigation}) => {
           <Text style={{color: '#fff'}}>Logout</Text>
         </View>
       </TouchableOpacity>
+      {isLogin && <Text>Login</Text>}
+      <View style={{height: 20}} />
+      <TouchableOpacity
+        style={{backgroundColor: COLOR_MAIN}}
+        onPress={() => {
+          login();
+        }}>
+        <Text style={{color: '#fff'}}>LOGIN REDUX</Text>
+      </TouchableOpacity>
+      <View style={{height: 20}} />
+      <TouchableOpacity
+        style={{backgroundColor: COLOR_MAIN}}
+        onPress={() => {
+          logoutRedux();
+        }}>
+        <Text style={{color: '#fff'}}>LOGOUT REDUX</Text>
+      </TouchableOpacity>
     </>
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.auth.isLogin,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: () => dispatch(login()),
+    logoutRedux: () => dispatch(logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   main: {

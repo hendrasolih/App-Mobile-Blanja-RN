@@ -1,4 +1,3 @@
-import {color} from 'react-native-reanimated';
 import * as actionTypes from '../actionTypes';
 
 // `${itemID}-${size}-${size}`
