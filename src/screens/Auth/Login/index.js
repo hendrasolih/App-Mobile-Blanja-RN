@@ -6,6 +6,10 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
 
+//redux
+import {connect} from 'react-redux';
+import {login, logout} from '../../../utils/redux/action/authAction';
+
 const storeData = async (value) => {
   try {
     await AsyncStorage.setItem('token', value);
@@ -28,7 +32,7 @@ const getData = async () => {
   }
 };
 
-const Login = ({navigation}) => {
+const Login = ({navigation, login}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = () => {
@@ -41,21 +45,18 @@ const Login = ({navigation}) => {
       .then(async (res) => {
         console.log(res.data.data.token);
         console.log(res.data.data.user_id);
+        console.log(res.data.data.level);
         const token = res.data.data.token;
         const id = res.data.data.user_id;
-        const userid = id.toString();
-        console.log(typeof userid);
+        const level = res.data.data.level;
+        login(token, id, level);
 
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('userid', userid);
         console.log('done');
-        await getData();
-        navigation.navigate('ForgotPass');
-        console.log('done2');
+        navigation.navigate('MainApp');
       })
       .catch((err) => {
         console.log(err);
-        console.log('erro disini');
+        console.log('error disini');
       });
   };
   return (
@@ -87,11 +88,25 @@ const Login = ({navigation}) => {
           <Text style={styles.textBtn}>Login</Text>
         </View>
       </TouchableOpacity>
+      <View style={{flexDirection: 'row', marginTop: 10}}>
+        <Text>Don't have an account?</Text>
+        <Text
+          style={{marginLeft: 5, color: COLOR_MAIN}}
+          onPress={() => navigation.navigate('Register')}>
+          Register
+        </Text>
+      </View>
     </View>
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (token, id, level) => dispatch(login(token, id, level)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

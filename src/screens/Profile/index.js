@@ -14,15 +14,24 @@ import axios from 'axios';
 
 //redux
 import {connect} from 'react-redux';
-import {login, logout} from '../../utils/redux/action/authAction';
+import {logout} from '../../utils/redux/action/authAction';
 
 import {API_URL} from '@env';
-const Stack = createStackNavigator();
 
-const Profile = ({navigation, login, logoutRedux, isLogin}) => {
+const Profile = ({navigation, logoutRedux, isLogin, token, id, level}) => {
   const [userid, setUserid] = useState(0);
   const [profile, setProfile] = useState({});
   console.log(isLogin);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (!isLogin) {
+        navigation.navigate('Login');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   useEffect(() => {
     // code to run on component mount
     getUserId();
@@ -32,16 +41,14 @@ const Profile = ({navigation, login, logoutRedux, isLogin}) => {
   }, [userid]);
   const logout = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
       console.log(`ini token: ${token}`);
-      axios.delete(`${API_URL}/auth/logout`, {
+      await axios.delete(`${API_URL}/auth/logout`, {
         headers: {
           'x-access-token': 'Bearer ' + token,
         },
       });
-      await AsyncStorage.removeItem('token');
-      console.log('remove');
-      navigation.navigate('MyOrder');
+      logoutRedux();
+      navigation.navigate('Login');
     } catch (e) {
       // remove error
       console.log(e);
@@ -119,23 +126,8 @@ const Profile = ({navigation, login, logoutRedux, isLogin}) => {
           <Text style={{color: '#fff'}}>Logout</Text>
         </View>
       </TouchableOpacity>
-      {isLogin && <Text>Login</Text>}
       <View style={{height: 20}} />
-      <TouchableOpacity
-        style={{backgroundColor: COLOR_MAIN}}
-        onPress={() => {
-          login();
-        }}>
-        <Text style={{color: '#fff'}}>LOGIN REDUX</Text>
-      </TouchableOpacity>
       <View style={{height: 20}} />
-      <TouchableOpacity
-        style={{backgroundColor: COLOR_MAIN}}
-        onPress={() => {
-          logoutRedux();
-        }}>
-        <Text style={{color: '#fff'}}>LOGOUT REDUX</Text>
-      </TouchableOpacity>
     </>
   );
 };
@@ -143,12 +135,14 @@ const Profile = ({navigation, login, logoutRedux, isLogin}) => {
 const mapStateToProps = (state) => {
   return {
     isLogin: state.auth.isLogin,
+    token: state.auth.token,
+    id: state.auth.id,
+    level: state.auth.level,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: () => dispatch(login()),
     logoutRedux: () => dispatch(logout()),
   };
 };

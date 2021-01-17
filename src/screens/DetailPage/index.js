@@ -14,7 +14,7 @@ import {
 } from '../../utils/constans';
 
 // Redux
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {addToCart} from '../../utils/redux/action/cartAction';
 import {API_URL} from '@env';
 
@@ -25,6 +25,9 @@ const DetailPage = ({navigation, route, addToCart}) => {
   const [card, setCard] = useState([]);
   const [pickSize, setPickSize] = useState(0);
   const [pickColor, setPickColor] = useState('color');
+  const level = useSelector((state) => state.auth.level);
+  const token = useSelector((state) => state.auth.token);
+  console.log(`level detail page: ${level}`);
   useEffect(() => {
     // code to run on component mount
     console.log(itemId);
@@ -34,7 +37,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
   const getProduct = async (itemId) => {
     const config = {
       headers: {
-        'x-access-token': 'Bearer ' + (await AsyncStorage.getItem('token')),
+        'x-access-token': 'Bearer ' + token,
       },
     };
     axios
@@ -131,30 +134,32 @@ const DetailPage = ({navigation, route, addToCart}) => {
         </View>
       </ScrollView>
 
-      <View style={styles.addcart}>
-        <TouchableOpacity
-          onPress={() => {
-            addToCart(
-              itemId,
-              pictures[0],
-              product.prd_price,
-              product.prd_name,
-              pickSize,
-              pickColor,
-            );
-            console.log('on Press');
-            Alert.alert(
-              `${product.prd_name} Berhasil ditambahkan !!!`,
-              'Ayo Belanja Lagi :)',
-              [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-              {cancelable: false},
-            );
-          }}>
-          <View style={styles.btn}>
-            <Text style={{color: '#fff'}}>ADD TO CART</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      {level === 'Customer' && (
+        <View style={styles.addcart}>
+          <TouchableOpacity
+            onPress={() => {
+              addToCart(
+                itemId,
+                pictures[0],
+                product.prd_price,
+                product.prd_name,
+                pickSize,
+                pickColor,
+              );
+              console.log('on Press');
+              Alert.alert(
+                `${product.prd_name} Berhasil ditambahkan !!!`,
+                'Ayo Belanja Lagi :)',
+                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                {cancelable: false},
+              );
+            }}>
+            <View style={styles.btn}>
+              <Text style={{color: '#fff'}}>ADD TO CART</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
     </>
   );
 };
