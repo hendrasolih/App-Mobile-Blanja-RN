@@ -21,7 +21,6 @@ import {API_URL} from '@env';
 const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
   const level = useSelector((state) => state.auth.level);
   const user_id = useSelector((state) => state.auth.id);
-  const [userid, setUserid] = useState(0);
   const [profile, setProfile] = useState({});
   console.log(isLogin);
   console.log(level);
@@ -38,11 +37,9 @@ const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
 
   useEffect(() => {
     // code to run on component mount
-    getUserId();
-    if (userid !== 0) {
-      getProfile();
-    }
-  }, [userid]);
+    getProfile();
+  }, [navigation, user_id]);
+
   const logout = async () => {
     try {
       console.log(`ini token: ${token}`);
@@ -58,9 +55,9 @@ const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
       console.log(e);
     }
   };
-  const getProfile = async () => {
+  const getProfile = () => {
     axios
-      .get(`${API_URL}/user/${userid}`)
+      .get(`${API_URL}/user/${user_id}`)
       .then((res) => {
         console.log(res.data.data[0]);
         setProfile(res.data.data[0]);
@@ -69,21 +66,7 @@ const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
         console.log(err);
       });
   };
-  const getUserId = async () => {
-    try {
-      const value = await AsyncStorage.getItem('userid');
 
-      if (value !== null) {
-        // value previously stored
-        console.log(value);
-        setUserid(value);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-  const {user_name, email, photo_user} = profile;
-  const img = {uri: photo_user};
   return (
     <>
       <View style={styles.titlewrap}>
@@ -92,11 +75,19 @@ const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
       <View style={styles.profile}>
         <Image
           style={styles.img}
-          source={photo_user !== null ? img : ProfilePict}
+          source={
+            isLogin && profile && profile.photo_user
+              ? {uri: profile.photo_user}
+              : ProfilePict
+          }
         />
         <View>
-          <Text style={styles.main}>{user_name}</Text>
-          <Text style={styles.second}>{email}</Text>
+          <Text style={styles.main}>
+            {isLogin && profile && profile.user_name ? profile.user_name : ''}
+          </Text>
+          <Text style={styles.second}>
+            {isLogin && profile && profile.email ? profile.email : ''}
+          </Text>
         </View>
       </View>
       {level === 'Seller' ? (
