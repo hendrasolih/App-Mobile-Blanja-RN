@@ -13,15 +13,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 //redux
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
 
 import {API_URL} from '@env';
 
-const Profile = ({navigation, logoutRedux, isLogin, token, id, level}) => {
+const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
+  const level = useSelector((state) => state.auth.level);
+  const user_id = useSelector((state) => state.auth.id);
   const [userid, setUserid] = useState(0);
   const [profile, setProfile] = useState({});
   console.log(isLogin);
+  console.log(level);
+  console.log(user_id);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
@@ -95,12 +99,25 @@ const Profile = ({navigation, logoutRedux, isLogin, token, id, level}) => {
           <Text style={styles.second}>{email}</Text>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('MyOrder');
-        }}>
-        <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
-      </TouchableOpacity>
+      {level === 'Seller' ? (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('MyProduct');
+          }}>
+          <ProfileMenu
+            title={'My products'}
+            detail={`Already have 12 products`}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('MyOrder');
+          }}>
+          <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
+        </TouchableOpacity>
+      )}
+
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('ShippingAddress');

@@ -1,12 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  Profile,
-  MyOrder,
-  ShippingAddress,
-  SettingsProfile,
-} from '../../screens';
+import {Profile, MyOrder, ShippingAddress, MyProduct} from '../../screens';
 
 import {FONT_BOLD} from '../../utils/constans';
 
@@ -23,6 +18,11 @@ const MainProfile = () => {
       <Stack.Screen
         name="MyOrder"
         component={MyOrder}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MyProduct"
+        component={MyProduct}
         options={{headerShown: false}}
       />
       <Stack.Screen
