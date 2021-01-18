@@ -37,7 +37,9 @@ const MyProduct = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>My Product</Text>
-      <TouchableOpacity style={styles.add}>
+      <TouchableOpacity
+        style={styles.add}
+        onPress={() => navigation.navigate('AddProduct')}>
         <Text style={{color: '#fff'}}>Add Product</Text>
       </TouchableOpacity>
       <ScrollView vertical={true}>
