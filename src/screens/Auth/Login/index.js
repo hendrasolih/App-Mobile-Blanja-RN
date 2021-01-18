@@ -8,29 +8,7 @@ import {API_URL} from '@env';
 
 //redux
 import {connect} from 'react-redux';
-import {login, logout} from '../../../utils/redux/action/authAction';
-
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem('token', value);
-  } catch (e) {
-    // saving error
-  }
-};
-
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('token');
-    const userid = await AsyncStorage.getItem('userid');
-    if (value !== null) {
-      // value previously stored
-      console.log(value);
-      console.log(userid);
-    }
-  } catch (e) {
-    // error reading value
-  }
-};
+import {login} from '../../../utils/redux/action/authAction';
 
 const Login = ({navigation, login}) => {
   const [email, setEmail] = useState('');
