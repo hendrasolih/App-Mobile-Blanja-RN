@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Platform, StyleSheet, Text, TextInput, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
+import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import {API_URL} from '@env';
 const AddProduct = () => {
+  useEffect(() => {
+    // code to run on component mount
+    getCategory();
+  }, []);
+  const [category, setCategory] = useState([]);
   const [filePath, setFilePath] = useState([]);
   const [nameProd, setNameProd] = useState('');
   const [brand, setBrand] = useState('');
@@ -14,8 +20,19 @@ const AddProduct = () => {
   const [ctg, setCtg] = useState(0);
   const user_id = useSelector((state) => state.auth.id);
   const token = useSelector((state) => state.auth.token);
-  console.log(API_URL);
-  console.log(Platform.OS);
+  console.log(ctg);
+
+  const getCategory = () => {
+    axios
+      .get(`${API_URL}/category`)
+      .then(({data}) => {
+        //console.log(data.data);
+        setCategory(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleSumbmit = async () => {
     console.log(filePath);
@@ -31,6 +48,7 @@ const AddProduct = () => {
     data.append('prd_price', price);
     data.append('prd_description', desc);
     data.append('user_id', user_id);
+    data.append('prd_ctg', ctg);
     // data.append('image', filePath);
     for (let i = 0; i < filePath.length; i++) {
       data.append('image', {
@@ -110,13 +128,20 @@ const AddProduct = () => {
           defaultValue={price}
           onChangeText={(price) => setPrice(price)}
         />
-        <TextInput
-          style={styles.form}
-          placeholder="Product Category"
-          defaultValue={ctg.toString()}
-          onChangeText={(ctg) => setCtg(ctg)}
-          keyboardType="numeric"
-        />
+        {/* DROPDOWN */}
+        <Picker
+          selectedValue={ctg}
+          //style={{height: 50, width: 100}}
+          onValueChange={(itemValue) => {
+            setCtg(itemValue);
+          }}>
+          {category.length !== 0 &&
+            category.map(({ctg_id, ctg_name}) => {
+              return (
+                <Picker.Item key={ctg_id} label={ctg_name} value={ctg_id} />
+              );
+            })}
+        </Picker>
         <TextInput
           multiline={true}
           style={{...styles.form, height: 100, textAlignVertical: 'top'}}

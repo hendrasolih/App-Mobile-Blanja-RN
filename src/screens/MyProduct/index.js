@@ -46,9 +46,8 @@ const MyProduct = ({navigation}) => {
         {product.length !== 0 &&
           product.map(({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
             return (
-              <>
+              <View key={prd_id}>
                 <CardCatalog
-                  key={prd_id}
                   itemId={prd_id}
                   name={prd_name}
                   brand={prd_brand}
@@ -67,7 +66,7 @@ const MyProduct = ({navigation}) => {
                   </Text>
                   <Text style={{marginHorizontal: 10}}>edit</Text>
                 </View>
-              </>
+              </View>
             );
           })}
         <View style={{height: 30}} />
