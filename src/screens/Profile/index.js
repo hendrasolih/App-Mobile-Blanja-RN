@@ -9,7 +9,6 @@ import {
   FONT_BOLD,
   FONT_LIGHT,
 } from '../../utils/constans';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 //redux
@@ -18,7 +17,7 @@ import {logout} from '../../utils/redux/action/authAction';
 
 import {API_URL} from '@env';
 
-const Profile = ({navigation, logoutRedux, isLogin, token, id}) => {
+const Profile = ({navigation, logoutRedux, isLogin, token}) => {
   const level = useSelector((state) => state.auth.level);
   const user_id = useSelector((state) => state.auth.id);
   const [profile, setProfile] = useState({});

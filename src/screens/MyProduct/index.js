@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {CardCatalog} from '../../components';
 
 //redux
@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {COLOR_MAIN} from '../../utils/constans';
+import {COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
 
 const MyProduct = ({navigation}) => {
   const user_id = useSelector((state) => state.auth.id);
@@ -29,14 +29,50 @@ const MyProduct = ({navigation}) => {
         //console.log(res.data.data[0]);
         const data = res.data.data;
         setProduct(data);
+        console.log('get data');
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const deleteProduct = (id) => {
+    Alert.alert(
+      'Delete Product',
+      'Are Sure Want Delete ?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            return console.log('Cancel Pressed');
+          },
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            const config = {
+              headers: {
+                'x-access-token': 'Bearer ' + token,
+              },
+            };
+            await axios
+              .delete(`${API_URL}/product/${id}`, config)
+              .then((res) => console.log(res.data))
+              .catch((err) => {
+                console.log(err);
+              });
+            console.log('klick delete OK' + id);
+            getProduct();
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  };
   return (
     <View style={styles.container}>
-      <Text>My Product</Text>
+      <Text style={styles.title}>My Product</Text>
       <TouchableOpacity
         style={styles.add}
         onPress={() => navigation.navigate('AddProduct')}>
@@ -56,32 +92,51 @@ const MyProduct = ({navigation}) => {
                   navigation={navigation}
                 />
                 <View
-                  style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                  <Text
-                    style={{
-                      marginHorizontal: 10,
-                      color: 'red',
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    marginTop: 5,
+                  }}>
+                  <TouchableOpacity
+                    style={styles.btnDelete}
+                    onPress={() => {
+                      deleteProduct(prd_id);
                     }}>
-                    delete
-                  </Text>
-                  <Text style={{marginHorizontal: 10}}>edit</Text>
+                    <Text
+                      style={{
+                        marginHorizontal: 10,
+                        color: 'red',
+                      }}>
+                      delete
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{...styles.btnDelete, marginLeft: 5}}>
+                    <Text style={{marginHorizontal: 10}}>edit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
           })}
-        <View style={{height: 30}} />
+        <View style={{height: 150}} />
       </ScrollView>
     </View>
   );
 };
 
-const windowWidth = Dimensions.get('window').width;
-
 export default MyProduct;
+
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: windowWidth * 0.04,
+  },
+  title: {
+    fontSize: 34,
+    fontFamily: FONT_BOLD,
+    marginTop: 40,
+    marginBottom: 20,
   },
   add: {
     backgroundColor: COLOR_MAIN,
@@ -89,5 +144,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnDelete: {
+    backgroundColor: '#fff',
+    height: 20,
+    borderRadius: 5,
   },
 });

@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Platform, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
 const AddProduct = () => {
   useEffect(() => {
     // code to run on component mount
@@ -60,7 +70,15 @@ const AddProduct = () => {
             : filePath[i].path.replace('file://', ''),
       });
     }
-
+    if (
+      nameProd == '' ||
+      brand == '' ||
+      price == '' ||
+      desc == '' ||
+      ctg == 0
+    ) {
+      return Alert.alert('Add Product', 'Plese Fill All Form');
+    }
     console.log(data);
     axios
       .post(`${API_URL}/products`, data, config)
@@ -89,10 +107,10 @@ const AddProduct = () => {
   };
 
   return (
-    <View>
-      <Text>Add Product</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Add Product</Text>
       <ScrollView vertical={true}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
           {filePath.map((item) => {
             return (
               <Image
@@ -128,20 +146,25 @@ const AddProduct = () => {
           defaultValue={price}
           onChangeText={(price) => setPrice(price)}
         />
-        {/* DROPDOWN */}
-        <Picker
-          selectedValue={ctg}
-          //style={{height: 50, width: 100}}
-          onValueChange={(itemValue) => {
-            setCtg(itemValue);
-          }}>
-          {category.length !== 0 &&
-            category.map(({ctg_id, ctg_name}) => {
-              return (
-                <Picker.Item key={ctg_id} label={ctg_name} value={ctg_id} />
-              );
-            })}
-        </Picker>
+        <View style={{backgroundColor: '#fff', marginBottom: 10}}>
+          <Text style={{fontSize: 14, color: COLOR_DISABLE}}>
+            Product Category
+          </Text>
+          {/* DROPDOWN */}
+          <Picker
+            selectedValue={ctg}
+            //style={{height: 50, width: 100}}
+            onValueChange={(itemValue) => {
+              setCtg(itemValue);
+            }}>
+            {category.length !== 0 &&
+              category.map(({ctg_id, ctg_name}) => {
+                return (
+                  <Picker.Item key={ctg_id} label={ctg_name} value={ctg_id} />
+                );
+              })}
+          </Picker>
+        </View>
         <TextInput
           multiline={true}
           style={{...styles.form, height: 100, textAlignVertical: 'top'}}
@@ -150,11 +173,10 @@ const AddProduct = () => {
           onChangeText={(desc) => setDesc(desc)}
         />
         <View style={{height: 20}} />
-        <TouchableOpacity
-          style={{backgroundColor: '#fff', height: 50}}
-          onPress={handleSumbmit}>
-          <Text>ADD PRODUCT</Text>
+        <TouchableOpacity style={styles.btnadd} onPress={handleSumbmit}>
+          <Text style={{color: '#fff'}}>ADD PRODUCT</Text>
         </TouchableOpacity>
+        <View style={{height: 130}} />
       </ScrollView>
     </View>
   );
@@ -162,7 +184,18 @@ const AddProduct = () => {
 
 export default AddProduct;
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: windowWidth * 0.04,
+  },
+  title: {
+    fontSize: 34,
+    fontFamily: FONT_BOLD,
+    marginTop: 40,
+    marginBottom: 20,
+  },
   form: {
     backgroundColor: '#fff',
     marginBottom: 8,
@@ -176,15 +209,17 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     padding: 10,
-    color: 'black',
+    color: '#fff',
     textAlign: 'center',
   },
   buttonStyle: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    alignSelf: 'center',
+    backgroundColor: COLOR_MAIN,
     padding: 5,
     marginVertical: 10,
     width: 250,
+    borderRadius: 8,
   },
   imageStyle: {
     width: 100,
@@ -193,5 +228,12 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 5,
     borderWidth: 1,
+  },
+  btnadd: {
+    height: 50,
+    borderRadius: 24,
+    backgroundColor: COLOR_MAIN,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
