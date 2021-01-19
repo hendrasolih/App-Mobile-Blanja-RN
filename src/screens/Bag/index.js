@@ -16,7 +16,6 @@ import {connect} from 'react-redux';
 const Bag = ({cart, navigation}) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   useEffect(() => {
     let items = 0;
     let price = 0;
@@ -45,23 +44,17 @@ const Bag = ({cart, navigation}) => {
         </Text>
         {cart.map((item) => {
           return (
-            <View key={item.id} style={styles.wrapcard}>
-              <CheckBox
-                disabled={false}
-                value={toggleCheckBox}
-                onValueChange={(newValue) => setToggleCheckBox(newValue)}
-                tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
-              />
-              <CardMyBag
-                name={item.name}
-                img={item.img}
-                price={item.prc}
-                size={item.size}
-                color={item.color}
-                id={item.id}
-                qty={item.qty}
-              />
-            </View>
+            <CardMyBag
+              key={item.id}
+              name={item.name}
+              img={item.img}
+              price={item.prc}
+              size={item.size}
+              color={item.color}
+              id={item.id}
+              qty={item.qty}
+              status={true}
+            />
           );
         })}
       </View>

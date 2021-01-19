@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardPictNew, IconMin, IconPlus} from '../../assets';
-import {COLOR_DISABLE, FONT_BOLD} from '../../utils/constans';
+import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
+import CheckBox from '@react-native-community/checkbox';
 
 import {connect} from 'react-redux';
 
@@ -17,10 +18,24 @@ const CardMyBag = ({
   id,
   qty,
   removeFromCart,
+  status,
 }) => {
   const imgs = {uri: `${img}`};
+  const [toggleCheckBox, setToggleCheckBox] = useState(status);
   return (
     <View style={styles.container}>
+      <View style={{justifyContent: 'center'}}>
+        <CheckBox
+          disabled={false}
+          value={toggleCheckBox}
+          onValueChange={(newValue) => setToggleCheckBox(newValue)}
+          tintColors={{
+            true: COLOR_MAIN,
+            false: COLOR_DISABLE,
+          }}
+        />
+      </View>
+
       <Image source={imgs} style={styles.img} />
       <View style={styles.infobag}>
         <Text>{name}</Text>
