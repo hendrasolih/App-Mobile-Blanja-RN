@@ -7,6 +7,7 @@ import {
   ShippingAddress,
   MyProduct,
   AddProduct,
+  EditProduct,
 } from '../../screens';
 
 import {FONT_BOLD} from '../../utils/constans';
@@ -34,6 +35,11 @@ const MainProfile = () => {
       <Stack.Screen
         name="AddProduct"
         component={AddProduct}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditProduct"
+        component={EditProduct}
         options={{headerShown: false}}
       />
       <Stack.Screen

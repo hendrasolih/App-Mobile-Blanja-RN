@@ -21,6 +21,7 @@ import Checkout from './Checkout';
 import Success from './SuccessTransaction';
 import MyProduct from './MyProduct';
 import AddProduct from './AddProduct';
+import EditProduct from './EditProduct';
 
 export {
   Splash,
@@ -46,4 +47,5 @@ export {
   Success,
   MyProduct,
   AddProduct,
+  EditProduct,
 };

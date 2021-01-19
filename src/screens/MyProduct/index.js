@@ -16,14 +16,21 @@ const MyProduct = ({navigation}) => {
   useEffect(() => {
     getProduct();
   }, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getProduct();
+    });
 
-  const getProduct = () => {
+    return unsubscribe;
+  }, [navigation]);
+
+  const getProduct = async () => {
     const config = {
       headers: {
         'x-access-token': 'Bearer ' + token,
       },
     };
-    axios
+    await axios
       .get(`${API_URL}/product/user/${user_id}`, config)
       .then((res) => {
         //console.log(res.data.data[0]);
@@ -80,44 +87,63 @@ const MyProduct = ({navigation}) => {
       </TouchableOpacity>
       <ScrollView vertical={true}>
         {product.length !== 0 &&
-          product.map(({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
-            return (
-              <View key={prd_id}>
-                <CardCatalog
-                  itemId={prd_id}
-                  name={prd_name}
-                  brand={prd_brand}
-                  price={prd_price}
-                  image={JSON.parse(prd_image)}
-                  navigation={navigation}
-                />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    marginTop: 5,
-                  }}>
-                  <TouchableOpacity
-                    style={styles.btnDelete}
-                    onPress={() => {
-                      deleteProduct(prd_id);
+          product.map(
+            ({
+              prd_id,
+              prd_name,
+              prd_brand,
+              prd_price,
+              prd_image,
+              prd_description,
+            }) => {
+              return (
+                <View key={prd_id}>
+                  <CardCatalog
+                    itemId={prd_id}
+                    name={prd_name}
+                    brand={prd_brand}
+                    price={prd_price}
+                    image={JSON.parse(prd_image)}
+                    navigation={navigation}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      marginTop: 5,
                     }}>
-                    <Text
-                      style={{
-                        marginHorizontal: 10,
-                        color: 'red',
+                    <TouchableOpacity
+                      style={styles.btnDelete}
+                      onPress={() => {
+                        deleteProduct(prd_id);
                       }}>
-                      delete
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{...styles.btnDelete, marginLeft: 5}}>
-                    <Text style={{marginHorizontal: 10}}>edit</Text>
-                  </TouchableOpacity>
+                      <Text
+                        style={{
+                          marginHorizontal: 10,
+                          color: 'red',
+                        }}>
+                        delete
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{...styles.btnDelete, marginLeft: 5}}
+                      onPress={() =>
+                        navigation.navigate('EditProduct', {
+                          itemId: prd_id,
+                          name: prd_name,
+                          brand: prd_brand,
+                          price: prd_price,
+                          image: prd_image,
+                          desc: prd_description,
+                        })
+                      }>
+                      <Text style={{marginHorizontal: 10}}>edit</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            },
+          )}
         <View style={{height: 150}} />
       </ScrollView>
     </View>
