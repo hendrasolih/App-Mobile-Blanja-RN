@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacityBase,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardMyBag} from '../../components';
 import {
@@ -8,21 +14,29 @@ import {
   FONT_BOLD,
   FONT_LIGHT,
 } from '../../utils/constans';
-import CheckBox from '@react-native-community/checkbox';
 
 //redux
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
+import {pickCart} from '../../utils/redux/action/cartAction';
 
-const Bag = ({cart, navigation}) => {
+const Bag = ({cart, navigation, pickCart}) => {
+  const pick = useSelector((state) => state.cart.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  if (pick.length !== 0) {
+    pick.map((item) =>
+      console.log('disini cekpoint ' + pick.indexOf(item) + ' ' + item.pick),
+    );
+  }
   useEffect(() => {
     let items = 0;
     let price = 0;
 
     cart.forEach((item) => {
-      items += item.qty;
-      price += item.qty * item.prc;
+      if (item.pick) {
+        items += item.qty;
+        price += item.qty * item.prc;
+      }
     });
 
     setTotalItems(items);
@@ -44,17 +58,21 @@ const Bag = ({cart, navigation}) => {
         </Text>
         {cart.map((item) => {
           return (
-            <CardMyBag
-              key={item.id}
-              name={item.name}
-              img={item.img}
-              price={item.prc}
-              size={item.size}
-              color={item.color}
-              id={item.id}
-              qty={item.qty}
-              status={true}
-            />
+            <View key={item.id}>
+              <CardMyBag
+                name={item.name}
+                img={item.img}
+                price={item.prc}
+                size={item.size}
+                color={item.color}
+                id={item.id}
+                qty={item.qty}
+                status={item.pick}
+              />
+              {/* <TouchableOpacity onPress={() => pickCart(item.id)}>
+                <Text>CHANGE</Text>
+              </TouchableOpacity> */}
+            </View>
           );
         })}
       </View>
@@ -85,13 +103,19 @@ const Bag = ({cart, navigation}) => {
   );
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    pickCart: (id) => dispatch(pickCart(id)),
+  };
+};
+
 const mapStateToProps = (state) => {
   return {
     cart: state.cart.cart,
   };
 };
 
-export default connect(mapStateToProps)(Bag);
+export default connect(mapStateToProps, mapDispatchToProps)(Bag);
 
 const windowWidth = Dimensions.get('window').width;
 

@@ -6,6 +6,7 @@ import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
 import CheckBox from '@react-native-community/checkbox';
 
 import {connect} from 'react-redux';
+import {pickCart} from '../../utils/redux/action/cartAction';
 
 import {removeFromCart} from '../../utils/redux/action/cartAction';
 
@@ -19,16 +20,16 @@ const CardMyBag = ({
   qty,
   removeFromCart,
   status,
+  pickCart,
 }) => {
   const imgs = {uri: `${img}`};
-  const [toggleCheckBox, setToggleCheckBox] = useState(status);
   return (
     <View style={styles.container}>
       <View style={{justifyContent: 'center'}}>
         <CheckBox
           disabled={false}
-          value={toggleCheckBox}
-          onValueChange={(newValue) => setToggleCheckBox(newValue)}
+          value={status}
+          onChange={() => pickCart(id)}
           tintColors={{
             true: COLOR_MAIN,
             false: COLOR_DISABLE,
@@ -68,6 +69,7 @@ const CardMyBag = ({
 const mapDispatchToProps = (dispatch) => {
   return {
     removeFromCart: (id) => dispatch(removeFromCart(id)),
+    pickCart: (id) => dispatch(pickCart(id)),
   };
 };
 

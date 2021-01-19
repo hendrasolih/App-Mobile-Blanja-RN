@@ -28,6 +28,13 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: state.cart.filter((item) => item.id !== action.payload.id),
       };
+    case actionTypes.PICK_CART:
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id ? {...item, pick: !item.pick} : item,
+        ),
+      };
     default:
       return state;
   }
