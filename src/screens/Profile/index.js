@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {ProfilePict} from '../../assets';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ProfileMenu} from '../../components';
@@ -16,6 +23,7 @@ import {connect, useSelector} from 'react-redux';
 import {logout} from '../../utils/redux/action/authAction';
 
 import {API_URL} from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation, logoutRedux, isLogin, token}) => {
   const level = useSelector((state) => state.auth.level);
@@ -33,6 +41,17 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
 
     return unsubscribe;
   }, [navigation]);
+
+  const clearAll = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('ALL CLEAR');
+    } catch (e) {
+      // clear error
+    }
+
+    console.log('Done.');
+  };
 
   useEffect(() => {
     // code to run on component mount
@@ -133,6 +152,7 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
           <Text style={{color: '#fff'}}>Logout</Text>
         </View>
       </TouchableOpacity>
+      {/* <Button onPress={clearAll} title="Learn More" color={COLOR_MAIN} /> */}
       <View style={{height: 20}} />
       <View style={{height: 20}} />
     </>

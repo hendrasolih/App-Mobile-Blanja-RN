@@ -9,6 +9,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TO_CART:
       console.log(action.payload.id);
       const item = action.payload;
+      console.log(state);
       const inCart = state.cart.find((item) =>
         item.id === action.payload.id ? true : false,
       );

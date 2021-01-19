@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardPictNew, IconMin, IconPlus} from '../../assets';
 import {COLOR_DISABLE, FONT_BOLD} from '../../utils/constans';
@@ -57,6 +57,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(CardMyBag);
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -68,23 +69,23 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   btn: {
-    width: 36,
-    height: 36,
+    width: 30,
+    height: 30,
     borderWidth: 1,
     borderRadius: 36 / 2,
     alignItems: 'center',
-    paddingTop: 4,
+    paddingTop: 2,
     borderColor: COLOR_DISABLE,
   },
   img: {
-    width: 104,
-    height: 104,
+    height: windowWidth * 0.25,
+    width: windowWidth * 0.25,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
   },
   infobag: {
     backgroundColor: '#fff',
-    width: 220,
+    width: windowWidth * 0.6,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
