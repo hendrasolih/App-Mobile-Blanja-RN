@@ -34,3 +34,9 @@ export const pickCart = (id) => {
     },
   };
 };
+
+export const clearCart = () => {
+  return {
+    type: actionTypes.CLEAR_CART,
+  };
+};

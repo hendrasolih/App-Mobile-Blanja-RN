@@ -35,6 +35,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
           item.id === action.payload.id ? {...item, pick: !item.pick} : item,
         ),
       };
+    case actionTypes.CLEAR_CART:
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item.pick == false),
+      };
     default:
       return state;
   }

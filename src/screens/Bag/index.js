@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   Dimensions,
   StyleSheet,
   Text,
@@ -17,9 +18,9 @@ import {
 
 //redux
 import {connect, useSelector} from 'react-redux';
-import {pickCart} from '../../utils/redux/action/cartAction';
+import {pickCart, clearCart} from '../../utils/redux/action/cartAction';
 
-const Bag = ({cart, navigation, pickCart}) => {
+const Bag = ({cart, navigation, clearCart}) => {
   const pick = useSelector((state) => state.cart.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -69,9 +70,6 @@ const Bag = ({cart, navigation, pickCart}) => {
                 qty={item.qty}
                 status={item.pick}
               />
-              {/* <TouchableOpacity onPress={() => pickCart(item.id)}>
-                <Text>CHANGE</Text>
-              </TouchableOpacity> */}
             </View>
           );
         })}
@@ -91,9 +89,18 @@ const Bag = ({cart, navigation, pickCart}) => {
           <Text style={{fontFamily: FONT_BOLD}}>Rp. {totalPrice}</Text>
         </View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Checkout', {totalPrice, totalItems})
-          }>
+          onPress={() => {
+            if (totalItems == 0) {
+              return Alert.alert(
+                `Bag`,
+                'Pick Your Product',
+                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                {cancelable: true},
+              );
+            }
+            clearCart();
+            navigation.navigate('Checkout', {totalPrice, totalItems});
+          }}>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>CHECK OUT</Text>
           </View>
@@ -106,6 +113,7 @@ const Bag = ({cart, navigation, pickCart}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     pickCart: (id) => dispatch(pickCart(id)),
+    clearCart: () => dispatch(clearCart()),
   };
 };
 
