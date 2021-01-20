@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardAddress, CheckboxPayments} from '../../components';
@@ -13,13 +13,43 @@ import {
 } from '../../utils/constans';
 import {API_URL} from '@env';
 
+//redux
+import {useSelector} from 'react-redux';
+
+import PushNotification from 'react-native-push-notification';
+import {showNotification} from '../../notif';
+
 const Checkout = ({navigation, route}) => {
   //const userid = await AsyncStorage.getItem('userid');
+  const user_id = useSelector((state) => state.auth.id);
+  const channel = 'notif';
   const {totalPrice, totalItems} = route.params;
   console.log('price here ckout ' + totalPrice);
   console.log('item here ckout ' + totalItems);
+  //pushnotif
+  useEffect(() => {
+    PushNotification.createChannel(
+      {
+        channelId: 'notif',
+        channelName: 'My Notification channel',
+        channelDescription: 'A channel to categories your notification',
+        soundName: 'default',
+        importance: 4,
+        vibrate: true,
+      },
+      (created) => console.log(`createchannel returned '${created}'`),
+    );
+    // code to run on component mount
+  }, []);
+
+  useEffect(() => {
+    PushNotification.getChannels((channel_ids) => {
+      console.log(channel_ids);
+    });
+  }, []);
+  //pushnotif
   const postHistory = async () => {
-    const user_id = await AsyncStorage.getItem('userid');
+    // const user_id = await AsyncStorage.getItem('userid');
     // console.log('userid: ' + user_id);
     // console.log('price here ckout ' + totalPrice);
     // console.log('item here ckout ' + totalItems);
@@ -77,6 +107,8 @@ const Checkout = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => {
             postHistory();
+            //PUSH NOTIF
+            showNotification('Notification', 'Checkout Succes', channel);
             navigation.navigate('Success');
           }}>
           <View style={styles.btn}>
