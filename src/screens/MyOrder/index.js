@@ -11,7 +11,11 @@ import {
 } from '../../utils/constans';
 import {API_URL} from '@env';
 
+//redux
+import {useSelector} from 'react-redux';
+
 const MyOrder = () => {
+  const user_id = useSelector((state) => state.auth.id);
   const [history, setHistory] = useState([]);
   useEffect(() => {
     // code to run on component mount
@@ -19,7 +23,7 @@ const MyOrder = () => {
   }, []);
 
   const getHistory = async () => {
-    const user_id = await AsyncStorage.getItem('userid');
+    // const user_id = await AsyncStorage.getItem('userid');
     console.log('userid: ' + user_id);
     axios
       .get(API_URL + '/history/' + user_id)
