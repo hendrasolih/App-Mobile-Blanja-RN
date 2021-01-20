@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-const CardAddress = () => {
+const CardAddress = ({address, user}) => {
   return (
     <View style={styles.cardAddress}>
       <View style={styles.name}>
-        <Text>Jane Doe</Text>
+        <Text>{user}</Text>
         <Text>Change</Text>
       </View>
       <View>
-        <Text>3 Newbridge Court Chino Hills, CA 91709, United States</Text>
+        <Text>{address}</Text>
       </View>
     </View>
   );

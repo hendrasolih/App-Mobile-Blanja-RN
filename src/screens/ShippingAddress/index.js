@@ -1,20 +1,40 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import CardAddress from '../../components/CardAddress';
 import {FONT_BOLD} from '../../utils/constans';
 
+//redux
+import {useSelector} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
+
 const ShippingAddress = () => {
+  const user_id = useSelector((state) => state.auth.id);
+  const [address, setAddress] = useState([]);
+  useEffect(() => {
+    getAddress();
+  }, []);
+  const getAddress = () => {
+    axios
+      .get(`${API_URL}/address/${user_id}`)
+      .then((res) => {
+        setAddress(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Text style={styles.title}>Shipping Address</Text>
-      <View style={styles.cardAddress}>
-        <View style={styles.name}>
-          <Text>Jane Doe</Text>
-          <Text>Change</Text>
-        </View>
-        <View>
-          <Text>3 Newbridge Court Chino Hills, CA 91709, United States</Text>
-        </View>
-      </View>
+      {address.length !== 0 &&
+        address.map(({id_adres, address, user_name}) => {
+          return (
+            <CardAddress key={id_adres} address={address} user={user_name} />
+          );
+        })}
+
       <TouchableOpacity>
         <View style={styles.button}>
           <Text>ADD NEW ADDRESS</Text>
@@ -39,6 +59,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_BOLD,
     marginBottom: 21,
     marginTop: 31,
+    marginLeft: 17,
   },
   cardAddress: {
     paddingHorizontal: 24,
