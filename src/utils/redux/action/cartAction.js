@@ -34,9 +34,3 @@ export const pickCart = (id) => {
     },
   };
 };
-
-// export const unpickCart = () => {
-//   return {
-//     type: actionTypes.UNPICK_CART,
-//   };
-// };
