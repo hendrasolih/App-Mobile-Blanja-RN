@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CardAddress, CheckboxPayments} from '../../components';
@@ -22,6 +22,7 @@ import {showNotification} from '../../notif';
 const Checkout = ({navigation, route}) => {
   //const userid = await AsyncStorage.getItem('userid');
   const user_id = useSelector((state) => state.auth.id);
+  const [address, setAddress] = useState([]);
   const channel = 'notif';
   const {totalPrice, totalItems} = route.params;
   console.log('price here ckout ' + totalPrice);
@@ -46,8 +47,22 @@ const Checkout = ({navigation, route}) => {
     PushNotification.getChannels((channel_ids) => {
       console.log(channel_ids);
     });
+    getAddress();
   }, []);
   //pushnotif
+
+  const getAddress = () => {
+    axios
+      .get(`${API_URL}/address/${user_id}`)
+      .then((res) => {
+        console.log(res.data.data[0]);
+        setAddress(() => [...address, res.data.data[0]]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const postHistory = async () => {
     // const user_id = await AsyncStorage.getItem('userid');
     // console.log('userid: ' + user_id);
@@ -81,7 +96,12 @@ const Checkout = ({navigation, route}) => {
             Shipping address
           </Text>
         </View>
-        <CardAddress />
+        {address.length !== 0 &&
+          address.map(({id_adres, address, user_name}) => {
+            return (
+              <CardAddress key={id_adres} address={address} user={user_name} />
+            );
+          })}
         <View style={{margin: 16}}>
           <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Payment</Text>
         </View>
