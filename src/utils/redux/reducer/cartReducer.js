@@ -40,6 +40,22 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: state.cart.filter((item) => item.pick == false),
       };
+    case actionTypes.PLUS_QTY:
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id ? {...item, qty: item.qty + 1} : item,
+        ),
+      };
+    case actionTypes.MIN_QTY:
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id
+            ? {...item, qty: item.qty === 0 ? item.qty : item.qty - 1}
+            : item,
+        ),
+      };
     default:
       return state;
   }

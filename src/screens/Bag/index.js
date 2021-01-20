@@ -18,9 +18,13 @@ import {
 
 //redux
 import {connect, useSelector} from 'react-redux';
-import {pickCart, clearCart} from '../../utils/redux/action/cartAction';
+import {
+  pickCart,
+  clearCart,
+  plusQty,
+} from '../../utils/redux/action/cartAction';
 
-const Bag = ({cart, navigation, clearCart}) => {
+const Bag = ({cart, navigation, clearCart, plusQty}) => {
   const pick = useSelector((state) => state.cart.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -114,6 +118,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     pickCart: (id) => dispatch(pickCart(id)),
     clearCart: () => dispatch(clearCart()),
+    plusQty: (id) => dispatch(plusQty(id)),
   };
 };
 

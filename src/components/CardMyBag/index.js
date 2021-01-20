@@ -6,9 +6,12 @@ import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
 import CheckBox from '@react-native-community/checkbox';
 
 import {connect} from 'react-redux';
-import {pickCart} from '../../utils/redux/action/cartAction';
-
-import {removeFromCart} from '../../utils/redux/action/cartAction';
+import {
+  pickCart,
+  removeFromCart,
+  plusQty,
+  minQty,
+} from '../../utils/redux/action/cartAction';
 
 const CardMyBag = ({
   name,
@@ -21,6 +24,8 @@ const CardMyBag = ({
   removeFromCart,
   status,
   pickCart,
+  plusQty,
+  minQty,
 }) => {
   const imgs = {uri: `${img}`};
   return (
@@ -49,11 +54,11 @@ const CardMyBag = ({
         </View>
         <View style={{flexDirection: 'row', marginTop: 14}}>
           <View style={styles.btn}>
-            <IconMin />
+            <IconMin onPress={() => minQty(id)} />
           </View>
           <Text style={{marginTop: 7, marginHorizontal: 10}}>{qty}</Text>
           <View style={styles.btn}>
-            <IconPlus />
+            <IconPlus onPress={() => plusQty(id)} />
           </View>
           <View style={styles.price}>
             <Text style={{fontFamily: FONT_BOLD, fontSize: 11}}>
@@ -70,6 +75,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     removeFromCart: (id) => dispatch(removeFromCart(id)),
     pickCart: (id) => dispatch(pickCart(id)),
+    plusQty: (id) => dispatch(plusQty(id)),
+    minQty: (id) => dispatch(minQty(id)),
   };
 };
 

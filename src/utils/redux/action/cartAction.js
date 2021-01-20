@@ -17,6 +17,24 @@ export const addToCart = (itemID, image, price, name, size, color) => {
   };
 };
 
+export const plusQty = (id) => {
+  return {
+    type: actionTypes.PLUS_QTY,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const minQty = (id) => {
+  return {
+    type: actionTypes.MIN_QTY,
+    payload: {
+      id,
+    },
+  };
+};
+
 export const removeFromCart = (itemID) => {
   return {
     type: actionTypes.REMOVE_FROM_CART,
