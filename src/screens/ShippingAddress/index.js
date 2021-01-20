@@ -8,12 +8,21 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 
-const ShippingAddress = () => {
+const ShippingAddress = ({navigation}) => {
   const user_id = useSelector((state) => state.auth.id);
   const [address, setAddress] = useState([]);
   useEffect(() => {
     getAddress();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAddress();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const getAddress = () => {
     axios
       .get(`${API_URL}/address/${user_id}`)
@@ -35,7 +44,7 @@ const ShippingAddress = () => {
           );
         })}
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('AddAddress')}>
         <View style={styles.button}>
           <Text>ADD NEW ADDRESS</Text>
         </View>

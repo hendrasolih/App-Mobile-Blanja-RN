@@ -33,6 +33,8 @@ import {
 } from '../../utils/constans';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '@env';
+//redux
+import {useSelector} from 'react-redux';
 
 const Review = ({route}) => {
   const {itemId} = route.params;
@@ -41,6 +43,7 @@ const Review = ({route}) => {
   const [review, setReview] = useState([]);
   const [newReview, setNewReview] = useState('');
   const [newRating, setNewRating] = useState(0);
+  const user_id = useSelector((state) => state.auth.id);
   useEffect(() => {
     // code to run on component mount
     getRating();
@@ -78,7 +81,6 @@ const Review = ({route}) => {
   };
 
   const postReview = async () => {
-    const user_id = await AsyncStorage.getItem('userid');
     console.log('itemid: ' + itemId);
     console.log('userid: ' + user_id);
     console.log('review: ' + newReview);

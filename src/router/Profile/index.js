@@ -8,6 +8,7 @@ import {
   MyProduct,
   AddProduct,
   EditProduct,
+  AddAddress,
 } from '../../screens';
 
 import {FONT_BOLD} from '../../utils/constans';
@@ -41,6 +42,21 @@ const MainProfile = () => {
         name="EditProduct"
         component={EditProduct}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddAddress"
+        component={AddAddress}
+        options={{
+          title: 'Add Address',
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontFamily: FONT_BOLD,
+            fontSize: 18,
+          },
+        }}
       />
       <Stack.Screen
         name="ShippingAddress"
