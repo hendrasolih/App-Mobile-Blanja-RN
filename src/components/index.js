@@ -6,8 +6,8 @@ import SizeColorPicker from './SizeColorPicker';
 import ListBar from './ListBar';
 import ReviewSection from './ReviewSection';
 import CardMyBag from './CardMyBag';
-import SizeItem from './SizeItem';
-import ColorItem from './ColorItem';
+// import SizeItem from './SizeItem';
+// import ColorItem from './ColorItem';
 import NavBar from './NavBar';
 import ListCategory from './ListCategory';
 import CardCatalog from './CardCatalog';
@@ -27,8 +27,8 @@ export {
   ListBar,
   ReviewSection,
   CardMyBag,
-  SizeItem,
-  ColorItem,
+  // SizeItem,
+  // ColorItem,
   NavBar,
   ListCategory,
   CardCatalog,
