@@ -3,13 +3,17 @@ import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN} from '../../utils/constans';
 import {API_URL} from '@env';
-import socketIO from 'socket.io-client';
+//import socketIO from 'socket.io-client';
+
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
 
 //redux
 import {useSelector} from 'react-redux';
-const socket = socketIO(`${API_URL}`);
+//const socket = socketIO(`${API_URL}`);
 
 const Chat = () => {
+  const socket = useSocket();
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   //sender id
@@ -26,7 +30,7 @@ const Chat = () => {
   }, []);
 
   const submitChatMessage = () => {
-    socket.emit('chat message', {chatMessage, sender: user_id, recepient: 13});
+    socket.emit('chat message', {chatMessage, sender: user_id}, 20);
     setChatMessage('');
   };
 
@@ -39,7 +43,7 @@ const Chat = () => {
         justifyContent: 'flex-end',
       }}>
       <View style={{backgroundColor: 'lightgrey'}}>
-        {/* {chatMessages.length !== 0 &&
+        {chatMessages.length !== 0 &&
           chatMessages.map(({chatMessage, sender}, index) => {
             return (
               <View key={index}>
@@ -47,8 +51,8 @@ const Chat = () => {
                 <Text>{sender}</Text>
               </View>
             );
-          })} */}
-        {chatMessages.length !== 0 &&
+          })}
+        {/* {chatMessages.length !== 0 &&
           chatMessages
             .filter(
               (chat) => chat.sender == user_id || chat.recepient == user_id,
@@ -60,7 +64,7 @@ const Chat = () => {
                   <Text>{sender}</Text>
                 </View>
               );
-            })}
+            })} */}
       </View>
 
       <View style={{height: 300}} />

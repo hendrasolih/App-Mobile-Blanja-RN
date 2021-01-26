@@ -13,6 +13,7 @@ export function useSocket() {
 
 export function SocketProvider({children}) {
   const user_id = useSelector((state) => state.auth.id);
+  console.log('ini context' + user_id);
   const [socket, setSocket] = useState();
 
   useEffect(() => {
