@@ -12,7 +12,9 @@ const socket = socketIO(`${API_URL}`);
 const Chat = () => {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  //sender id
   const user_id = useSelector((state) => state.auth.id);
+  //recipe id
 
   useEffect(() => {
     socket.on('chat message', (msg) => {
@@ -24,7 +26,7 @@ const Chat = () => {
   }, []);
 
   const submitChatMessage = () => {
-    socket.emit('chat message', {chatMessage});
+    socket.emit('chat message', {chatMessage, sender: user_id, recepient: 13});
     setChatMessage('');
   };
 
@@ -37,10 +39,28 @@ const Chat = () => {
         justifyContent: 'flex-end',
       }}>
       <View style={{backgroundColor: 'lightgrey'}}>
+        {/* {chatMessages.length !== 0 &&
+          chatMessages.map(({chatMessage, sender}, index) => {
+            return (
+              <View key={index}>
+                <Text>{chatMessage}</Text>
+                <Text>{sender}</Text>
+              </View>
+            );
+          })} */}
         {chatMessages.length !== 0 &&
-          chatMessages.map(({chatMessage}, index) => {
-            return <Text key={index}>{chatMessage}</Text>;
-          })}
+          chatMessages
+            .filter(
+              (chat) => chat.sender == user_id || chat.recepient == user_id,
+            )
+            .map(({chatMessage, sender}, index) => {
+              return (
+                <View key={index}>
+                  <Text>{chatMessage}</Text>
+                  <Text>{sender}</Text>
+                </View>
+              );
+            })}
       </View>
 
       <View style={{height: 300}} />

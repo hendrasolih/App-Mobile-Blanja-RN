@@ -28,6 +28,9 @@ import {FONT_BOLD} from '../utils/constans';
 //redux
 import {useSelector} from 'react-redux';
 
+//cotext
+import {SocketProvider} from '../utils/Context/SocketProvider';
+
 import Shop from './Shop';
 import MainProfile from './Profile';
 import Notification from '../screens/Notification';
@@ -59,72 +62,75 @@ const ProfileScreen = () => {
 };
 
 const Router = ({navigation}) => {
+  const user_id = useSelector((state) => state.auth.id);
   return (
-    <Stack.Navigator initialRouteName="Splash">
-      <Stack.Screen
-        name="Splash"
-        component={Splash}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        headerMode="none"
-        name="MainApp"
-        component={MainApp}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="ForgotPass"
-        component={ForgotPass}
-        options={{title: ''}}
-      />
-      <Stack.Screen name="otp" component={Otp} />
-      <Stack.Screen name="ResetPass" component={ResetPass} nav={navigation} />
-      <Stack.Screen
-        name="SettingsProfile"
-        component={SettingsProfile}
-        options={{
-          title: '',
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTintColor: 'black',
-          headerTitleStyle: {
-            fontFamily: FONT_BOLD,
-            fontSize: 18,
-          },
-        }}
-      />
-      <Stack.Screen name="DetailPage" component={DetailPage} />
-      <Stack.Screen name="ReviewPage" component={Review} />
-      <Stack.Screen
-        name="Notification"
-        component={Notification}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Search"
-        component={Search}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="Filter" component={Filter} />
-      <Stack.Screen name="Checkout" component={Checkout} />
-      <Stack.Screen
-        name="Success"
-        component={Success}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Chat"
-        component={Chat}
-        options={{headerShown: false}}
-      />
-    </Stack.Navigator>
+    <SocketProvider id={user_id}>
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          headerMode="none"
+          name="MainApp"
+          component={MainApp}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ForgotPass"
+          component={ForgotPass}
+          options={{title: ''}}
+        />
+        <Stack.Screen name="otp" component={Otp} />
+        <Stack.Screen name="ResetPass" component={ResetPass} nav={navigation} />
+        <Stack.Screen
+          name="SettingsProfile"
+          component={SettingsProfile}
+          options={{
+            title: '',
+            headerStyle: {
+              backgroundColor: '#ffffff',
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontFamily: FONT_BOLD,
+              fontSize: 18,
+            },
+          }}
+        />
+        <Stack.Screen name="DetailPage" component={DetailPage} />
+        <Stack.Screen name="ReviewPage" component={Review} />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Filter" component={Filter} />
+        <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen
+          name="Success"
+          component={Success}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </SocketProvider>
   );
 };
 
