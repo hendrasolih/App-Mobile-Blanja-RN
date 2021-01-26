@@ -126,13 +126,20 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
           <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
         </TouchableOpacity>
       )}
-
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('ShippingAddress');
         }}>
         <ProfileMenu title={'Shipping addresses'} detail={`3 ddresses`} />
       </TouchableOpacity>
+      {/* CHAT PAGE */}
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Chat');
+        }}>
+        <ProfileMenu title={'Chats'} detail={`Your Chats`} />
+      </TouchableOpacity>
+      {/* CHAT PAGE */}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('SettingsProfile');

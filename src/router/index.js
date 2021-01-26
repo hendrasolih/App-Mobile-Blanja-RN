@@ -20,6 +20,7 @@ import {
   ForgotPass,
   Otp,
   ResetPass,
+  Chat,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -116,6 +117,11 @@ const Router = ({navigation}) => {
       <Stack.Screen
         name="Success"
         component={Success}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

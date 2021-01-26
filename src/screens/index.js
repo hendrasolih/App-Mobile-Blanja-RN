@@ -23,6 +23,7 @@ import MyProduct from './MyProduct';
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import AddAddress from './AddAddress';
+import Chat from './Chat';
 
 export {
   Splash,
@@ -50,4 +51,5 @@ export {
   AddProduct,
   EditProduct,
   AddAddress,
+  Chat,
 };
