@@ -10,8 +10,8 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {ColorItem} from '../ColorItem';
-import {SizeItem} from '../SizeItem';
+import ColorItem from '../ColorItem';
+import SizeItem from '../SizeItem';
 import {IconLove} from '../../assets';
 import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
 import {API_URL} from '@env';
