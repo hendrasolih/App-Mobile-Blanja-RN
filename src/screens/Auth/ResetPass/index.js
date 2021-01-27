@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
+import axios from 'axios';
 
-const ResetPass = ({navigation}) => {
+const ResetPass = ({navigation, route}) => {
+  const {user_id} = route.params;
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const handleSubmit = () => {
@@ -12,12 +14,12 @@ const ResetPass = ({navigation}) => {
       user_password: password,
     };
     axios
-      .post(`${API_URL}/auth/signup`, data)
-      .then(async (res) => {
+      .post(`${API_URL}/auth/resetpass/${user_id}`, data)
+      .then((res) => {
         console.log(res);
         Alert.alert(
-          'Register',
-          'Register Berhasil',
+          'Reset Password',
+          'Reset Password Berhasil',
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
@@ -25,7 +27,7 @@ const ResetPass = ({navigation}) => {
       })
       .catch((err) => {
         console.log(err);
-        console.log('erro disini');
+        console.log('error disini');
       });
   };
   return (
@@ -51,12 +53,8 @@ const ResetPass = ({navigation}) => {
             setConfirmPassword(confirmPassword)
           }
         />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ForgotPass');
-          }}></TouchableOpacity>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>Reset Password</Text>
         </View>

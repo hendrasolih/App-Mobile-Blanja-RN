@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  Alert,
 } from 'react-native';
 import {ProfilePict} from '../../assets';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -59,19 +60,39 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
   }, [navigation, user_id]);
 
   const logout = async () => {
-    try {
-      console.log(`ini token: ${token}`);
-      await axios.delete(`${API_URL}/auth/logout`, {
-        headers: {
-          'x-access-token': 'Bearer ' + token,
+    Alert.alert(
+      'Logout',
+      'Are Sure Want Logout ?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            return console.log('Cancel Pressed');
+          },
+          style: 'cancel',
         },
-      });
-      logoutRedux();
-      navigation.navigate('Login');
-    } catch (e) {
-      // remove error
-      console.log(e);
-    }
+        {
+          text: 'OK',
+          onPress: async () => {
+            //logout
+            try {
+              console.log(`ini token: ${token}`);
+              await axios.delete(`${API_URL}/auth/logout`, {
+                headers: {
+                  'x-access-token': 'Bearer ' + token,
+                },
+              });
+              logoutRedux();
+              navigation.navigate('Login');
+            } catch (e) {
+              // remove error
+              console.log(e);
+            }
+          },
+        },
+      ],
+      {cancelable: true},
+    );
   };
   const getProfile = () => {
     axios

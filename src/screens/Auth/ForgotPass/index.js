@@ -20,7 +20,10 @@ const ForgotPass = ({navigation}) => {
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
-        navigation.navigate('otp');
+
+        console.log(res.data.data);
+        const user_id = res.data.data;
+        navigation.navigate('otp', {user_id});
       })
       .catch((err) => {
         console.log(err);

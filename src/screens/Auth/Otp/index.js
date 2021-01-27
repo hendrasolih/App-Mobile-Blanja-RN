@@ -7,7 +7,8 @@ import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 //navigation.navigate('ResetPass');
 import {API_URL} from '@env';
 
-const Otp = ({navigation}) => {
+const Otp = ({navigation, route}) => {
+  const {user_id} = route.params;
   const [otp, setOtp] = useState('');
   const handleSubmit = () => {
     const data = {
@@ -22,9 +23,15 @@ const Otp = ({navigation}) => {
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
-        navigation.navigate('ResetPass');
+        navigation.navigate('ResetPass', {user_id});
       })
       .catch((err) => {
+        Alert.alert(
+          'OTP',
+          'Kode OTP Tidak Valid',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
         console.log(err);
         console.log('error disini');
       });
