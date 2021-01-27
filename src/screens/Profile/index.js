@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
   },
   titlewrap: {
     marginTop: 74,
+    marginHorizontal: 14,
   },
   img: {
     height: 69,
@@ -229,6 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15,
     marginBottom: 20,
+    marginHorizontal: 14,
   },
   myorder: {
     flexDirection: 'row',
