@@ -64,7 +64,7 @@ const ProfileScreen = () => {
 const Router = ({navigation}) => {
   const user_id = useSelector((state) => state.auth.id);
   return (
-    <SocketProvider id={user_id}>
+    <SocketProvider>
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"

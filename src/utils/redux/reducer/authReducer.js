@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   token: null,
   id: null,
   level: null,
+  name_user: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +17,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         token: action.payload.token,
         id: action.payload.id,
         level: action.payload.level,
+        name_user: action.payload.nameUser,
       };
     case actionTypes.LOGOUT:
       return {
@@ -24,6 +26,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         token: null,
         id: null,
         level: null,
+        name_user: null,
       };
     default:
       return state;

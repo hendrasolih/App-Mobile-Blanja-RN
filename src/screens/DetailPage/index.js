@@ -66,10 +66,10 @@ const DetailPage = ({navigation, route, addToCart}) => {
         console.log(err);
       });
   };
-  console.log(`here is ${pictures}`);
-  console.log(typeof product.prd_image);
-  console.log(`ini size: ${pickSize}`);
-  console.log(`ini color: ${pickColor}`);
+  // console.log(`here is ${pictures}`);
+  // console.log(typeof product.prd_image);
+  // console.log(`ini size: ${pickSize}`);
+  // console.log(`ini color: ${pickColor}`);
 
   return (
     <>
@@ -97,7 +97,12 @@ const DetailPage = ({navigation, route, addToCart}) => {
             <Text style={styles.PrdName}> (10)</Text>
           </View>
           <Text style={styles.desc}>{product.prd_description}</Text>
-          <ListBar nav={navigation} id={itemId} />
+          <ListBar
+            nav={navigation}
+            id={itemId}
+            sellerId={product.user_id}
+            sellerName={product.user_name}
+          />
           <View style={styles.text}>
             <Text style={{fontFamily: FONT_BOLD, fontSize: 18}}>
               You can also like this

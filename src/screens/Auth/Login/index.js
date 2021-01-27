@@ -24,10 +24,12 @@ const Login = ({navigation, login}) => {
         console.log(res.data.data.token);
         console.log(res.data.data.user_id);
         console.log(res.data.data.level);
+        console.log('hereeeee   ' + res.data.data.user_name);
         const token = res.data.data.token;
         const id = res.data.data.user_id;
         const level = res.data.data.level;
-        login(token, id, level);
+        const nameUser = res.data.data.user_name;
+        login(token, id, level, nameUser);
 
         console.log('done');
         navigation.navigate('MainApp');
@@ -80,7 +82,8 @@ const Login = ({navigation, login}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (token, id, level) => dispatch(login(token, id, level)),
+    login: (token, id, level, nameUser) =>
+      dispatch(login(token, id, level, nameUser)),
   };
 };
 
