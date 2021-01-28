@@ -77,12 +77,6 @@ const Checkout = ({navigation, route}) => {
       .post(`${API_URL}/history`, data)
       .then((res) => {
         console.log(res.data.msg);
-        Alert.alert(
-          `Checkout Berhasil !!!`,
-          'Ayo Belanja Lagi :)',
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: false},
-        );
       })
       .catch((err) => {
         console.log(err);

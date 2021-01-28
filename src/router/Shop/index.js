@@ -7,7 +7,11 @@ const Stack = createStackNavigator();
 const ShopCategory = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Shop" component={Shop} />
+      <Stack.Screen
+        name="Shop"
+        component={Shop}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Catalog"
         component={Catalog}

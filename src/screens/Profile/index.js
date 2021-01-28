@@ -147,12 +147,14 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
           <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
         </TouchableOpacity>
       )}
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('ShippingAddress');
-        }}>
-        <ProfileMenu title={'Shipping addresses'} detail={`3 ddresses`} />
-      </TouchableOpacity>
+      {level === 'Customer' && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ShippingAddress');
+          }}>
+          <ProfileMenu title={'Shipping addresses'} detail={`3 ddresses`} />
+        </TouchableOpacity>
+      )}
       {/* CHAT PAGE */}
       <TouchableOpacity
         onPress={() => {
