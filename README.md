@@ -32,7 +32,7 @@
 
 ## Screenshoots
 
-<div>
+<div align="center">
     <img width="21%" src="./src/assets/images/Mob 1.png">
     <img width="21%" src="./src/assets/images/Mob 2.png">
     <img width="21%" src="./src/assets/images/Mob 3.png">
