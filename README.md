@@ -33,14 +33,10 @@
 ## Screenshoots
 
 <div>
-    <img margin-right="50" width="25%" src="./src/assets/images/Mob 1.png">
-    <img width="25%" src="./src/assets/images/Mob 2.png">
-    
-</div>
-
-<div>
-    <img width="25%" src="./src/assets/images/Mob 3.png">
-    <img width="25%" src="./src/assets/images/Mob 4.png">
+    <img width="21%" src="./src/assets/images/Mob 1.png">
+    <img width="21%" src="./src/assets/images/Mob 2.png">
+    <img width="21%" src="./src/assets/images/Mob 3.png">
+    <img width="21%" src="./src/assets/images/Mob 4.png">
 </div>
 
 ## Demo Blanja
