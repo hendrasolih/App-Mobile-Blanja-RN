@@ -44,7 +44,7 @@
 Let's try it.
 
 <a href="#link-demo">
-  <img src="https://img.shields.io/badge/Food%20Recipes-Link%20Demo-blue.svg?style=popout&logo=firefox"/>
+  <img src="https://img.shields.io/badge/Blanja-Link%20Demo-blue.svg?style=popout&logo=firefox"/>
 </a>
 
 ## Related Project
@@ -52,5 +52,5 @@ Let's try it.
 RESTful API for this web application.
 
 <a href="https://github.com/hendrasolih/backend-blanja">
-<img src="https://img.shields.io/badge/Food%20Recipes-Repository-blue.svg?style=popout&logo=github"/>
+    <img src="https://img.shields.io/badge/Blanja-Repository-blue.svg?style=popout&logo=github"/>
 </a>
