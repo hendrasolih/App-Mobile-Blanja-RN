@@ -32,8 +32,8 @@
 
 ## Screenshoots
 
-<div align="center">
-    <img width="25%" src="./src/assets/images/Mob 1.png">
+<div>
+    <img margin-right="50" width="25%" src="./src/assets/images/Mob 1.png">
     <img width="25%" src="./src/assets/images/Mob 2.png">
     
 </div>
