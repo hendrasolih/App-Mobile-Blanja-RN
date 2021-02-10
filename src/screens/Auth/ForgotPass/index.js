@@ -4,10 +4,17 @@ import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
-
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const ForgotPass = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const handleSubmit = () => {
+    if (email == '') {
+      return setErrorMsg('input');
+    }
+    if (!regexEmail.test(email)) {
+      return setErrorMsg('email');
+    }
     const data = {
       email: email,
     };
@@ -43,6 +50,13 @@ const ForgotPass = ({navigation}) => {
         defaultValue={email}
         onChangeText={(email) => setEmail(email)}
       />
+      <Text style={styles.error}>
+        {errorMsg == 'input'
+          ? 'Please Enter Your Email'
+          : errorMsg == 'email'
+          ? 'Please Enter Valid Email'
+          : ''}
+      </Text>
       <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>SEND</Text>
@@ -85,5 +99,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: FONT_REG,
     fontSize: 14,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: windowHeight * 0.05,
   },
 });

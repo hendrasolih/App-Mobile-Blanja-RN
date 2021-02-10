@@ -5,11 +5,23 @@ import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
 import axios from 'axios';
 
+const regexPwd = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+
 const ResetPass = ({navigation, route}) => {
   const {user_id} = route.params;
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const handleSubmit = () => {
+    if (password == '' || confirmPassword == '') {
+      return setErrorMsg('input');
+    }
+    if (!regexPwd.test(password)) {
+      return setErrorMsg('strongpass');
+    }
+    if (password !== confirmPassword) {
+      return setErrorMsg('notsame');
+    }
     const data = {
       user_password: password,
     };
@@ -54,6 +66,15 @@ const ResetPass = ({navigation, route}) => {
           }
         />
       </View>
+      <Text style={styles.error}>
+        {errorMsg == 'input'
+          ? 'Please Enter Your New Password'
+          : errorMsg == 'strongpass'
+          ? 'Password should at least have 1 Lower Case (a-z), 1 Upper Case (A-Z), 1 Number (0-9)'
+          : errorMsg == 'notsame'
+          ? `Password didn't match`
+          : ''}
+      </Text>
       <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>Reset Password</Text>
@@ -100,5 +121,10 @@ const styles = StyleSheet.create({
     fontFamily: FONT_REG,
     marginBottom: 32,
     marginTop: 5,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: windowHeight * 0.04,
   },
 });

@@ -26,10 +26,12 @@ import {logout} from '../../utils/redux/action/authAction';
 import {API_URL} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = ({navigation, logoutRedux, isLogin, token}) => {
+const Profile = ({navigation, logoutRedux, isLogin}) => {
   const level = useSelector((state) => state.auth.level);
   const user_id = useSelector((state) => state.auth.id);
+  const token = useSelector((state) => state.auth.token);
   const [profile, setProfile] = useState({});
+  const [totalProduct, setTotalProduct] = useState(0);
   console.log(isLogin);
   console.log(level);
   console.log(user_id);
@@ -57,6 +59,7 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
   useEffect(() => {
     // code to run on component mount
     getProfile();
+    getProduct();
   }, [navigation, user_id]);
 
   const logout = async () => {
@@ -106,6 +109,24 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
       });
   };
 
+  const getProduct = async () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token,
+      },
+    };
+    await axios
+      .get(`${API_URL}/product/user/${user_id}`, config)
+      .then((res) => {
+        //console.log(res.data.data[0]);
+        const data = res.data.data;
+        setTotalProduct(data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <View style={styles.titlewrap}>
@@ -136,7 +157,7 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
           }}>
           <ProfileMenu
             title={'My products'}
-            detail={`Already have 12 products`}
+            detail={`Already have ${totalProduct} products`}
           />
         </TouchableOpacity>
       ) : (

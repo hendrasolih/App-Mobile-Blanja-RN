@@ -20,13 +20,32 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import {API_URL} from '@env';
 
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+const regexPwd = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+
 const Register = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [store, setStore] = useState('');
   const [role, setRole] = useState(1);
+  const [errorMsg, setErrorMsg] = useState('');
   const handleSubmit = () => {
+    if (name == '' || email == '' || password == '' || store == '') {
+      return setErrorMsg('input');
+    }
+    if (name.length < 4 || name.length > 12) {
+      return setErrorMsg('name');
+    }
+    if (!regexEmail.test(email)) {
+      return setErrorMsg('email');
+    }
+    if (store.length < 4 || store.length > 12) {
+      return setErrorMsg('store');
+    }
+    if (!regexPwd.test(password)) {
+      return setErrorMsg('strongpass');
+    }
     const data = {
       user_name: name,
       email: email,
@@ -37,7 +56,6 @@ const Register = ({navigation}) => {
     axios
       .post(`${API_URL}/auth/signup`, data)
       .then(async (res) => {
-        console.log(res);
         Alert.alert(
           'Register',
           'Register Berhasil',
@@ -46,9 +64,11 @@ const Register = ({navigation}) => {
         );
         navigation.navigate('Login');
       })
-      .catch((err) => {
-        console.log(err);
-        console.log('erro disini');
+      .catch((error) => {
+        console.log(error.message);
+        const status = error.response.data.status;
+        setErrorMsg(status);
+        //console.log(error.response.data.status);
       });
   };
   return (
@@ -105,6 +125,21 @@ const Register = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.errormsg}>
+          {errorMsg == 409
+            ? 'Email Already Registered'
+            : errorMsg == 'input'
+            ? 'Please Fill All Form'
+            : errorMsg == 'name'
+            ? 'Name Length Char Min 4 Max 12'
+            : errorMsg == 'email'
+            ? 'Please Input Valid Email'
+            : errorMsg == 'store'
+            ? 'Store Name Length Char Min 4 Max 12'
+            : errorMsg == 'strongpass'
+            ? 'Password should at least have 1 Lower Case (a-z), 1 Upper Case (A-Z), 1 Number (0-9)'
+            : ''}
+        </Text>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.containerKeyboard}>
@@ -159,5 +194,10 @@ const styles = StyleSheet.create({
     fontFamily: FONT_REG,
     marginBottom: 32,
     marginTop: 5,
+  },
+  errormsg: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: windowHeight * 0.03,
   },
 });

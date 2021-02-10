@@ -5,6 +5,7 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
+const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 //redux
 import {connect} from 'react-redux';
@@ -13,7 +14,14 @@ import {login} from '../../../utils/redux/action/authAction';
 const Login = ({navigation, login}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const handleSubmit = () => {
+    setErrorMsg('');
+    if (email == '' || password == '') {
+      return setErrorMsg('input');
+    } else if (!regexEmail.test(email)) {
+      return setErrorMsg('errormail');
+    }
     const data = {
       email: email,
       user_password: password,
@@ -36,6 +44,7 @@ const Login = ({navigation, login}) => {
       })
       .catch((err) => {
         console.log(err);
+        setErrorMsg('wrong email');
         console.log('error disini');
       });
   };
@@ -63,6 +72,15 @@ const Login = ({navigation, login}) => {
           <Text style={styles.forgotPas}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
+      <Text style={styles.errormsg}>
+        {errorMsg == 'wrong email'
+          ? 'Invalid Email or Password'
+          : errorMsg == 'input'
+          ? 'Please Enter Your Email and Password'
+          : errorMsg == 'errormail'
+          ? 'Please Input Correct Email Format'
+          : ''}
+      </Text>
       <TouchableOpacity onPress={handleSubmit}>
         <View style={styles.button}>
           <Text style={styles.textBtn}>Login</Text>
@@ -122,7 +140,12 @@ const styles = StyleSheet.create({
   forgotPas: {
     alignSelf: 'flex-end',
     fontFamily: FONT_REG,
-    marginBottom: 32,
+    marginBottom: windowHeight * 0.05,
     marginTop: 5,
+  },
+  errormsg: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: windowHeight * 0.05,
   },
 });
