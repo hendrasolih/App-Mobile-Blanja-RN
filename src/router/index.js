@@ -21,6 +21,7 @@ import {
   Otp,
   ResetPass,
   Chat,
+  FilterBrand,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -128,6 +129,13 @@ const Router = ({navigation}) => {
           name="Chat"
           component={Chat}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Filter Brand"
+          component={FilterBrand}
+          options={{
+            title: 'Brand',
+          }}
         />
       </Stack.Navigator>
     </SocketProvider>

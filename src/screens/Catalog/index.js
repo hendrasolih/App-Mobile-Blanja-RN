@@ -19,6 +19,10 @@ import {
 } from '../../utils/constans';
 import {API_URL} from '@env';
 import ActionSheet from 'react-native-actions-sheet';
+import {useIsFocused} from '@react-navigation/native';
+
+//redux
+import {useSelector} from 'react-redux';
 
 const Catalog = ({navigation, route}) => {
   const isInitialMount = useRef(true);
@@ -27,24 +31,31 @@ const Catalog = ({navigation, route}) => {
   const [descend, setDescend] = useState('');
   let {title, keyword} = route.params;
   const [viewall, setViewall] = useState([]);
+  const brand = useSelector((state) => state.filter.brand);
+  const color = useSelector((state) => state.filter.color);
+  const size = useSelector((state) => state.filter.size);
+  const category = useSelector((state) => state.filter.category);
+  const isFocused = useIsFocused();
   //viewall
   useEffect(() => {
     // code to run on component mount
     getViewAll();
-  }, [navigation]);
+  }, []);
   //sort
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
       // Your useEffect code here to be run on update
-      if (active == 'Customer review') {
+      if (active == 'Filter') {
+        getFilter();
+      } else if (active == 'Customer review') {
         getSortWithReview();
       } else {
         getSorted();
       }
     }
-  }, [active]);
+  }, [isFocused, active]);
 
   const getSortWithReview = () => {
     axios
@@ -90,7 +101,48 @@ const Catalog = ({navigation, route}) => {
       });
   };
 
+  const getFilter = () => {
+    console.log('filter');
+    let keyBrand = '';
+    let keyColor = '';
+    let keySize = '';
+    let keyCtg = '';
+    brand.forEach((el) => {
+      keyBrand += `'${el}',`;
+    });
+    color.forEach((el) => {
+      keyColor += `'${el}',`;
+    });
+    size.forEach((el) => {
+      keySize += `'${el}',`;
+    });
+    category.forEach((el) => {
+      keyCtg += `'${el}',`;
+    });
+    const newbrand = keyBrand.slice(0, -1);
+    const newcolor = keyColor.slice(0, -1);
+    const newsize = keySize.slice(0, -1);
+    const newctg = keyCtg.slice(0, -1);
+    console.log(newbrand);
+    console.log(newcolor);
+    console.log(newsize);
+    console.log(newctg);
+    axios
+      .get(
+        `${API_URL}/products/filter?color=${newcolor}&category=${newctg}&brand=${newbrand}&size=${newsize}`,
+      )
+      .then((res) => {
+        //console.log(res.data.data.length);
+        setViewall(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        getViewAll();
+      });
+  };
+
   const actionSheetRef = createRef();
+  console.log('active', active);
 
   return (
     <>
@@ -99,7 +151,10 @@ const Catalog = ({navigation, route}) => {
         <View style={styles.wrapfilter}>
           <TouchableOpacity
             style={styles.filter}
-            onPress={() => navigation.navigate('Filter')}>
+            onPress={() => {
+              navigation.navigate('Filter');
+              setActive('Filter');
+            }}>
             <IconFilter style={{marginRight: 10}} />
             <Text style={{fontFamily: FONT_LIGHT}}>Filter</Text>
           </TouchableOpacity>
@@ -118,10 +173,10 @@ const Catalog = ({navigation, route}) => {
         <ScrollView>
           {viewall.length !== 0 &&
             viewall.map(
-              ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+              ({prd_id, prd_name, prd_brand, prd_price, prd_image}, index) => {
                 return (
                   <CardCatalog
-                    key={prd_id}
+                    key={index}
                     itemId={prd_id}
                     name={prd_name}
                     brand={prd_brand}
@@ -135,7 +190,7 @@ const Catalog = ({navigation, route}) => {
 
           <View style={styles.gap} />
         </ScrollView>
-        <ActionSheet ref={actionSheetRef}>
+        <ActionSheet ref={actionSheetRef} actionSheetRef>
           <View style={styles.sort}>
             <Text
               style={{
@@ -151,6 +206,7 @@ const Catalog = ({navigation, route}) => {
               onPress={() => {
                 console.log('rating');
                 setActive('rating');
+                actionSheetRef.current?.setModalVisible(false);
               }}>
               <Text
                 style={
@@ -164,6 +220,7 @@ const Catalog = ({navigation, route}) => {
               onPress={() => {
                 console.log('new');
                 setActive('new');
+                actionSheetRef.current?.setModalVisible(false);
               }}>
               <Text
                 style={
@@ -181,6 +238,7 @@ const Catalog = ({navigation, route}) => {
               onPress={() => {
                 console.log('Customer review');
                 setActive('Customer review');
+                actionSheetRef.current?.setModalVisible(false);
               }}>
               <Text
                 style={
@@ -196,6 +254,7 @@ const Catalog = ({navigation, route}) => {
               onPress={() => {
                 console.log('price');
                 setActive('price');
+                actionSheetRef.current?.setModalVisible(false);
               }}>
               <Text
                 style={
@@ -209,6 +268,7 @@ const Catalog = ({navigation, route}) => {
               onPress={() => {
                 console.log('priceD');
                 setActive('priceD');
+                actionSheetRef.current?.setModalVisible(false);
               }}>
               <Text
                 style={

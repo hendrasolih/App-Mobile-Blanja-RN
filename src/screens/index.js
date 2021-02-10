@@ -24,6 +24,7 @@ import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import AddAddress from './AddAddress';
 import Chat from './Chat';
+import FilterBrand from './FilterBrand';
 
 export {
   Splash,
@@ -52,4 +53,5 @@ export {
   EditProduct,
   AddAddress,
   Chat,
+  FilterBrand,
 };

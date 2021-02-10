@@ -1,25 +1,76 @@
-import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {CategoryFilter, ColorFilter, SizeFilter} from '../../components';
+import {API_URL} from '@env';
+import {COLOR_MAIN} from '../../utils/constans';
 
-const Filter = () => {
+//redux
+import {useSelector} from 'react-redux';
+
+const Filter = ({navigation}) => {
+  const brand = useSelector((state) => state.filter.brand);
+  //console.log(brand);
+  useEffect(() => {
+    getColor();
+    getSize();
+    getCategory();
+  }, []);
+  const [color, setColor] = useState([]);
+  const [size, setSize] = useState([]);
+  const [category, setCategory] = useState([]);
+  const getColor = () => {
+    axios
+      .get(`${API_URL}/color`)
+      .then((res) => {
+        setColor(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getSize = () => {
+    axios
+      .get(`${API_URL}/size`)
+      .then((res) => {
+        setSize(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getCategory = () => {
+    axios
+      .get(`${API_URL}/category`)
+      .then(({data}) => {
+        //console.log(data.data);
+        setCategory(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View>
       <Text>Colors</Text>
       <View style={styles.wrapcolor}>
         <View style={{marginLeft: 10}} />
-        <ColorFilter title="red" />
-        <ColorFilter title="black" />
-        <ColorFilter title="blue" />
-        <ColorFilter title="yellow" />
+        {color.length !== 0 &&
+          color.map(({color_type, id}) => {
+            return <ColorFilter title={color_type} key={id} />;
+          })}
       </View>
       <Text>Sizes</Text>
       <View style={styles.wrapcolor}>
         <View style={{marginLeft: 10}} />
-        <SizeFilter size={41} />
-        <SizeFilter size={41} />
-        <SizeFilter size={41} />
-        <SizeFilter size={41} />
+        {size.length !== 0 &&
+          size.map(({size_prd, size_id}) => {
+            return <SizeFilter size={size_prd} key={size_id} />;
+          })}
       </View>
       <Text>Category</Text>
       <View style={styles.wrapcolor}>
@@ -29,15 +80,22 @@ const Filter = () => {
             flexWrap: 'wrap',
             marginHorizontal: 10,
           }}>
-          <CategoryFilter category="All" />
-          <CategoryFilter category="Women" />
-          <CategoryFilter category="Men" />
-          <CategoryFilter category="Boys" />
+          {category.length !== 0 &&
+            category.map(({ctg_id, ctg_name}) => {
+              return <CategoryFilter category={ctg_name} key={ctg_id} />;
+            })}
         </View>
       </View>
-      <View style={styles.wrapbrand}>
+      <TouchableOpacity
+        style={styles.wrapbrand}
+        onPress={() => navigation.navigate('Filter Brand')}>
         <Text>Brand</Text>
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{backgroundColor: COLOR_MAIN}}
+        onPress={() => navigation.goBack()}>
+        <Text style={{color: '#fff'}}>Apply</Text>
+      </TouchableOpacity>
     </View>
   );
 };

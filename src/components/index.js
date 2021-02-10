@@ -17,6 +17,7 @@ import CategoryFilter from './CategoryFilter';
 import CardAddress from './CardAddress';
 import CheckboxPayments from './CheckboxPayments';
 import NotifSetting from './NotifSetting';
+import CheckboxBrand from './CheckboxBrand';
 
 export {
   BottomNavigator,
@@ -38,4 +39,5 @@ export {
   CardAddress,
   CheckboxPayments,
   NotifSetting,
+  CheckboxBrand,
 };
