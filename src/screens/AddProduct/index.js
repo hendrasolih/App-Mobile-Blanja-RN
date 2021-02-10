@@ -16,13 +16,14 @@ import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import {API_URL} from '@env';
 import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
-const AddProduct = () => {
+const AddProduct = ({navigation}) => {
   useEffect(() => {
     // code to run on component mount
     getCategory();
   }, []);
   const [category, setCategory] = useState([]);
   const [filePath, setFilePath] = useState([]);
+  const [filePathCamera, setFilePathCamera] = useState([]);
   const [nameProd, setNameProd] = useState('');
   const [brand, setBrand] = useState('');
   const [price, setPrice] = useState('');
@@ -70,6 +71,17 @@ const AddProduct = () => {
             : filePath[i].path.replace('file://', ''),
       });
     }
+    if (filePathCamera.length !== 0 && filePathCamera !== undefined) {
+      data.append('image', {
+        name: filePathCamera.path.split('/').pop(),
+        type: filePathCamera.mime,
+        uri:
+          Platform.OS === 'android'
+            ? filePathCamera.path
+            : filePathCamera.path.replace('file://', ''),
+      });
+    }
+
     if (
       nameProd == '' ||
       brand == '' ||
@@ -84,6 +96,7 @@ const AddProduct = () => {
       .post(`${API_URL}/products`, data, config)
       .then((res) => {
         console.log(res.data.msg);
+        navigation.navigate('MyProduct');
       })
       .catch((err) => {
         console.log('error disini');
@@ -98,7 +111,8 @@ const AddProduct = () => {
       .then((images) => {
         console.log(images.length);
         // const imgss = images.map((item) => item.path);
-        // console.log(imgss);
+        //console.log(imgss);
+        console.log(images);
         setFilePath(images);
       })
       .catch((err) => {
@@ -106,6 +120,21 @@ const AddProduct = () => {
       });
   };
 
+  const choosePhoto = () => {
+    ImagePicker.openCamera({
+      //cropping: true,
+      mediaType: 'photo',
+    })
+      .then((image) => {
+        console.log(image);
+        setFilePathCamera(image);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log(filePathCamera);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add Product</Text>
@@ -120,6 +149,12 @@ const AddProduct = () => {
               />
             );
           })}
+          {filePathCamera !== undefined && filePathCamera.length !== 0 && (
+            <Image
+              source={{uri: filePathCamera.path}}
+              style={styles.imageStyle}
+            />
+          )}
         </View>
 
         <TouchableOpacity
@@ -127,6 +162,12 @@ const AddProduct = () => {
           style={styles.buttonStyle}
           onPress={() => chooseFile()}>
           <Text style={styles.textStyle}>Choose Image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonStyle}
+          onPress={() => choosePhoto()}>
+          <Text style={styles.textStyle}>Use Camera</Text>
         </TouchableOpacity>
         <TextInput
           style={styles.form}

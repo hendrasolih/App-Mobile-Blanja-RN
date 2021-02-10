@@ -36,7 +36,7 @@ const Profile = ({navigation, logoutRedux, isLogin, token}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
-        navigation.navigate('Login');
+        navigation.replace('Login');
       }
     });
 
