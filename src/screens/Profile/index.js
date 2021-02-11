@@ -150,24 +150,24 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
           </Text>
         </View>
       </View>
-      {level === 'Seller' ? (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('MyProduct');
-          }}>
-          <ProfileMenu
-            title={'My products'}
-            detail={`Already have ${totalProduct} products`}
-          />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('MyOrder');
-          }}>
-          <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
-        </TouchableOpacity>
-      )}
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MyProduct');
+        }}>
+        <ProfileMenu
+          title={'My products'}
+          detail={`Already have ${totalProduct} products`}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MyOrder');
+        }}>
+        <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
+      </TouchableOpacity>
+
       {level === 'Customer' && (
         <TouchableOpacity
           onPress={() => {

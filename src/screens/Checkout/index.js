@@ -14,17 +14,19 @@ import {
 import {API_URL} from '@env';
 
 //redux
-import {useSelector} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
+import {clearCart} from '../../utils/redux/action/cartAction';
 
+//push notif
 import PushNotification from 'react-native-push-notification';
 import {showNotification} from '../../notif';
 
-const Checkout = ({navigation, route}) => {
+const Checkout = ({navigation, route, clearCart}) => {
   //const userid = await AsyncStorage.getItem('userid');
   const user_id = useSelector((state) => state.auth.id);
   const [address, setAddress] = useState([]);
   const channel = 'notif';
-  const {totalPrice, totalItems} = route.params;
+  const {totalPrice, totalItems, seller_id} = route.params;
   console.log('price here ckout ' + totalPrice);
   console.log('item here ckout ' + totalItems);
   //pushnotif
@@ -72,11 +74,14 @@ const Checkout = ({navigation, route}) => {
       user_id: user_id,
       qty: totalItems,
       price: totalPrice,
+      seller_id: seller_id,
+      status: 'Packing',
     };
     axios
       .post(`${API_URL}/history`, data)
       .then((res) => {
         console.log(res.data.msg);
+        clearCart();
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +139,13 @@ const Checkout = ({navigation, route}) => {
   );
 };
 
-export default Checkout;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCart: () => dispatch(clearCart()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Checkout);
 
 const windowWidth = Dimensions.get('window').width;
 

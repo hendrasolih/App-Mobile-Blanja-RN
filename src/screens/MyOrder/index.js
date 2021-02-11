@@ -11,24 +11,83 @@ import {
 } from '../../utils/constans';
 import {API_URL} from '@env';
 
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
+
 //redux
 import {useSelector} from 'react-redux';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Picker} from '@react-native-picker/picker';
+
+//push notif
+import PushNotification from 'react-native-push-notification';
+import {showNotification} from '../../notif';
 
 const MyOrder = () => {
+  const socket = useSocket();
+  const channel = 'notif';
+  const level = useSelector((state) => state.auth.level);
   const user_id = useSelector((state) => state.auth.id);
   const [history, setHistory] = useState([]);
+  console.log(level);
   useEffect(() => {
     // code to run on component mount
-    getHistory();
+    if (level == 'Seller') {
+      getOrderSeller();
+    } else {
+      getHistory();
+    }
+  }, []);
+
+  //pushnotif
+  PushNotification.createChannel(
+    {
+      channelId: 'notif',
+      channelName: 'My Notification channel',
+      channelDescription: 'A channel to categories your notification',
+      soundName: 'default',
+      importance: 4,
+      vibrate: true,
+    },
+    (created) => console.log(`createchannel returned '${created}'`),
+  );
+  // code to run on component mount
+
+  PushNotification.getChannels((channel_ids) => {
+    console.log(channel_ids);
+  });
+  //pushnotif
+
+  useEffect(() => {
+    socket.on('sending customer', (msg) => {
+      showNotification('Notification', msg, channel);
+      getHistory();
+    });
+    socket.on('recieved customer', (msg) => {
+      showNotification('Notification', msg, channel);
+      getHistory();
+    });
+    socket.on('sending seller', (msg) => {
+      //push notif
+      showNotification('Notification', msg, channel);
+      getOrderSeller();
+    });
+    socket.on('recieved seller', (msg) => {
+      //push notif
+      showNotification('Notification', msg, channel);
+      getOrderSeller();
+    });
+    return () => {
+      socket.off('chat message');
+      socket.off('sending seller');
+    };
   }, []);
 
   const getHistory = async () => {
-    // const user_id = await AsyncStorage.getItem('userid');
     console.log('userid: ' + user_id);
     axios
       .get(API_URL + '/history/' + user_id)
       .then((res) => {
-        //console.log(res.data.data);
         const history = res.data.data;
         setHistory(history);
       })
@@ -36,39 +95,113 @@ const MyOrder = () => {
         console.log(err);
       });
   };
-  console.log(history);
+
+  const getOrderSeller = () => {
+    axios
+      .get(API_URL + '/history/seller/' + user_id)
+      .then((res) => {
+        const history = res.data.data;
+        setHistory(history);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const sending = (id, user_id) => {
+    const data = {
+      id: id,
+      status: 'Shipping',
+    };
+    axios
+      .patch(`${API_URL}/history`, data)
+      .then((res) => {
+        socket.emit('sending', user_id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const recieved = (id, seller_id) => {
+    const data = {
+      id: id,
+      status: 'Delivered',
+    };
+    axios
+      .patch(`${API_URL}/history`, data)
+      .then((res) => {
+        socket.emit('recieved', seller_id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
-      <View style={styles.titlewrap}>
-        <Text style={styles.title}>My Orders</Text>
-      </View>
       <ScrollView vertical={true}>
+        <View style={styles.titlewrap}>
+          <Text style={styles.title}>My Orders</Text>
+        </View>
+
         {history.length !== 0 &&
-          history.map(({id, invoice_id, price, qty}) => {
-            return (
-              <View style={styles.cardOrders} key={id}>
-                <View style={styles.noOrders}>
-                  <Text style={styles.titleOrder}>Order No: {invoice_id}</Text>
-                  <Text style={styles.date}>05-12-2019</Text>
+          history.map(
+            ({id, invoice_id, price, qty, status, user_id, seller_id}) => {
+              return (
+                <View style={styles.cardOrders} key={id}>
+                  <View style={styles.noOrders}>
+                    <Text style={styles.titleOrder}>
+                      Order No: {invoice_id}
+                    </Text>
+                    <Text style={styles.date}>05-12-2019</Text>
+                  </View>
+                  <View style={styles.infOrders}>
+                    <Text style={styles.textKey}>Tracking number:</Text>
+                    <Text style={styles.textValue}>IW3475453455</Text>
+                  </View>
+                  <View style={styles.infOrders}>
+                    <Text style={styles.textKey}>Quantity:</Text>
+                    <Text style={styles.textValue}>{qty}</Text>
+                  </View>
+                  <View style={styles.infOrders}>
+                    <Text style={styles.textKey}>Total Amount:</Text>
+                    <Text style={styles.textValue}>Rp. {price}</Text>
+                  </View>
+                  <View style={styles.delivStat}>
+                    <Text
+                      style={
+                        status == 'Delivered'
+                          ? styles.deliv
+                          : styles.shippingPacking
+                      }>
+                      {status}
+                    </Text>
+                    {level !== 'Customer' && status == 'Packing' && (
+                      <TouchableOpacity
+                        style={styles.sending}
+                        onPress={() => {
+                          console.log('seding');
+                          sending(id, user_id);
+                        }}>
+                        <Text style={{color: '#fff'}}>Sending</Text>
+                      </TouchableOpacity>
+                    )}
+                    {level !== 'Seller' && status == 'Shipping' && (
+                      <TouchableOpacity
+                        style={styles.sending}
+                        onPress={() => {
+                          console.log('deliv');
+                          recieved(id, seller_id);
+                        }}>
+                        <Text style={{color: '#fff'}}>Recieved</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
-                <View style={styles.infOrders}>
-                  <Text style={styles.textKey}>Tracking number:</Text>
-                  <Text style={styles.textValue}>IW3475453455</Text>
-                </View>
-                <View style={styles.infOrders}>
-                  <Text style={styles.textKey}>Quantity:</Text>
-                  <Text style={styles.textValue}>{qty}</Text>
-                </View>
-                <View style={styles.infOrders}>
-                  <Text style={styles.textKey}>Total Amount:</Text>
-                  <Text style={styles.textValue}>Rp. {price}</Text>
-                </View>
-                <View style={styles.delivStat}>
-                  <Text style={styles.deliv}>Delivered</Text>
-                </View>
-              </View>
-            );
-          })}
+              );
+            },
+          )}
         <View style={{height: 25}} />
       </ScrollView>
     </>
@@ -88,6 +221,9 @@ const styles = StyleSheet.create({
   },
   delivStat: {
     alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   textKey: {
     marginRight: 10,
@@ -133,5 +269,15 @@ const styles = StyleSheet.create({
   deliv: {
     fontFamily: FONT_LIGHT,
     color: '#2AA952',
+  },
+  shippingPacking: {
+    fontFamily: FONT_LIGHT,
+    color: '#ffcc00',
+  },
+  sending: {
+    backgroundColor: '#2AA952',
+    paddingVertical: 2,
+    paddingHorizontal: 3,
+    borderRadius: 4,
   },
 });

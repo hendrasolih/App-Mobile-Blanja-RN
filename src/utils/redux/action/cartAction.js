@@ -2,7 +2,15 @@ import * as actionTypes from '../actionTypes';
 
 // `${itemID}-${size}-${size}`
 
-export const addToCart = (itemID, image, price, name, size, color) => {
+export const addToCart = (
+  itemID,
+  image,
+  price,
+  name,
+  size,
+  color,
+  sellerid,
+) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
@@ -12,6 +20,7 @@ export const addToCart = (itemID, image, price, name, size, color) => {
       name: name,
       size: size,
       color: color,
+      seller_id: sellerid,
       pick: true,
     },
   };

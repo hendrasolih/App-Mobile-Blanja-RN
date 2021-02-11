@@ -24,8 +24,12 @@ import {
   plusQty,
 } from '../../utils/redux/action/cartAction';
 
-const Bag = ({cart, navigation, clearCart, plusQty}) => {
+const Bag = ({cart, navigation}) => {
   const pick = useSelector((state) => state.cart.cart);
+  let seller_id = '';
+  if (pick.length !== 0) {
+    seller_id = pick[0].seller_id;
+  }
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   if (pick.length !== 0) {
@@ -102,8 +106,12 @@ const Bag = ({cart, navigation, clearCart, plusQty}) => {
                 {cancelable: true},
               );
             }
-            clearCart();
-            navigation.navigate('Checkout', {totalPrice, totalItems});
+            navigation.navigate('Checkout', {
+              totalPrice,
+              totalItems,
+              seller_id,
+            });
+            //clearCart();
           }}>
           <View style={styles.btn}>
             <Text style={{color: '#fff'}}>CHECK OUT</Text>

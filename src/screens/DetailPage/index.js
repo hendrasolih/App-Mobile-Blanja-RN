@@ -150,6 +150,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
                 product.prd_name,
                 pickSize,
                 pickColor,
+                product.user_id,
               );
               console.log('on Press');
               Alert.alert(
@@ -171,8 +172,8 @@ const DetailPage = ({navigation, route, addToCart}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id, img, prc, name, size, color) =>
-      dispatch(addToCart(id, img, prc, name, size, color)),
+    addToCart: (id, img, prc, name, size, color, sellerid) =>
+      dispatch(addToCart(id, img, prc, name, size, color, sellerid)),
   };
 };
 
