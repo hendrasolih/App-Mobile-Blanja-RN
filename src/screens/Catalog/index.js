@@ -30,6 +30,8 @@ const Catalog = ({navigation, route}) => {
   const [descend, setDescend] = useState('');
   let {title, keyword} = route.params;
   const [viewall, setViewall] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
+  const [page, setPage] = useState([]);
   const brand = useSelector((state) => state.filter.brand);
   const color = useSelector((state) => state.filter.color);
   const size = useSelector((state) => state.filter.size);
@@ -93,12 +95,54 @@ const Catalog = ({navigation, route}) => {
       )
       .then(({data}) => {
         console.log('view all');
+        setPageInfo(data.data.pageInfo);
         setViewall(data.data.products);
+        console.log(pageInfo.totalPage);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const nextpage = () => {
+    axios
+      .get(`${API_URL}${pageInfo.nextPage}`)
+      .then(({data}) => {
+        setPageInfo(data.data.pageInfo);
+        setViewall(data.data.products);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('next page error');
+      });
+  };
+  const prevpage = () => {
+    axios
+      .get(`${API_URL}${pageInfo.previousPage}`)
+      .then(({data}) => {
+        setPageInfo(data.data.pageInfo);
+        setViewall(data.data.products);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('prev page error');
+      });
+  };
+
+  const specpage = (num) => {
+    axios
+      .get(`${API_URL}/products?page=${num}&limit=10`)
+      .then(({data}) => {
+        setPageInfo(data.data.pageInfo);
+        setViewall(data.data.products);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log('spec page error');
+      });
+  };
+
+  console.log(pageInfo);
 
   const getFilter = () => {
     console.log('filter');
@@ -141,7 +185,6 @@ const Catalog = ({navigation, route}) => {
   };
 
   const actionSheetRef = createRef();
-  console.log('active', active);
 
   return (
     <>
@@ -186,6 +229,43 @@ const Catalog = ({navigation, route}) => {
                 );
               },
             )}
+
+          <View style={styles.pagination}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              {pageInfo.previousPage !== null && (
+                <TouchableOpacity
+                  onPress={() => {
+                    prevpage();
+                  }}>
+                  <Text>Prev</Text>
+                </TouchableOpacity>
+              )}
+
+              {Array.from(Array(pageInfo.totalPage)).map((_, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => specpage(index + 1)}>
+                  <Text
+                    style={
+                      index + 1 == pageInfo.currentPage
+                        ? {color: COLOR_MAIN}
+                        : {color: '#000'}
+                    }>
+                    {index + 1}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              {pageInfo.nextPage !== null && (
+                <TouchableOpacity
+                  onPress={() => {
+                    nextpage();
+                  }}>
+                  <Text>Next</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
 
           <View style={styles.gap} />
         </ScrollView>
@@ -331,5 +411,8 @@ const styles = StyleSheet.create({
   },
   textFilterAct: {
     color: '#fff',
+  },
+  pagination: {
+    marginTop: windowHeight * 0.02,
   },
 });
