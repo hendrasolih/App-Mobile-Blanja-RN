@@ -5,6 +5,9 @@ import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
 import axios from 'axios';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const regexPwd = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 
 const ResetPass = ({navigation, route}) => {
@@ -85,9 +88,6 @@ const ResetPass = ({navigation, route}) => {
 };
 
 export default ResetPass;
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   title: {

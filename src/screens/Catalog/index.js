@@ -27,7 +27,6 @@ import {useSelector} from 'react-redux';
 const Catalog = ({navigation, route}) => {
   const isInitialMount = useRef(true);
   const [active, setActive] = useState('');
-  const [cosRev, setCosRev] = useState('');
   const [descend, setDescend] = useState('');
   let {title, keyword} = route.params;
   const [viewall, setViewall] = useState([]);

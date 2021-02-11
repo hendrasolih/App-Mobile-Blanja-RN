@@ -32,9 +32,6 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
   const token = useSelector((state) => state.auth.token);
   const [profile, setProfile] = useState({});
   const [totalProduct, setTotalProduct] = useState(0);
-  console.log(isLogin);
-  console.log(level);
-  console.log(user_id);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
@@ -59,7 +56,9 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
   useEffect(() => {
     // code to run on component mount
     getProfile();
-    getProduct();
+    if (level === 'Seller') {
+      getProduct();
+    }
   }, [navigation, user_id]);
 
   const logout = async () => {
@@ -101,7 +100,7 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
     axios
       .get(`${API_URL}/user/${user_id}`)
       .then((res) => {
-        console.log(res.data.data[0]);
+        //console.log(res.data.data[0]);
         setProfile(res.data.data[0]);
       })
       .catch((err) => {
@@ -151,15 +150,17 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
         </View>
       </View>
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('MyProduct');
-        }}>
-        <ProfileMenu
-          title={'My products'}
-          detail={`Already have ${totalProduct} products`}
-        />
-      </TouchableOpacity>
+      {level === 'Seller' && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('MyProduct');
+          }}>
+          <ProfileMenu
+            title={'My products'}
+            detail={`Already have ${totalProduct} products`}
+          />
+        </TouchableOpacity>
+      )}
 
       <TouchableOpacity
         onPress={() => {
@@ -186,7 +187,7 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       {/* CHAT PAGE */}
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('SettingsProfile');
+          navigation.navigate('SettingsProfile', {email: profile.email});
         }}>
         <ProfileMenu title={'Settings'} detail={`Notifications, password`} />
       </TouchableOpacity>
