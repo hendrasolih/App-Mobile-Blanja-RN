@@ -180,7 +180,7 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       {/* CHAT PAGE */}
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Chat');
+          navigation.navigate('Chat List');
         }}>
         <ProfileMenu title={'Chats'} detail={`Your Chats`} />
       </TouchableOpacity>

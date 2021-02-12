@@ -18,13 +18,16 @@ import {useSocket} from '../../utils/Context/SocketProvider';
 
 //redux
 import {useSelector} from 'react-redux';
+import axios from 'axios';
 //const socket = socketIO(`${API_URL}`);
 
 const Chat = ({route}) => {
-  const [sellerId, setSellerId] = useState(0);
+  const [receiveId, setReceiveId] = useState(0);
+  const {room_id, cus_id, seller_id} = route.params;
   const socket = useSocket();
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  const level = useSelector((state) => state.auth.level);
   //sender id
   const user_id = useSelector((state) => state.auth.id);
   const user_name = useSelector((state) => state.auth.name_user);
@@ -32,30 +35,67 @@ const Chat = ({route}) => {
   //recipe id
 
   useEffect(() => {
-    if (route.params && route.params.sellerId) {
-      setSellerId(route.params.sellerId);
+    // if (route.params && route.params.sellerId) {
+    //   setSellerId(route.params.sellerId);
+    // }
+    getChatByRoomId();
+    if (level == 'Customer') {
+      setReceiveId(seller_id);
+    } else if (level == 'Seller') {
+      setReceiveId(cus_id);
     }
   }, []);
 
   useEffect(() => {
-    socket.on('chat message', (msg) => {
+    socket.on(room_id, (msg) => {
       setChatMessages((chatMessages) => [...chatMessages, msg]);
       if (user_id != msg.sender) {
-        setSellerId(msg.sender);
+        setReceiveId(msg.sender);
       }
     });
     return () => {
-      socket.off('chat message');
+      socket.off(room_id);
     };
   }, []);
 
   const submitChatMessage = () => {
+    postChat();
     socket.emit(
       'chat message',
-      {chatMessage, sender: user_id, senderName: user_name},
-      sellerId,
+      {chatMessage, sender: user_id, senderName: user_name, room_id},
+      receiveId,
+      room_id,
     );
     setChatMessage('');
+  };
+
+  const getChatByRoomId = () => {
+    axios
+      .get(`${API_URL}/chat/${room_id}`)
+      .then(({data}) => {
+        console.log(data.data.data);
+        setChatMessages(data.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const postChat = () => {
+    const data = {
+      chatMessage,
+      sender: user_id,
+      senderName: user_name,
+      room_id,
+    };
+    axios
+      .post(`${API_URL}/chat`, data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   console.log(chatMessages);

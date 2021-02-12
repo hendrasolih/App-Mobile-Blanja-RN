@@ -22,6 +22,7 @@ import {
   ResetPass,
   Chat,
   FilterBrand,
+  ChatRoom,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -129,6 +130,11 @@ const Router = ({navigation}) => {
           name="Chat"
           component={Chat}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Chat List"
+          component={ChatRoom}
+          options={{title: 'Chat List'}}
         />
         <Stack.Screen
           name="Filter Brand"

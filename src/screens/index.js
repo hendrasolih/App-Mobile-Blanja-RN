@@ -25,6 +25,7 @@ import EditProduct from './EditProduct';
 import AddAddress from './AddAddress';
 import Chat from './Chat';
 import FilterBrand from './FilterBrand';
+import ChatRoom from './ChatRoom';
 
 export {
   Splash,
@@ -54,4 +55,5 @@ export {
   AddAddress,
   Chat,
   FilterBrand,
+  ChatRoom,
 };
