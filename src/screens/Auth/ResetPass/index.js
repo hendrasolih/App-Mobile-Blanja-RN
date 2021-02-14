@@ -49,7 +49,12 @@ const ResetPass = ({navigation, route}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Reset Password</Text>
       <View>
-        <Text style={{color: '#F01F0E'}}>
+        <Text
+          style={{
+            color: '#F01F0E',
+            textAlign: 'center',
+            marginBottom: windowHeight * 0.04,
+          }}>
           You need to change your password to activate your account
         </Text>
         <TextInput

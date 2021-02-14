@@ -9,7 +9,12 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {COLOR_MAIN, FONT_LIGHT, FONT_REG} from '../../utils/constans';
+import {
+  COLOR_MAIN,
+  FONT_BOLD,
+  FONT_LIGHT,
+  FONT_REG,
+} from '../../utils/constans';
 import {API_URL} from '@env';
 //import socketIO from 'socket.io-client';
 
@@ -73,7 +78,7 @@ const Chat = ({route}) => {
     axios
       .get(`${API_URL}/chat/${room_id}`)
       .then(({data}) => {
-        console.log(data.data.data);
+        //console.log(data.data.data);
         setChatMessages(data.data.data);
       })
       .catch((err) => {
@@ -107,6 +112,9 @@ const Chat = ({route}) => {
         // justifyContent: 'flex-start',
         justifyContent: 'space-between',
       }}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Zia</Text>
+      </View>
       <ScrollView>
         <KeyboardAvoidingView>
           <View style={styles.wrapmsgSender}>
@@ -161,6 +169,7 @@ const Chat = ({route}) => {
 export default Chat;
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   wrapTextInput: {
@@ -226,5 +235,15 @@ const styles = StyleSheet.create({
     color: 'lightgrey',
     fontFamily: FONT_LIGHT,
     fontSize: 12,
+  },
+  header: {
+    height: windowHeight * 0.06,
+    backgroundColor: COLOR_MAIN,
+    justifyContent: 'center',
+    paddingHorizontal: windowWidth * 0.05,
+  },
+  headerText: {
+    fontFamily: FONT_BOLD,
+    color: '#fff',
   },
 });

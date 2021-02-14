@@ -233,13 +233,15 @@ const Catalog = ({navigation, route}) => {
           <View style={styles.pagination}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              {pageInfo.previousPage !== null && (
+              {pageInfo.previousPage !== null ? (
                 <TouchableOpacity
                   onPress={() => {
                     prevpage();
                   }}>
                   <Text>Prev</Text>
                 </TouchableOpacity>
+              ) : (
+                <View />
               )}
 
               {Array.from(Array(pageInfo.totalPage)).map((_, index) => (
@@ -256,13 +258,15 @@ const Catalog = ({navigation, route}) => {
                   </Text>
                 </TouchableOpacity>
               ))}
-              {pageInfo.nextPage !== null && (
+              {pageInfo.nextPage !== null ? (
                 <TouchableOpacity
                   onPress={() => {
                     nextpage();
                   }}>
                   <Text>Next</Text>
                 </TouchableOpacity>
+              ) : (
+                <View />
               )}
             </View>
           </View>

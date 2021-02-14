@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {PictDetail, PictDetail2} from '../../assets';
+import {API_URL} from '@env';
 
 const ImageGallery = ({image}) => {
   //const img = {uri: `${image}`};
@@ -13,7 +14,7 @@ const ImageGallery = ({image}) => {
         {image.map((img) => {
           return (
             <Image
-              source={{uri: `${img}`}}
+              source={{uri: `${API_URL}${img}`}}
               style={styles.image}
               key={image.indexOf(img)}
             />

@@ -15,10 +15,11 @@ import {
   FONT_MED,
   FONT_REG,
 } from '../../utils/constans';
+import {API_URL} from '@env';
 
 const Card = ({nav, name, brand, price, image, id}) => {
   const url = image[0];
-  const img = {uri: `${url}`};
+  const img = {uri: `${API_URL}${url}`};
   console.log(typeof image);
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
