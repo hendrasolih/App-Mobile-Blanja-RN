@@ -21,7 +21,6 @@ const AddAddress = ({navigation}) => {
   const [zipcode, setZipcode] = useState('');
 
   const addressFull = `${address} ${city} ${province} ${zipcode}`;
-  console.log(addressFull);
 
   const postAddress = () => {
     const data = {

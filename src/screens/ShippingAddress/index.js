@@ -40,10 +40,16 @@ const ShippingAddress = ({navigation}) => {
       {address.length !== 0 &&
         address.map(({id_adres, address, user_name}) => {
           return (
-            <CardAddress key={id_adres} address={address} user={user_name} />
+            <CardAddress
+              key={id_adres}
+              address={address}
+              user={user_name}
+              statDelete={true}
+              id={id_adres}
+              getAddress={getAddress}
+            />
           );
         })}
-
       <TouchableOpacity onPress={() => navigation.navigate('AddAddress')}>
         <View style={styles.button}>
           <Text>ADD NEW ADDRESS</Text>

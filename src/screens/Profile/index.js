@@ -32,10 +32,26 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
   const token = useSelector((state) => state.auth.token);
   const [profile, setProfile] = useState({});
   const [totalProduct, setTotalProduct] = useState(0);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const [totalAddress, setTotalAddress] = useState(0);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
         navigation.replace('Login');
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (level === 'Seller') {
+        getProduct();
+        getOrderSeller();
+      } else {
+        getHistory();
+        getAddress();
       }
     });
 
@@ -58,13 +74,17 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
     getProfile();
     if (level === 'Seller') {
       getProduct();
+      getOrderSeller();
+    } else {
+      getHistory();
+      getAddress();
     }
   }, [navigation, user_id]);
 
   const logout = async () => {
     Alert.alert(
       'Logout',
-      'Are Sure Want Logout ?',
+      'Are You Sure Want Logout ?',
       [
         {
           text: 'Cancel',
@@ -126,6 +146,42 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       });
   };
 
+  const getHistory = async () => {
+    axios
+      .get(API_URL + '/history/' + user_id)
+      .then((res) => {
+        const history = res.data.data;
+        setTotalOrder(history.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getOrderSeller = () => {
+    axios
+      .get(API_URL + '/history/seller/' + user_id)
+      .then((res) => {
+        const data = res.data.data;
+        setTotalOrder(data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getAddress = () => {
+    axios
+      .get(`${API_URL}/address/${user_id}`)
+      .then((res) => {
+        const data = res.data.data;
+        setTotalAddress(data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <View style={styles.titlewrap}>
@@ -166,7 +222,10 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
         onPress={() => {
           navigation.navigate('MyOrder');
         }}>
-        <ProfileMenu title={'My orders'} detail={`Already have 12 orders`} />
+        <ProfileMenu
+          title={'My orders'}
+          detail={`Already have ${totalOrder} orders`}
+        />
       </TouchableOpacity>
 
       {level === 'Customer' && (
@@ -174,7 +233,10 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
           onPress={() => {
             navigation.navigate('ShippingAddress');
           }}>
-          <ProfileMenu title={'Shipping addresses'} detail={`3 ddresses`} />
+          <ProfileMenu
+            title={'Shipping addresses'}
+            detail={`${totalAddress} adresses`}
+          />
         </TouchableOpacity>
       )}
       {/* CHAT PAGE */}
@@ -191,20 +253,9 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
         }}>
         <ProfileMenu title={'Settings'} detail={`Notifications, password`} />
       </TouchableOpacity>
-      <TouchableOpacity style={{marginTop: 50}} onPress={logout}>
-        <View
-          style={{
-            backgroundColor: COLOR_MAIN,
-            width: 75,
-            height: 20,
-            borderRadius: 5,
-            marginLeft: 10,
-            paddingHorizontal: 15,
-          }}>
-          <Text style={{color: '#fff'}}>Logout</Text>
-        </View>
+      <TouchableOpacity onPress={logout}>
+        <ProfileMenu title={'Logout'} detail={'Logout Your Account'} />
       </TouchableOpacity>
-      {/* <Button onPress={clearAll} title="Learn More" color={COLOR_MAIN} /> */}
       <View style={{height: 20}} />
       <View style={{height: 20}} />
     </>

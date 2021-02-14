@@ -28,6 +28,9 @@ const CardMyBag = ({
   minQty,
 }) => {
   const imgs = {uri: `${img}`};
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   return (
     <View style={styles.container}>
       <View style={{justifyContent: 'center'}}>
@@ -62,7 +65,7 @@ const CardMyBag = ({
           </View>
           <View style={styles.price}>
             <Text style={{fontFamily: FONT_BOLD, fontSize: 11}}>
-              Rp. {price}
+              Rp {toPrice(price)}
             </Text>
           </View>
         </View>

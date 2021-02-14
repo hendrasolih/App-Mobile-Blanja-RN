@@ -2,8 +2,29 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_DISABLE, FONT_LIGHT} from '../../utils/constans';
+import {API_URL} from '@env';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 
 const ListBar = ({nav, id, sellerId, sellerName}) => {
+  const user_id = useSelector((state) => state.auth.id);
+  const postRoom = () => {
+    const data = {
+      cus_id: user_id,
+      seller_id: sellerId,
+      room_id: `c${user_id}s${sellerId}`,
+    };
+    axios
+      .post(`${API_URL}/chat/room`, data)
+      .then((res) => {
+        console.log(res);
+        nav.navigate('Chat List');
+      })
+      .catch((err) => {
+        console.log(err);
+        nav.navigate('Chat List');
+      });
+  };
   return (
     <>
       <View style={{marginTop: 20}}>
@@ -12,7 +33,8 @@ const ListBar = ({nav, id, sellerId, sellerName}) => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            nav.navigate('Chat', {sellerId, sellerName});
+            //post new room
+            postRoom();
           }}>
           <View style={styles.ListBar}>
             <Text style={styles.text}>Chat Seller {sellerId}</Text>

@@ -1,7 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconStar, IconStarAct} from '../../assets';
 import {Card, ImageGallery, ListBar, SizeColorPicker} from '../../components';
@@ -18,6 +25,18 @@ import {connect, useSelector} from 'react-redux';
 import {addToCart} from '../../utils/redux/action/cartAction';
 import {API_URL} from '@env';
 
+const toPrice = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+const showToastWithGravity = () => {
+  ToastAndroid.showWithGravity(
+    'Added To Crat',
+    ToastAndroid.SHORT,
+    ToastAndroid.BOTTOM,
+  );
+};
+
 const DetailPage = ({navigation, route, addToCart}) => {
   const {itemId} = route.params;
   const [product, setProduct] = useState({});
@@ -27,6 +46,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
   const [pickColor, setPickColor] = useState('color');
   const level = useSelector((state) => state.auth.level);
   const token = useSelector((state) => state.auth.token);
+  const [price, setPrice] = useState('');
   console.log(`level detail page: ${level}`);
   useEffect(() => {
     // code to run on component mount
@@ -49,6 +69,11 @@ const DetailPage = ({navigation, route, addToCart}) => {
         console.log(imgg);
         console.log(typeof imgg);
         setProduct(data.data[0]);
+        setPrice(
+          data.data[0].prd_price
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
+        );
         setPictures(imgg);
       })
       .catch((err) => {
@@ -70,7 +95,6 @@ const DetailPage = ({navigation, route, addToCart}) => {
   // console.log(typeof product.prd_image);
   // console.log(`ini size: ${pickSize}`);
   // console.log(`ini color: ${pickColor}`);
-
   return (
     <>
       <ScrollView scrollEnabled={true} vertical={true}>
@@ -85,7 +109,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
           />
           <View style={styles.wraptitle}>
             <Text style={styles.title}>{product.prd_brand}</Text>
-            <Text style={styles.title}>Rp.{product.prd_price}</Text>
+            <Text style={styles.title}>Rp {price}</Text>
           </View>
           <Text style={styles.PrdName}>{product.prd_name}</Text>
           <View style={styles.rating}>
@@ -153,12 +177,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
                 product.user_id,
               );
               console.log('on Press');
-              Alert.alert(
-                `${product.prd_name} Berhasil ditambahkan !!!`,
-                'Ayo Belanja Lagi :)',
-                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-                {cancelable: false},
-              );
+              showToastWithGravity();
             }}>
             <View style={styles.btn}>
               <Text style={{color: '#fff'}}>ADD TO CART</Text>

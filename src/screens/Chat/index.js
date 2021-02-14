@@ -98,8 +98,8 @@ const Chat = ({route}) => {
       });
   };
 
-  console.log(chatMessages);
-  console.log('length ' + chatMessages.length);
+  // console.log(chatMessages);
+  // console.log('length ' + chatMessages.length);
   return (
     <View
       style={{

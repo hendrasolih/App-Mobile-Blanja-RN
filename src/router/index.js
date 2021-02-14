@@ -23,6 +23,7 @@ import {
   Chat,
   FilterBrand,
   ChatRoom,
+  ShippingAddress,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -64,7 +65,6 @@ const ProfileScreen = () => {
 };
 
 const Router = ({navigation}) => {
-  const user_id = useSelector((state) => state.auth.id);
   return (
     <SocketProvider>
       <Stack.Navigator initialRouteName="Splash">
@@ -141,6 +141,13 @@ const Router = ({navigation}) => {
           component={FilterBrand}
           options={{
             title: 'Brand',
+          }}
+        />
+        <Stack.Screen
+          name="ShippingAddress"
+          component={ShippingAddress}
+          options={{
+            title: 'Shipping Address',
           }}
         />
       </Stack.Navigator>

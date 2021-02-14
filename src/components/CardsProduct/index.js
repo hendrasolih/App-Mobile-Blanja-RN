@@ -20,6 +20,9 @@ const Card = ({nav, name, brand, price, image, id}) => {
   const url = image[0];
   const img = {uri: `${url}`};
   console.log(typeof image);
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -45,7 +48,7 @@ const Card = ({nav, name, brand, price, image, id}) => {
         <View style={{width: 148}}>
           <Text style={styles.nameProd}>{name}</Text>
         </View>
-        <Text style={styles.price}>Rp.{price}</Text>
+        <Text style={styles.price}>Rp {toPrice(price)}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -7,6 +7,9 @@ import {COLOR_DISABLE} from '../../utils/constans';
 const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
   //console.log(image[0]);
   const imgs = {uri: image[0]};
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   return (
     <TouchableOpacity
       style={styles.container}
@@ -24,7 +27,7 @@ const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
           <IconStarAct />
           <IconStar />
         </View>
-        <Text>Rp.{price}</Text>
+        <Text>Rp {toPrice(price)}</Text>
       </View>
     </TouchableOpacity>
   );

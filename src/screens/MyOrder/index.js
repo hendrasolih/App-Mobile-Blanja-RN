@@ -84,7 +84,6 @@ const MyOrder = () => {
   }, []);
 
   const getHistory = async () => {
-    console.log('userid: ' + user_id);
     axios
       .get(API_URL + '/history/' + user_id)
       .then((res) => {

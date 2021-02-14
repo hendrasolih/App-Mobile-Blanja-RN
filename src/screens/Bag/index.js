@@ -51,8 +51,9 @@ const Bag = ({cart, navigation}) => {
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
-  console.log('price here ' + totalPrice);
-  console.log('item here' + totalItems);
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   return (
     <>
       <View style={styles.container}>
@@ -81,6 +82,17 @@ const Bag = ({cart, navigation}) => {
             </View>
           );
         })}
+        {cart.length === 0 && (
+          <Text
+            style={{
+              fontFamily: FONT_BOLD,
+              fontSize: 30,
+              marginTop: 90,
+              marginBottom: 24,
+            }}>
+            Your Bag Still Empty...
+          </Text>
+        )}
       </View>
       <View style={styles.addcart}>
         <View
@@ -94,7 +106,7 @@ const Bag = ({cart, navigation}) => {
           <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
             Total amount:
           </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>Rp. {totalPrice}</Text>
+          <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(totalPrice)}</Text>
         </View>
         <TouchableOpacity
           onPress={() => {
