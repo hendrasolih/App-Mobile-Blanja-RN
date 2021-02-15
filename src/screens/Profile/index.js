@@ -35,17 +35,22 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
   const [totalOrder, setTotalOrder] = useState(0);
   const [totalAddress, setTotalAddress] = useState(0);
   useEffect(() => {
+    // code to run on component mount
+    getProfile();
+    if (level === 'Seller') {
+      getProduct();
+      getOrderSeller();
+    } else {
+      getHistory();
+      getAddress();
+    }
+  }, [user_id]);
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
         navigation.replace('Login');
       }
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+      getProfile();
       if (level === 'Seller') {
         getProduct();
         getOrderSeller();
@@ -56,7 +61,7 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, user_id]);
 
   const clearAll = async () => {
     try {
@@ -68,18 +73,6 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
 
     console.log('Done.');
   };
-
-  useEffect(() => {
-    // code to run on component mount
-    getProfile();
-    if (level === 'Seller') {
-      getProduct();
-      getOrderSeller();
-    } else {
-      getHistory();
-      getAddress();
-    }
-  }, [navigation, user_id]);
 
   const logout = async () => {
     Alert.alert(
@@ -116,8 +109,8 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       {cancelable: true},
     );
   };
-  const getProfile = () => {
-    axios
+  const getProfile = async () => {
+    await axios
       .get(`${API_URL}/user/${user_id}`)
       .then((res) => {
         //console.log(res.data.data[0]);
@@ -158,8 +151,8 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       });
   };
 
-  const getOrderSeller = () => {
-    axios
+  const getOrderSeller = async () => {
+    await axios
       .get(API_URL + '/history/seller/' + user_id)
       .then((res) => {
         const data = res.data.data;
@@ -170,8 +163,8 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       });
   };
 
-  const getAddress = () => {
-    axios
+  const getAddress = async () => {
+    await axios
       .get(`${API_URL}/address/${user_id}`)
       .then((res) => {
         const data = res.data.data;

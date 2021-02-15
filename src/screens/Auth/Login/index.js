@@ -15,7 +15,7 @@ const Login = ({navigation, login}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setErrorMsg('');
     if (email == '' || password == '') {
       return setErrorMsg('input');
@@ -26,21 +26,21 @@ const Login = ({navigation, login}) => {
       email: email,
       user_password: password,
     };
-    axios
+    await axios
       .post(`${API_URL}/auth/login`, data)
       .then(async (res) => {
-        console.log(res.data.data.token);
-        console.log(res.data.data.user_id);
-        console.log(res.data.data.level);
-        console.log('hereeeee   ' + res.data.data.user_name);
-        const token = res.data.data.token;
-        const id = res.data.data.user_id;
-        const level = res.data.data.level;
-        const nameUser = res.data.data.user_name;
-        login(token, id, level, nameUser);
+        // console.log(res.data.data.token);
+        // console.log(res.data.data.user_id);
+        // console.log(res.data.data.level);
+        // console.log('hereeeee   ' + res.data.data.user_name);
+        const token = await res.data.data.token;
+        const id = await res.data.data.user_id;
+        const level = await res.data.data.level;
+        const nameUser = await res.data.data.user_name;
+        await login(token, id, level, nameUser);
 
         console.log('done');
-        navigation.navigate('MainApp');
+        navigation.navigate('Home');
       })
       .catch((err) => {
         console.log(err);
