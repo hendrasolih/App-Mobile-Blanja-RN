@@ -26,6 +26,7 @@ import AddAddress from './AddAddress';
 import Chat from './Chat';
 import FilterBrand from './FilterBrand';
 import ChatRoom from './ChatRoom';
+import AddColor from './AddColor';
 
 export {
   Splash,
@@ -56,4 +57,5 @@ export {
   Chat,
   FilterBrand,
   ChatRoom,
+  AddColor,
 };

@@ -24,6 +24,7 @@ import {
   FilterBrand,
   ChatRoom,
   ShippingAddress,
+  AddColor,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -107,7 +108,11 @@ const Router = ({navigation}) => {
             },
           }}
         />
-        <Stack.Screen name="DetailPage" component={DetailPage} />
+        <Stack.Screen
+          name="DetailPage"
+          component={DetailPage}
+          options={{title: 'Detail Page'}}
+        />
         <Stack.Screen name="ReviewPage" component={Review} />
         <Stack.Screen
           name="Notification"
@@ -148,6 +153,13 @@ const Router = ({navigation}) => {
           component={ShippingAddress}
           options={{
             title: 'Shipping Address',
+          }}
+        />
+        <Stack.Screen
+          name="AddColor"
+          component={AddColor}
+          options={{
+            title: 'Add Color',
           }}
         />
       </Stack.Navigator>

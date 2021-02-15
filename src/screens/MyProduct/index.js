@@ -109,9 +109,22 @@ const MyProduct = ({navigation}) => {
                   <View
                     style={{
                       flexDirection: 'row',
-                      justifyContent: 'flex-end',
+                      justifyContent: 'space-between',
                       marginTop: 5,
                     }}>
+                    <TouchableOpacity
+                      style={{...styles.btnDelete, marginLeft: 5}}
+                      onPress={() => {
+                        console.log('TO COLOR');
+                        navigation.navigate('AddColor', {prd_id});
+                      }}>
+                      <Text style={{marginHorizontal: 10}}>Add Color</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{...styles.btnDelete, marginLeft: 5}}
+                      onPress={() => console.log('TO SIZE')}>
+                      <Text style={{marginHorizontal: 10}}>Add Size</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.btnDelete}
                       onPress={() => {
