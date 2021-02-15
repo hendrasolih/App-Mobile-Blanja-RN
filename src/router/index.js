@@ -25,6 +25,7 @@ import {
   ChatRoom,
   ShippingAddress,
   AddColor,
+  AddSize,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -160,6 +161,13 @@ const Router = ({navigation}) => {
           component={AddColor}
           options={{
             title: 'Add Color',
+          }}
+        />
+        <Stack.Screen
+          name="AddSize"
+          component={AddSize}
+          options={{
+            title: 'Add Size',
           }}
         />
       </Stack.Navigator>

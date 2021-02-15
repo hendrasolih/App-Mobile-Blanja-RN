@@ -16,7 +16,8 @@ const ColorFilter = ({title, addColor}) => {
       <TouchableOpacity
         onPress={() => {
           addColor(title);
-        }}>
+        }}
+        style={{marginTop: 5}}>
         <View
           style={
             inColor

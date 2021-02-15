@@ -8,57 +8,65 @@ import {API_URL} from '@env';
 
 const showToastWithGravity = () => {
   ToastAndroid.showWithGravity(
-    'Pick Color First',
+    'Pick Size First',
     ToastAndroid.SHORT,
     ToastAndroid.BOTTOM,
   );
 };
 const showToastSuccess = () => {
   ToastAndroid.showWithGravity(
-    'Add Color Success',
+    'Add Size Success',
     ToastAndroid.SHORT,
     ToastAndroid.BOTTOM,
   );
 };
 
-const AddColor = ({route, navigation}) => {
+const AddSize = ({route, navigation}) => {
   const {prd_id} = route.params;
-  const [merah, setMerah] = useState(false);
-  const [kuning, setKuning] = useState(false);
-  const [hijau, setHijau] = useState(false);
-  const [biru, setBiru] = useState(false);
-  const [coklat, setCoklat] = useState(false);
-  const [abu, setAbu] = useState(false);
-  const [hitam, setHitam] = useState(false);
+  const [empatDua, setEmpatDua] = useState(false);
+  const [tigaLapan, setTigaLapan] = useState(false);
+  const [tigaSembilan, setTigaSembilan] = useState(false);
+  const [empatPuluh, setEmpatPuluh] = useState(false);
+  const [empatSatu, setEmpatSatu] = useState(false);
+  const [s, setS] = useState(false);
+  const [m, setM] = useState(false);
+  const [l, setL] = useState(false);
+  const [xl, setXL] = useState(false);
   const postColor = () => {
     const data = [];
-    if (merah) {
+    if (empatDua) {
       data.push([prd_id, 1]);
     }
-    if (kuning) {
-      data.push([prd_id, 2]);
-    }
-    if (hijau) {
+    if (tigaLapan) {
       data.push([prd_id, 3]);
     }
-    if (biru) {
+    if (tigaSembilan) {
       data.push([prd_id, 4]);
     }
-    if (coklat) {
+    if (empatPuluh) {
       data.push([prd_id, 5]);
     }
-    if (abu) {
+    if (empatSatu) {
       data.push([prd_id, 6]);
     }
-    if (hitam) {
+    if (s) {
       data.push([prd_id, 7]);
+    }
+    if (m) {
+      data.push([prd_id, 8]);
+    }
+    if (l) {
+      data.push([prd_id, 9]);
+    }
+    if (xl) {
+      data.push([prd_id, 10]);
     }
     if (data.length == 0) {
       return showToastWithGravity();
     }
     //console.log(data);
     axios
-      .post(`${API_URL}/color`, data)
+      .post(`${API_URL}/size`, data)
       .then((res) => {
         //console.log(res);
         showToastSuccess();
@@ -71,65 +79,83 @@ const AddColor = ({route, navigation}) => {
   return (
     <View style={styles.constainer}>
       <View style={styles.checkbox}>
-        <Text>Merah</Text>
+        <Text>38</Text>
         <CheckBox
           disabled={false}
-          value={merah}
-          onValueChange={(newValue) => setMerah(newValue)}
+          value={tigaLapan}
+          onValueChange={(newValue) => setTigaLapan(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Kuning</Text>
+        <Text>39</Text>
         <CheckBox
           disabled={false}
-          value={kuning}
-          onValueChange={(newValue) => setKuning(newValue)}
+          value={tigaSembilan}
+          onValueChange={(newValue) => setTigaSembilan(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Hijau</Text>
+        <Text>40</Text>
         <CheckBox
           disabled={false}
-          value={hijau}
-          onValueChange={(newValue) => setHijau(newValue)}
+          value={empatPuluh}
+          onValueChange={(newValue) => setEmpatPuluh(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Biru</Text>
+        <Text>41</Text>
         <CheckBox
           disabled={false}
-          value={biru}
-          onValueChange={(newValue) => setBiru(newValue)}
+          value={empatSatu}
+          onValueChange={(newValue) => setEmpatSatu(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Coklat</Text>
+        <Text>42</Text>
         <CheckBox
           disabled={false}
-          value={coklat}
-          onValueChange={(newValue) => setCoklat(newValue)}
+          value={empatDua}
+          onValueChange={(newValue) => setEmpatDua(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Abu</Text>
+        <Text>S</Text>
         <CheckBox
           disabled={false}
-          value={abu}
-          onValueChange={(newValue) => setAbu(newValue)}
+          value={s}
+          onValueChange={(newValue) => setS(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
       <View style={styles.checkbox}>
-        <Text>Hitam</Text>
+        <Text>M</Text>
         <CheckBox
           disabled={false}
-          value={hitam}
-          onValueChange={(newValue) => setHitam(newValue)}
+          value={m}
+          onValueChange={(newValue) => setM(newValue)}
+          tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
+        />
+      </View>
+      <View style={styles.checkbox}>
+        <Text>L</Text>
+        <CheckBox
+          disabled={false}
+          value={l}
+          onValueChange={(newValue) => setL(newValue)}
+          tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
+        />
+      </View>
+      <View style={styles.checkbox}>
+        <Text>XL</Text>
+        <CheckBox
+          disabled={false}
+          value={xl}
+          onValueChange={(newValue) => setXL(newValue)}
           tintColors={{true: COLOR_MAIN, false: COLOR_DISABLE}}
         />
       </View>
@@ -142,14 +168,14 @@ const AddColor = ({route, navigation}) => {
           <Text style={{color: '#fff'}}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={postColor}>
-          <Text style={{color: '#fff'}}>Add Color</Text>
+          <Text style={{color: '#fff'}}>Add Size</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default AddColor;
+export default AddSize;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

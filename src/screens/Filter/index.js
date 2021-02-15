@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {CategoryFilter, ColorFilter, SizeFilter} from '../../components';
 import {API_URL} from '@env';
-import {COLOR_MAIN} from '../../utils/constans';
+import {COLOR_MAIN, FONT_MED, FONT_REG} from '../../utils/constans';
 
 //redux
 import {useSelector} from 'react-redux';
@@ -55,24 +55,22 @@ const Filter = ({navigation}) => {
       });
   };
   return (
-    <View>
-      <Text>Colors</Text>
+    <View style={styles.container}>
+      <Text style={styles.textTitle}>Colors</Text>
       <View style={styles.wrapcolor}>
-        <View style={{marginLeft: 10}} />
         {color.length !== 0 &&
           color.map(({color_type, id}) => {
             return <ColorFilter title={color_type} key={id} />;
           })}
       </View>
-      <Text>Sizes</Text>
+      <Text style={styles.textTitle}>Sizes</Text>
       <View style={styles.wrapcolor}>
-        <View style={{marginLeft: 10}} />
         {size.length !== 0 &&
           size.map(({size_prd, size_id}) => {
             return <SizeFilter size={size_prd} key={size_id} />;
           })}
       </View>
-      <Text>Category</Text>
+      <Text style={styles.textTitle}>Category</Text>
       <View style={styles.wrapcolor}>
         <View
           style={{
@@ -89,12 +87,14 @@ const Filter = ({navigation}) => {
       <TouchableOpacity
         style={styles.wrapbrand}
         onPress={() => navigation.navigate('Filter Brand')}>
-        <Text>Brand</Text>
+        <Text style={{fontFamily: FONT_REG, fontSize: 18}}>Brand</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={{backgroundColor: COLOR_MAIN}}
+        style={styles.btnApply}
         onPress={() => navigation.goBack()}>
-        <Text style={{color: '#fff'}}>Apply</Text>
+        <Text style={{color: '#fff', fontSize: 18, fontFamily: FONT_MED}}>
+          Apply
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -105,11 +105,16 @@ export default Filter;
 const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: windowWidth * 0.04,
+  },
   wrapcolor: {
     flexDirection: 'row',
     backgroundColor: '#fff',
+    paddingHorizontal: windowWidth * 0.04,
     paddingVertical: 5,
-    width: windowWidth,
+    //justifyContent: 'center',
+    //width: windowWidth,
     flexWrap: 'wrap',
   },
   wrapbrand: {
@@ -119,5 +124,20 @@ const styles = StyleSheet.create({
     width: windowWidth,
     flexWrap: 'wrap',
     marginTop: 10,
+    paddingHorizontal: 20,
+  },
+  btnApply: {
+    marginTop: 20,
+    backgroundColor: COLOR_MAIN,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  textTitle: {
+    fontFamily: FONT_REG,
+    fontSize: 16,
+    marginTop: 20,
+    marginBottom: 5,
   },
 });

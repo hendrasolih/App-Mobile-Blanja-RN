@@ -122,7 +122,10 @@ const MyProduct = ({navigation}) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={{...styles.btnDelete, marginLeft: 5}}
-                      onPress={() => console.log('TO SIZE')}>
+                      onPress={() => {
+                        console.log('TO SIZE');
+                        navigation.navigate('AddSize', {prd_id});
+                      }}>
                       <Text style={{marginHorizontal: 10}}>Add Size</Text>
                     </TouchableOpacity>
                     <TouchableOpacity

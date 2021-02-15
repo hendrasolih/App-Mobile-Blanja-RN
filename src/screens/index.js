@@ -27,6 +27,7 @@ import Chat from './Chat';
 import FilterBrand from './FilterBrand';
 import ChatRoom from './ChatRoom';
 import AddColor from './AddColor';
+import AddSize from './AddSize';
 
 export {
   Splash,
@@ -58,4 +59,5 @@ export {
   FilterBrand,
   ChatRoom,
   AddColor,
+  AddSize,
 };
