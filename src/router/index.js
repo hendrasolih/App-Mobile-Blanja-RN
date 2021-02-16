@@ -51,9 +51,9 @@ const MainApp = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Shop" component={ShopPage} />
       {level === 'Customer' && <Tab.Screen name="Bag" component={Bag} />}
-      {level === 'Customer' && (
+      {/* {level === 'Customer' && (
         <Tab.Screen name="Favorites" component={Favorites} />
-      )}
+      )} */}
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

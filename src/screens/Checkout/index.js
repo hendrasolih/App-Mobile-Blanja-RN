@@ -95,6 +95,11 @@ const Checkout = ({navigation, route, clearCart}) => {
         console.log(err);
       });
   };
+  const handleChangeOption = (val) => {
+    if (val !== 0) {
+      setShipping(val);
+    }
+  };
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
@@ -107,22 +112,21 @@ const Checkout = ({navigation, route, clearCart}) => {
               Shipping address
             </Text>
           </View>
-          {address !== null ? (
+          {address !== null && (
             <CardAddress
+              name={address.name}
               address={address.address}
               user={address.user}
               statDelete={false}
               navigation={navigation}
             />
-          ) : (
-            <View style={styles.pickaddress}>
-              <Text style={{fontSize: 16}}>Pick Your Address</Text>
-            </View>
           )}
           <TouchableOpacity
-            style={{...styles.btn, marginTop: windowHeight * 0.05}}
+            style={{...styles.btn}}
             onPress={() => navigation.navigate('ShippingAddress')}>
-            <Text style={{color: '#fff'}}>Pick Address</Text>
+            <Text style={{color: '#fff'}}>
+              {address == null ? 'Pick Address' : 'Chage Address'}
+            </Text>
           </TouchableOpacity>
           <View style={{margin: 16}}>
             <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Payment</Text>
@@ -137,48 +141,47 @@ const Checkout = ({navigation, route, clearCart}) => {
             <Picker
               selectedValue={shipping}
               style={styles.picker}
-              onValueChange={(itemValue, itemIndex) => setShipping(itemValue)}>
+              onValueChange={handleChangeOption}>
+              <Picker.Item label="Pick Your shipping" value={0} />
               <Picker.Item label="JNE" value={12000} />
               <Picker.Item label="Si Cepat" value={11000} />
             </Picker>
           </View>
         </View>
-
-        {/* Bottom BTN */}
-        <View style={styles.addcart}>
-          <View style={styles.costs}>
-            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-              Shipping:
-            </Text>
-            <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(shipping)}</Text>
-          </View>
-          <View style={styles.costs}>
-            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-              Cost:
-            </Text>
-            <Text style={{fontFamily: FONT_BOLD}}>
-              Rp {toPrice(totalPrice)}
-            </Text>
-          </View>
-          <View style={{...styles.costs, marginBottom: 15}}>
-            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-              Total amount:
-            </Text>
-            <Text style={{fontFamily: FONT_BOLD}}>
-              Rp {toPrice(totalPrice + shipping)}
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              postHistory();
-              //PUSH NOTIF
-            }}>
-            <View style={styles.btn}>
-              <Text style={{color: '#fff'}}>SUBMIT ORDER</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
+
+      {/* Bottom BTN */}
+      <View style={styles.addcart}>
+        <View style={styles.costs}>
+          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+            Shipping:
+          </Text>
+          <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(shipping)}</Text>
+        </View>
+        <View style={styles.costs}>
+          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+            Cost:
+          </Text>
+          <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(totalPrice)}</Text>
+        </View>
+        <View style={{...styles.costs, marginBottom: 15}}>
+          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+            Total amount:
+          </Text>
+          <Text style={{fontFamily: FONT_BOLD}}>
+            Rp {toPrice(totalPrice + shipping)}
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            postHistory();
+            //PUSH NOTIF
+          }}>
+          <View style={styles.btn}>
+            <Text style={{color: '#fff'}}>SUBMIT ORDER</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -222,7 +225,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: windowHeight * 0.06,
-    width: windowWidth * 0.4,
+    width: windowWidth * 0.5,
   },
   wrapPicker: {
     flexDirection: 'row',

@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {COLOR_MAIN, FONT_MED} from '../../utils/constans';
+import {COLOR_MAIN, FONT_BOLD, FONT_MED} from '../../utils/constans';
 
 //Redux
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {addAddress} from '../../utils/redux/action/addressAction';
 import axios from 'axios';
 import {API_URL} from '@env';
@@ -23,7 +23,9 @@ const CardAddress = ({
   statDelete,
   id,
   getAddress,
+  name,
 }) => {
+  const active = useSelector((state) => state.address.address.active);
   const showToastWithGravity = () => {
     ToastAndroid.showWithGravity(
       'Address Picked',
@@ -36,6 +38,8 @@ const CardAddress = ({
     addAddress({
       address,
       user,
+      name,
+      active: id,
     });
   };
   const deleteAddress = () => {
@@ -76,19 +80,31 @@ const CardAddress = ({
   return (
     <>
       <TouchableOpacity onPress={pickaddress}>
-        <View style={styles.cardAddress}>
+        <View style={active == id ? styles.actCard : styles.cardAddress}>
+          <View>
+            <Text style={{fontFamily: FONT_BOLD}}>{name}</Text>
+          </View>
           <View style={styles.name}>
-            <Text>{user}</Text>
+            <Text>To: {user}</Text>
           </View>
           <View>
             <Text>{address}</Text>
           </View>
         </View>
       </TouchableOpacity>
-      {statDelete && (
-        <TouchableOpacity style={styles.btnDelete} onPress={deleteAddress}>
-          <Text style={{color: '#fff'}}>Delete</Text>
-        </TouchableOpacity>
+      {statDelete ? (
+        <View style={active == id ? styles.actwrapBtn : styles.wrapBtn}>
+          <TouchableOpacity style={styles.btnDelete} onPress={deleteAddress}>
+            <Text style={{color: 'red'}}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btnDelete}
+            onPress={() => console.log('edit')}>
+            <Text style={{color: '#000'}}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={active == id ? styles.actwrapBtn : styles.wrapBtn}></View>
       )}
     </>
   );
@@ -108,19 +124,23 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   cardAddress: {
     paddingHorizontal: 24,
-    paddingVertical: 19,
+    paddingTop: 15,
     marginHorizontal: windowWidth * 0.04,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 1,
-      height: 2,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-
-    elevation: 5,
-    borderRadius: 8,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  actCard: {
+    paddingHorizontal: 24,
+    paddingTop: 15,
+    marginHorizontal: windowWidth * 0.04,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: '#008000',
   },
   name: {
     flexDirection: 'row',
@@ -128,10 +148,34 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   btnDelete: {
-    backgroundColor: COLOR_MAIN,
+    // backgroundColor: '#fff',
     marginHorizontal: windowWidth * 0.04,
-    borderRadius: 8,
-    paddingHorizontal: windowWidth * 0.07,
+    // borderRadius: 8,
+    // paddingHorizontal: windowWidth * 0.07,
+    // marginBottom: windowHeight * 0.03,
+  },
+  wrapBtn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: '#fff',
+    marginHorizontal: windowWidth * 0.04,
     marginBottom: windowHeight * 0.03,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    paddingBottom: 15,
+  },
+  actwrapBtn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: '#fff',
+    marginHorizontal: windowWidth * 0.04,
+    marginBottom: windowHeight * 0.03,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: '#008000',
   },
 });

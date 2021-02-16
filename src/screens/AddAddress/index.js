@@ -41,6 +41,18 @@ const AddAddress = ({navigation}) => {
       <View style={styles.container}>
         <TextInput
           style={styles.form}
+          placeholder="Address Name"
+          defaultValue={address}
+          onChangeText={(address) => setAddress(address)}
+        />
+        <TextInput
+          style={styles.form}
+          placeholder="Recipient's Name"
+          defaultValue={address}
+          onChangeText={(address) => setAddress(address)}
+        />
+        <TextInput
+          style={styles.form}
           placeholder="Address"
           defaultValue={address}
           onChangeText={(address) => setAddress(address)}

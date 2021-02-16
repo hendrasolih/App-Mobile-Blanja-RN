@@ -27,6 +27,7 @@ const ShippingAddress = ({navigation}) => {
     axios
       .get(`${API_URL}/address/${user_id}`)
       .then((res) => {
+        console.log(res.data.data);
         setAddress(res.data.data);
       })
       .catch((err) => {
@@ -38,15 +39,16 @@ const ShippingAddress = ({navigation}) => {
     <>
       <Text style={styles.title}>Shipping Address</Text>
       {address.length !== 0 &&
-        address.map(({id_adres, address, user_name}) => {
+        address.map(({id_adres, address, recipient, addrs_name}) => {
           return (
             <CardAddress
               key={id_adres}
               address={address}
-              user={user_name}
+              user={recipient}
               statDelete={true}
               id={id_adres}
               getAddress={getAddress}
+              name={addrs_name}
             />
           );
         })}
