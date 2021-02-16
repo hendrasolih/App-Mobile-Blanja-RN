@@ -118,12 +118,56 @@ const DetailPage = ({navigation, route, addToCart}) => {
             </View>
             <Text style={styles.PrdName}>{product.prd_name}</Text>
             <View style={styles.rating}>
-              <IconStarAct />
-              <IconStarAct />
-              <IconStarAct />
-              <IconStarAct />
-              <IconStar />
-              <Text style={styles.PrdName}> (10)</Text>
+              {product.rating_product == null ? (
+                <>
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                </>
+              ) : product.rating_product <= 1 ? (
+                <>
+                  <IconStarAct />
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                </>
+              ) : product.rating_product <= 2 ? (
+                <>
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStar />
+                  <IconStar />
+                  <IconStar />
+                </>
+              ) : product.rating_product <= 3 ? (
+                <>
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStar />
+                  <IconStar />
+                </>
+              ) : product.rating_product <= 4 ? (
+                <>
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStar />
+                </>
+              ) : (
+                <>
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                  <IconStarAct />
+                </>
+              )}
+              <Text style={styles.PrdName}> ({product.total_review})</Text>
             </View>
             <Text style={styles.desc}>{product.prd_description}</Text>
             <ListBar
@@ -234,6 +278,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     top: undefined,
+    backgroundColor: '#fff',
+    height: windowHeight * 0.1,
+    justifyContent: 'flex-end',
   },
   btn: {
     backgroundColor: COLOR_MAIN,

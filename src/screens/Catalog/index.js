@@ -66,6 +66,7 @@ const Catalog = ({navigation, route}) => {
       .then(({data}) => {
         console.log('Review');
         setViewall(data.data);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -79,6 +80,7 @@ const Catalog = ({navigation, route}) => {
         //console.log(data.data.products);
         console.log('sort');
         setViewall(data.data.products);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -186,6 +188,7 @@ const Catalog = ({navigation, route}) => {
       .then((res) => {
         //console.log(res.data.data.length);
         setViewall(res.data.data);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);

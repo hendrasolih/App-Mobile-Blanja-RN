@@ -55,15 +55,15 @@ const Home = ({navigation}) => {
   };
   return (
     <>
-      <ImageBackground source={HomePict} style={styles.header}>
-        <Text style={styles.banner}>Street clothes</Text>
-        <IconBell
-          style={styles.notif}
-          onPress={() => navigation.navigate('Notification')}
-        />
-      </ImageBackground>
-      <View style={styles.container}>
-        <ScrollView vertical={true}>
+      <ScrollView vertical={true}>
+        <ImageBackground source={HomePict} style={styles.header}>
+          <Text style={styles.banner}>Street clothes</Text>
+          <IconBell
+            style={styles.notif}
+            onPress={() => navigation.navigate('Notification')}
+          />
+        </ImageBackground>
+        <View style={styles.container}>
           <View>
             <TouchableOpacity>
               <Text style={styles.title} onPress={getData}>
@@ -159,8 +159,8 @@ const Home = ({navigation}) => {
             </View>
           </ScrollView>
           <View style={styles.gap} />
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -212,6 +212,6 @@ const styles = StyleSheet.create({
     marginVertical: 50,
   },
   gap: {
-    height: 200,
+    height: 20,
   },
 });

@@ -13,6 +13,10 @@ import IconStarAct from './StarAct.svg';
 import IconStar from './Star.svg';
 import IconLove from './Love.svg';
 import IconRatingLine from './rating line.svg';
+import IconRatingLine4 from './ratingline4.svg';
+import IconRatingLine3 from './ratingline3.svg';
+import IconRatingLine2 from './ratingline2.svg';
+import IconRatingLine1 from './ratingline1.svg';
 import IconPlus from './plus.svg';
 import IconMin from './min.svg';
 import IconChevron from './Chevron.svg';
@@ -56,4 +60,8 @@ export {
   IconStarBig,
   IconOn,
   IconOff,
+  IconRatingLine4,
+  IconRatingLine3,
+  IconRatingLine2,
+  IconRatingLine1,
 };

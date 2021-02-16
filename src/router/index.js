@@ -115,7 +115,13 @@ const Router = ({navigation}) => {
           component={DetailPage}
           options={{title: 'Detail Page'}}
         />
-        <Stack.Screen name="ReviewPage" component={Review} />
+        <Stack.Screen
+          name="ReviewPage"
+          component={Review}
+          options={{
+            title: 'Rating & Review',
+          }}
+        />
         <Stack.Screen
           name="Notification"
           component={Notification}
