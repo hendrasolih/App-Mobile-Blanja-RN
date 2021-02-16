@@ -31,7 +31,7 @@ const ResetPass = ({navigation, route}) => {
     axios
       .post(`${API_URL}/auth/resetpass/${user_id}`, data)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         Alert.alert(
           'Reset Password',
           'Reset Password Berhasil',

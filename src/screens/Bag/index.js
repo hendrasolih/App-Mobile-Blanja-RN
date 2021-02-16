@@ -15,6 +15,8 @@ import {
   FONT_BOLD,
   FONT_LIGHT,
 } from '../../utils/constans';
+import {API_URL} from '@env';
+import axios from 'axios';
 
 //redux
 import {connect, useSelector} from 'react-redux';
@@ -24,7 +26,10 @@ import {
   plusQty,
 } from '../../utils/redux/action/cartAction';
 
-const Bag = ({cart, navigation}) => {
+import {logout} from '../../utils/redux/action/authAction';
+
+const Bag = ({cart, navigation, logoutRedux}) => {
+  const token = useSelector((state) => state.auth.token);
   const pick = useSelector((state) => state.cart.cart);
   let seller_id = '';
   if (pick.length !== 0) {
@@ -37,6 +42,17 @@ const Bag = ({cart, navigation}) => {
       console.log('disini cekpoint ' + pick.indexOf(item) + ' ' + item.pick),
     );
   }
+  useEffect(() => {
+    checktoken();
+  }, [navigation]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Checktoken');
+      checktoken();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   useEffect(() => {
     let items = 0;
     let price = 0;
@@ -51,6 +67,29 @@ const Bag = ({cart, navigation}) => {
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
+
+  const checktoken = () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token,
+      },
+    };
+    axios
+      .get(`${API_URL}/auth/checktoken`, config)
+      .then((res) => {
+        console.log(res.data);
+        //navigation.replace('MainApp');
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          //console.log(error.response.headers);
+        }
+        logoutRedux();
+        navigation.replace('Login');
+      });
+  };
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
@@ -139,6 +178,7 @@ const mapDispatchToProps = (dispatch) => {
     pickCart: (id) => dispatch(pickCart(id)),
     clearCart: () => dispatch(clearCart()),
     plusQty: (id) => dispatch(plusQty(id)),
+    logoutRedux: () => dispatch(logout()),
   };
 };
 

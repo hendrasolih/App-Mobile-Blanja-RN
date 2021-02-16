@@ -113,14 +113,20 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
     );
   };
   const getProfile = async () => {
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token,
+      },
+    };
     await axios
-      .get(`${API_URL}/user/${user_id}`)
+      .get(`${API_URL}/user/${user_id}`, config)
       .then((res) => {
         //console.log(res.data.data[0]);
         setProfile(res.data.data[0]);
       })
       .catch((err) => {
         console.log(err);
+        navigation.replace('Login');
       });
   };
 
@@ -176,6 +182,30 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const checktoken = () => {
+    const token = useSelector((state) => state.auth.token);
+    const config = {
+      headers: {
+        'x-access-token': 'Bearer ' + token,
+      },
+    };
+    axios
+      .get(`${API_URL}/auth/checktoken`, config)
+      .then((res) => {
+        console.log(res.data);
+        //navigation.replace('MainApp');
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          //console.log(error.response.headers);
+        }
+        logoutRedux();
+        navigation.replace('Login');
       });
   };
 

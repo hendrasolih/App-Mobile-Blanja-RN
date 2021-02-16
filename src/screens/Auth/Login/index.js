@@ -6,7 +6,7 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {COLOR_MAIN, FONT_BOLD, FONT_REG} from '../../../utils/constans';
 import {API_URL} from '@env';
 const regexEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
+const regexPwd = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 //redux
 import {connect} from 'react-redux';
 import {login} from '../../../utils/redux/action/authAction';
@@ -21,6 +21,8 @@ const Login = ({navigation, login}) => {
       return setErrorMsg('input');
     } else if (!regexEmail.test(email)) {
       return setErrorMsg('errormail');
+    } else if (!regexPwd.test(password)) {
+      return setErrorMsg('strongpass');
     }
     const data = {
       email: email,
@@ -79,6 +81,8 @@ const Login = ({navigation, login}) => {
           ? 'Please Enter Your Email and Password'
           : errorMsg == 'errormail'
           ? 'Please Input Correct Email Format'
+          : errorMsg == 'strongpass'
+          ? 'Password should at least have 1 Lower Case (a-z), 1 Upper Case (A-Z), 1 Number (0-9)'
           : ''}
       </Text>
       <TouchableOpacity onPress={handleSubmit}>

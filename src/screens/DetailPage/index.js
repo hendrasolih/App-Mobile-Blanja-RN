@@ -78,11 +78,12 @@ const DetailPage = ({navigation, route, addToCart}) => {
       })
       .catch((err) => {
         console.log(err);
+        navigation.replace('Login');
       });
   };
   const getDataCard = () => {
     axios
-      .get(`${API_URL}/products?filter=update&limit=3`)
+      .get(`${API_URL}/products?filter=rating&limit=3`)
       .then((res) => {
         const card = res.data.data.products;
         setCard(card);
@@ -143,7 +144,15 @@ const DetailPage = ({navigation, route, addToCart}) => {
           <ScrollView horizontal={true}>
             <View style={styles.card}>
               {card.map(
-                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+                ({
+                  prd_id,
+                  prd_name,
+                  prd_brand,
+                  prd_price,
+                  prd_image,
+                  rating_product,
+                  total_review,
+                }) => {
                   return (
                     <Card
                       nav={navigation}
@@ -153,6 +162,8 @@ const DetailPage = ({navigation, route, addToCart}) => {
                       brand={prd_brand}
                       price={prd_price}
                       image={JSON.parse(prd_image)}
+                      rating={rating_product}
+                      review={total_review}
                     />
                   );
                 },
