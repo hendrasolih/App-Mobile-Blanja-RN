@@ -24,8 +24,9 @@ const CardAddress = ({
   id,
   getAddress,
   name,
+  navigation,
 }) => {
-  const active = useSelector((state) => state.address.address.active);
+  const addres = useSelector((state) => state.address.address);
   const showToastWithGravity = () => {
     ToastAndroid.showWithGravity(
       'Address Picked',
@@ -80,7 +81,12 @@ const CardAddress = ({
   return (
     <>
       <TouchableOpacity onPress={pickaddress}>
-        <View style={active == id ? styles.actCard : styles.cardAddress}>
+        <View
+          style={
+            addres !== null && addres.active == id
+              ? styles.actCard
+              : styles.cardAddress
+          }>
           <View>
             <Text style={{fontFamily: FONT_BOLD}}>{name}</Text>
           </View>
@@ -93,18 +99,28 @@ const CardAddress = ({
         </View>
       </TouchableOpacity>
       {statDelete ? (
-        <View style={active == id ? styles.actwrapBtn : styles.wrapBtn}>
+        <View
+          style={
+            addres !== null && addres.active == id
+              ? styles.actwrapBtn
+              : styles.wrapBtn
+          }>
           <TouchableOpacity style={styles.btnDelete} onPress={deleteAddress}>
             <Text style={{color: 'red'}}>Delete</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnDelete}
-            onPress={() => console.log('edit')}>
+            onPress={() => navigation.navigate('Edit Address', {id})}>
             <Text style={{color: '#000'}}>Edit</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={active == id ? styles.actwrapBtn : styles.wrapBtn}></View>
+        <View
+          style={
+            addres !== null && addres.active == id
+              ? styles.actwrapBtn
+              : styles.wrapBtn
+          }></View>
       )}
     </>
   );

@@ -91,7 +91,6 @@ const CardCatalog = ({
 export default CardCatalog;
 
 const windowWidth = Dimensions.get('window').width;
-console.log('here', windowWidth);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

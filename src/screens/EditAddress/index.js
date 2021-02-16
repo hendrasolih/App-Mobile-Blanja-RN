@@ -12,26 +12,43 @@ import {COLOR_MAIN} from '../../utils/constans';
 import {API_URL} from '@env';
 //redux
 import {useSelector} from 'react-redux';
+import {useEffect} from 'react/cjs/react.development';
 
-const AddAddress = ({navigation}) => {
+const EditAddress = ({navigation, route}) => {
+  const {id} = route.params;
   const user_id = useSelector((state) => state.auth.id);
   const [address, setAddress] = useState('');
   const [addressName, setAddressName] = useState('');
   const [recipient, setRecipient] = useState('');
-  const [city, setCity] = useState('');
-  const [province, setProvince] = useState('');
-  const [zipcode, setZipcode] = useState('');
 
-  const addressFull = `${address} ${city} ${province} ${zipcode}`;
+  //const addressFull = `${address} ${city} ${province} ${zipcode}`;
 
-  const postAddress = () => {
+  useEffect(() => {
+    // code to run on component mount
+    getDetail();
+  }, []);
+
+  const getDetail = () => {
+    axios
+      .get(`${API_URL}/address/detail/${id}`)
+      .then((res) => {
+        setAddress(res.data.data[0].address);
+        setAddressName(res.data.data[0].addrs_name);
+        setRecipient(res.data.data[0].recipient);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const patchAddress = () => {
     const data = {
-      address: addressFull,
+      address: address,
       addrs_name: addressName,
       recipient: recipient,
     };
     axios
-      .post(`${API_URL}/address/${user_id}`, data)
+      .patch(`${API_URL}/address/${id}`, data)
       .then((res) => {
         console.log(res.data.msg);
         navigation.navigate('ShippingAddress');
@@ -62,39 +79,21 @@ const AddAddress = ({navigation}) => {
           defaultValue={address}
           onChangeText={(address) => setAddress(address)}
         />
-        <TextInput
-          style={styles.form}
-          placeholder="City"
-          defaultValue={city}
-          onChangeText={(city) => setCity(city)}
-        />
-        <TextInput
-          style={styles.form}
-          placeholder="State/Province/Regions"
-          defaultValue={province}
-          onChangeText={(province) => setProvince(province)}
-        />
-        <TextInput
-          style={styles.form}
-          placeholder="Zip Code (Postal Code)"
-          defaultValue={zipcode}
-          onChangeText={(zipcode) => setZipcode(zipcode)}
-        />
 
         <TouchableOpacity
           style={styles.btn}
           onPress={() => {
             //console.log('press');
-            postAddress();
+            patchAddress();
           }}>
-          <Text style={{color: '#fff'}}>SAVE ADDRESS</Text>
+          <Text style={{color: '#fff'}}>CHANGE ADDRESS</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default AddAddress;
+export default EditAddress;
 
 const windowWidth = Dimensions.get('window').width;
 

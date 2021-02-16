@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginTop: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
   },
   price: {
     marginTop: 7,
@@ -112,16 +114,16 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
   },
   infobag: {
-    backgroundColor: '#fff',
-    width: windowWidth * 0.6,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    // backgroundColor: '#fff',
+    width: windowWidth * 0.55,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 4.65,
+    // elevation: 8,
     paddingHorizontal: 5,
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,

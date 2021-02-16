@@ -49,6 +49,7 @@ const ShippingAddress = ({navigation}) => {
               id={id_adres}
               getAddress={getAddress}
               name={addrs_name}
+              navigation={navigation}
             />
           );
         })}
