@@ -8,6 +8,7 @@ import axios from 'axios';
 
 const ListBar = ({nav, id, sellerId, sellerName}) => {
   const user_id = useSelector((state) => state.auth.id);
+  const level = useSelector((state) => state.auth.level);
   const postRoom = () => {
     const data = {
       cus_id: user_id,
@@ -31,15 +32,18 @@ const ListBar = ({nav, id, sellerId, sellerName}) => {
         <View style={styles.ListBar}>
           <Text style={styles.text}>Shipping info</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            //post new room
-            postRoom();
-          }}>
-          <View style={styles.ListBar}>
-            <Text style={styles.text}>Ask Seller</Text>
-          </View>
-        </TouchableOpacity>
+        {level == 'Customer' && (
+          <TouchableOpacity
+            onPress={() => {
+              //post new room
+              postRoom();
+            }}>
+            <View style={styles.ListBar}>
+              <Text style={styles.text}>Ask Seller</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           onPress={() => {
             nav.navigate('ReviewPage', {itemId: id});

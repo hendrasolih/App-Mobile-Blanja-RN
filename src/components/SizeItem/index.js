@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {COLOR_MAIN} from '../../utils/constans';
 
-const SizeItem = ({size, changeSize}) => {
+const SizeItem = ({size, changeSize, closemodal}) => {
   return (
     <TouchableHighlight
       style={{
@@ -10,7 +10,10 @@ const SizeItem = ({size, changeSize}) => {
         backgroundColor: COLOR_MAIN,
         marginBottom: 10,
       }}
-      onPress={() => changeSize(size)}>
+      onPress={() => {
+        changeSize(size);
+        closemodal();
+      }}>
       <View>
         <Text style={styles.textStyle}>{size}</Text>
       </View>
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: '50%',
   },
   textStyle: {
     color: 'white',

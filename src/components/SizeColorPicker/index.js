@@ -15,6 +15,7 @@ import SizeItem from '../SizeItem';
 import {IconLove} from '../../assets';
 import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constans';
 import {API_URL} from '@env';
+import {Picker} from '@react-native-picker/picker';
 
 const SelectColorPicker = ({
   id,
@@ -81,30 +82,24 @@ const SelectColorPicker = ({
         transparent={true}
         visible={modalVisibleSize}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          setModalVisibleSize(!modalVisibleSize);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {size.map(({size_id, size_prd}) => {
-              return (
-                <SizeItem
-                  key={size_id}
-                  size={size_prd}
-                  //changeSize={(pickSize) => setPickSize(pickSize)}
-                  changeSize={changeSize}
-                />
-              );
-            })}
-
-            <TouchableHighlight
-              style={{...styles.openButton, backgroundColor: '#2196F3'}}
-              onPress={() => {
-                setModalVisibleSize(!modalVisibleSize);
-              }}>
-              <View>
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </View>
-            </TouchableHighlight>
+            <View style={styles.opacity} />
+            <View style={styles.main}>
+              {size.map(({size_id, size_prd}) => {
+                return (
+                  <SizeItem
+                    key={size_id}
+                    size={size_prd}
+                    //changeSize={(pickSize) => setPickSize(pickSize)}
+                    changeSize={changeSize}
+                    closemodal={() => setModalVisibleSize(!modalVisibleSize)}
+                  />
+                );
+              })}
+            </View>
           </View>
         </View>
       </Modal>
@@ -115,29 +110,23 @@ const SelectColorPicker = ({
         transparent={true}
         visible={modalVisibleColor}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          setModalVisibleColor(!modalVisibleColor);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {color.map(({id, color_type}) => {
-              return (
-                <ColorItem
-                  key={id}
-                  color={color_type}
-                  changeColor={changeColor}
-                />
-              );
-            })}
-
-            <TouchableHighlight
-              style={{...styles.openButton, backgroundColor: '#2196F3'}}
-              onPress={() => {
-                setModalVisibleColor(!modalVisibleColor);
-              }}>
-              <View>
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </View>
-            </TouchableHighlight>
+            <View style={styles.opacity} />
+            <View style={styles.main}>
+              {color.map(({id, color_type}) => {
+                return (
+                  <ColorItem
+                    key={id}
+                    color={color_type}
+                    changeColor={changeColor}
+                    closemodal={() => setModalVisibleColor(!modalVisibleColor)}
+                  />
+                );
+              })}
+            </View>
           </View>
         </View>
       </Modal>
@@ -152,6 +141,20 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  opacity: {
+    height: windowHeight * 0.5,
+    width: windowWidth,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  main: {
+    backgroundColor: '#fff',
+    width: windowWidth,
+    height: '100%',
+    alignItems: 'center',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingTop: 20,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -191,22 +194,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    //padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    width: windowWidth,
+    height: windowHeight,
   },
   openButton: {
     backgroundColor: '#F194FF',

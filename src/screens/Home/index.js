@@ -124,6 +124,7 @@ const Home = ({navigation}) => {
                     <Card
                       nav={navigation}
                       key={prd_id}
+                      id={prd_id}
                       name={prd_name}
                       brand={prd_brand}
                       price={prd_price}
