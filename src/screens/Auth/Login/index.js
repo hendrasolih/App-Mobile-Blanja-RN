@@ -40,7 +40,7 @@ const Login = ({navigation, login}) => {
         await login(token, id, level, nameUser);
 
         console.log('done');
-        navigation.navigate('Home');
+        navigation.navigate('MainApp');
       })
       .catch((err) => {
         console.log(err);

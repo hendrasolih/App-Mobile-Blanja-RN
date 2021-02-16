@@ -86,6 +86,10 @@ const Catalog = ({navigation, route}) => {
   const getViewAll = () => {
     if (title === 'View All Items' || title === '' || title === undefined) {
       title = '';
+    } else if (title === 'New') {
+      return setActive('new');
+    } else if (title === 'Popular') {
+      return setActive('rating');
     }
     console.log(title);
     console.log(keyword);
@@ -142,10 +146,9 @@ const Catalog = ({navigation, route}) => {
       });
   };
 
-  console.log(pageInfo);
+  //console.log(pageInfo);
 
-  const getFilter = () => {
-    console.log('filter');
+  const getFilter = async () => {
     let keyBrand = '';
     let keyColor = '';
     let keySize = '';
@@ -166,11 +169,14 @@ const Catalog = ({navigation, route}) => {
     const newcolor = keyColor.slice(0, -1);
     const newsize = keySize.slice(0, -1);
     const newctg = keyCtg.slice(0, -1);
-    console.log(newbrand);
-    console.log(newcolor);
-    console.log(newsize);
-    console.log(newctg);
-    axios
+    // console.log(newbrand);
+    // console.log(newcolor);
+    // console.log(newsize);
+    // console.log(newctg);
+    if (keyBrand == '' && keyColor == '' && keySize == '' && keyCtg == '') {
+      return console.log('Fill 1st');
+    }
+    await axios
       .get(
         `${API_URL}/products/filter?color=${newcolor}&category=${newctg}&brand=${newbrand}&size=${newsize}`,
       )
@@ -215,7 +221,18 @@ const Catalog = ({navigation, route}) => {
         <ScrollView>
           {viewall.length !== 0 &&
             viewall.map(
-              ({prd_id, prd_name, prd_brand, prd_price, prd_image}, index) => {
+              (
+                {
+                  prd_id,
+                  prd_name,
+                  prd_brand,
+                  prd_price,
+                  prd_image,
+                  rating_product,
+                  total_review,
+                },
+                index,
+              ) => {
                 return (
                   <CardCatalog
                     key={index}
@@ -225,6 +242,8 @@ const Catalog = ({navigation, route}) => {
                     price={prd_price}
                     image={JSON.parse(prd_image)}
                     navigation={navigation}
+                    rating={rating_product}
+                    review={total_review}
                   />
                 );
               },

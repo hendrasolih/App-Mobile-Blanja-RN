@@ -36,7 +36,7 @@ const MyProduct = ({navigation}) => {
         //console.log(res.data.data[0]);
         const data = res.data.data;
         setProduct(data);
-        console.log('get data');
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -95,6 +95,8 @@ const MyProduct = ({navigation}) => {
               prd_price,
               prd_image,
               prd_description,
+              rating_product,
+              total_review,
             }) => {
               return (
                 <View key={prd_id}>
@@ -105,6 +107,8 @@ const MyProduct = ({navigation}) => {
                     price={prd_price}
                     image={JSON.parse(prd_image)}
                     navigation={navigation}
+                    rating={rating_product}
+                    review={total_review}
                   />
                   <View
                     style={{

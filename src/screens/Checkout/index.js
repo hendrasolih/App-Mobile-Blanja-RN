@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -99,81 +100,85 @@ const Checkout = ({navigation, route, clearCart}) => {
   };
   return (
     <>
-      <View>
-        <View style={{margin: 16}}>
-          <Text style={{fontFamily: FONT_MED, fontSize: 16}}>
-            Shipping address
-          </Text>
-        </View>
-        {address !== null ? (
-          <CardAddress
-            address={address.address}
-            user={address.user}
-            statDelete={false}
-            navigation={navigation}
-          />
-        ) : (
-          <View style={styles.pickaddress}>
-            <Text style={{fontSize: 16}}>Pick Your Address</Text>
+      <ScrollView>
+        <View>
+          <View style={{margin: 16}}>
+            <Text style={{fontFamily: FONT_MED, fontSize: 16}}>
+              Shipping address
+            </Text>
           </View>
-        )}
-        <TouchableOpacity
-          style={{...styles.btn, marginTop: windowHeight * 0.05}}
-          onPress={() => navigation.navigate('ShippingAddress')}>
-          <Text style={{color: '#fff'}}>Pick Address</Text>
-        </TouchableOpacity>
-        <View style={{margin: 16}}>
-          <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Payment</Text>
+          {address !== null ? (
+            <CardAddress
+              address={address.address}
+              user={address.user}
+              statDelete={false}
+              navigation={navigation}
+            />
+          ) : (
+            <View style={styles.pickaddress}>
+              <Text style={{fontSize: 16}}>Pick Your Address</Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={{...styles.btn, marginTop: windowHeight * 0.05}}
+            onPress={() => navigation.navigate('ShippingAddress')}>
+            <Text style={{color: '#fff'}}>Pick Address</Text>
+          </TouchableOpacity>
+          <View style={{margin: 16}}>
+            <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Payment</Text>
+          </View>
+          <CheckboxPayments image="Mastercard" />
+          <CheckboxPayments image="Pos" />
+          <CheckboxPayments image="Gopay" />
         </View>
-        <CheckboxPayments image="Mastercard" />
-        <CheckboxPayments image="Pos" />
-        <CheckboxPayments image="Gopay" />
-      </View>
-      <View style={styles.wrapPicker}>
-        <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Shipping</Text>
-        <View style={{borderWidth: 1, borderRadius: 5}}>
-          <Picker
-            selectedValue={shipping}
-            style={styles.picker}
-            onValueChange={(itemValue, itemIndex) => setShipping(itemValue)}>
-            <Picker.Item label="JNE" value={12000} />
-            <Picker.Item label="Si Cepat" value={11000} />
-          </Picker>
+        <View style={styles.wrapPicker}>
+          <Text style={{fontFamily: FONT_MED, fontSize: 16}}>Shipping</Text>
+          <View style={{borderWidth: 1, borderRadius: 5}}>
+            <Picker
+              selectedValue={shipping}
+              style={styles.picker}
+              onValueChange={(itemValue, itemIndex) => setShipping(itemValue)}>
+              <Picker.Item label="JNE" value={12000} />
+              <Picker.Item label="Si Cepat" value={11000} />
+            </Picker>
+          </View>
         </View>
-      </View>
 
-      {/* Bottom BTN */}
-      <View style={styles.addcart}>
-        <View style={styles.costs}>
-          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-            Shipping:
-          </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(shipping)}</Text>
-        </View>
-        <View style={styles.costs}>
-          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-            Cost:
-          </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(totalPrice)}</Text>
-        </View>
-        <View style={{...styles.costs, marginBottom: 15}}>
-          <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
-            Total amount:
-          </Text>
-          <Text style={{fontFamily: FONT_BOLD}}>
-            Rp {toPrice(totalPrice + shipping)}
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            postHistory();
-            //PUSH NOTIF
-          }}>
-          <View style={styles.btn}>
-            <Text style={{color: '#fff'}}>SUBMIT ORDER</Text>
+        {/* Bottom BTN */}
+        <View style={styles.addcart}>
+          <View style={styles.costs}>
+            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+              Shipping:
+            </Text>
+            <Text style={{fontFamily: FONT_BOLD}}>Rp {toPrice(shipping)}</Text>
           </View>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.costs}>
+            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+              Cost:
+            </Text>
+            <Text style={{fontFamily: FONT_BOLD}}>
+              Rp {toPrice(totalPrice)}
+            </Text>
+          </View>
+          <View style={{...styles.costs, marginBottom: 15}}>
+            <Text style={{fontFamily: FONT_LIGHT, color: COLOR_DISABLE}}>
+              Total amount:
+            </Text>
+            <Text style={{fontFamily: FONT_BOLD}}>
+              Rp {toPrice(totalPrice + shipping)}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              postHistory();
+              //PUSH NOTIF
+            }}>
+            <View style={styles.btn}>
+              <Text style={{color: '#fff'}}>SUBMIT ORDER</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </>
   );
 };

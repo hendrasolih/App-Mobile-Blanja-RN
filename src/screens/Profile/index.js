@@ -36,6 +36,9 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
   const [totalAddress, setTotalAddress] = useState(0);
   useEffect(() => {
     // code to run on component mount
+    if (!isLogin) {
+      return navigation.replace('Login');
+    }
     getProfile();
     if (level === 'Seller') {
       getProduct();
@@ -135,7 +138,8 @@ const Profile = ({navigation, logoutRedux, isLogin}) => {
         setTotalProduct(data.length);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
+        setTotalProduct(0);
       });
   };
 

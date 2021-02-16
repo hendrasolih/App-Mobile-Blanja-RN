@@ -26,6 +26,7 @@ import {
   ShippingAddress,
   AddColor,
   AddSize,
+  Catalog,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -169,6 +170,11 @@ const Router = ({navigation}) => {
           options={{
             title: 'Add Size',
           }}
+        />
+        <Stack.Screen
+          name="Catalog"
+          component={Catalog}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </SocketProvider>

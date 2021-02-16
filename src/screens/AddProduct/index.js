@@ -3,6 +3,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
@@ -139,85 +140,87 @@ const AddProduct = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Add Product</Text>
       <ScrollView vertical={true}>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {filePath.map((item) => {
-            return (
+        <KeyboardAvoidingView>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {filePath.map((item) => {
+              return (
+                <Image
+                  key={filePath.indexOf(item)}
+                  source={{uri: filePath.length !== 0 ? item.path : ''}}
+                  style={styles.imageStyle}
+                />
+              );
+            })}
+            {filePathCamera !== undefined && filePathCamera.length !== 0 && (
               <Image
-                key={filePath.indexOf(item)}
-                source={{uri: filePath.length !== 0 ? item.path : ''}}
+                source={{uri: filePathCamera.path}}
                 style={styles.imageStyle}
               />
-            );
-          })}
-          {filePathCamera !== undefined && filePathCamera.length !== 0 && (
-            <Image
-              source={{uri: filePathCamera.path}}
-              style={styles.imageStyle}
-            />
-          )}
-        </View>
+            )}
+          </View>
 
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonStyle}
-          onPress={() => chooseFile()}>
-          <Text style={styles.textStyle}>Choose Image</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonStyle}
-          onPress={() => choosePhoto()}>
-          <Text style={styles.textStyle}>Use Camera</Text>
-        </TouchableOpacity>
-        <TextInput
-          style={styles.form}
-          placeholder="Product Name"
-          defaultValue={nameProd}
-          onChangeText={(nameProd) => setNameProd(nameProd)}
-        />
-        <TextInput
-          style={styles.form}
-          placeholder="Product Brand"
-          defaultValue={brand}
-          onChangeText={(brand) => setBrand(brand)}
-        />
-        <TextInput
-          style={styles.form}
-          placeholder="Product Price"
-          defaultValue={price}
-          onChangeText={(price) => setPrice(price)}
-        />
-        <View style={{backgroundColor: '#fff', marginBottom: 10}}>
-          <Text style={{fontSize: 14, color: COLOR_DISABLE}}>
-            Product Category
-          </Text>
-          {/* DROPDOWN */}
-          <Picker
-            selectedValue={ctg}
-            //style={{height: 50, width: 100}}
-            onValueChange={(itemValue) => {
-              setCtg(itemValue);
-            }}>
-            {category.length !== 0 &&
-              category.map(({ctg_id, ctg_name}) => {
-                return (
-                  <Picker.Item key={ctg_id} label={ctg_name} value={ctg_id} />
-                );
-              })}
-          </Picker>
-        </View>
-        <TextInput
-          multiline={true}
-          style={{...styles.form, height: 100, textAlignVertical: 'top'}}
-          placeholder="Product Description"
-          defaultValue={desc}
-          onChangeText={(desc) => setDesc(desc)}
-        />
-        <View style={{height: 20}} />
-        <TouchableOpacity style={styles.btnadd} onPress={handleSumbmit}>
-          <Text style={{color: '#fff'}}>ADD PRODUCT</Text>
-        </TouchableOpacity>
-        <View style={{height: 130}} />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.buttonStyle}
+            onPress={() => chooseFile()}>
+            <Text style={styles.textStyle}>Choose Image</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.buttonStyle}
+            onPress={() => choosePhoto()}>
+            <Text style={styles.textStyle}>Use Camera</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.form}
+            placeholder="Product Name"
+            defaultValue={nameProd}
+            onChangeText={(nameProd) => setNameProd(nameProd)}
+          />
+          <TextInput
+            style={styles.form}
+            placeholder="Product Brand"
+            defaultValue={brand}
+            onChangeText={(brand) => setBrand(brand)}
+          />
+          <TextInput
+            style={styles.form}
+            placeholder="Product Price"
+            defaultValue={price}
+            onChangeText={(price) => setPrice(price)}
+          />
+          <View style={{backgroundColor: '#fff', marginBottom: 10}}>
+            <Text style={{fontSize: 14, color: COLOR_DISABLE}}>
+              Product Category
+            </Text>
+            {/* DROPDOWN */}
+            <Picker
+              selectedValue={ctg}
+              //style={{height: 50, width: 100}}
+              onValueChange={(itemValue) => {
+                setCtg(itemValue);
+              }}>
+              {category.length !== 0 &&
+                category.map(({ctg_id, ctg_name}) => {
+                  return (
+                    <Picker.Item key={ctg_id} label={ctg_name} value={ctg_id} />
+                  );
+                })}
+            </Picker>
+          </View>
+          <TextInput
+            multiline={true}
+            style={{...styles.form, height: 100, textAlignVertical: 'top'}}
+            placeholder="Product Description"
+            defaultValue={desc}
+            onChangeText={(desc) => setDesc(desc)}
+          />
+          <View style={{height: 20}} />
+          <TouchableOpacity style={styles.btnadd} onPress={handleSumbmit}>
+            <Text style={{color: '#fff'}}>ADD PRODUCT</Text>
+          </TouchableOpacity>
+          <View style={{height: 130}} />
+        </KeyboardAvoidingView>
       </ScrollView>
     </View>
   );

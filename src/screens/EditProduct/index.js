@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {API_URL} from '@env';
 import {COLOR_DISABLE, COLOR_MAIN, FONT_BOLD} from '../../utils/constans';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
@@ -14,6 +21,7 @@ const EditProduct = ({route, navigation}) => {
   const [priceProd, setPrice] = useState(`${price}`);
   const [descProd, setDesc] = useState(desc);
   const [filePath, setFilePath] = useState([]);
+  const [filePathCamera, setFilePathCamera] = useState([]);
   const [imgProd, setImg] = useState(JSON.parse(image));
   const token = useSelector((state) => state.auth.token);
   useEffect(() => {
@@ -53,6 +61,17 @@ const EditProduct = ({route, navigation}) => {
       }
     }
 
+    if (filePathCamera.length !== 0 && filePathCamera !== undefined) {
+      data.append('image', {
+        name: filePathCamera.path.split('/').pop(),
+        type: filePathCamera.mime,
+        uri:
+          Platform.OS === 'android'
+            ? filePathCamera.path
+            : filePathCamera.path.replace('file://', ''),
+      });
+    }
+
     if (
       nameProd == '' ||
       brandProd == '' ||
@@ -90,8 +109,23 @@ const EditProduct = ({route, navigation}) => {
         console.log(err);
       });
   };
+
+  const choosePhoto = () => {
+    ImagePicker.openCamera({
+      //cropping: true,
+      mediaType: 'photo',
+    })
+      .then((image) => {
+        console.log(image);
+        setFilePathCamera(image);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Edit Product</Text>
       <ScrollView vertical={true}>
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -114,6 +148,12 @@ const EditProduct = ({route, navigation}) => {
                   />
                 );
               })}
+          {filePathCamera !== undefined && filePathCamera.length !== 0 && (
+            <Image
+              source={{uri: filePathCamera.path}}
+              style={styles.imageStyle}
+            />
+          )}
         </View>
 
         <TouchableOpacity
@@ -121,6 +161,12 @@ const EditProduct = ({route, navigation}) => {
           style={styles.buttonStyle}
           onPress={() => chooseFile()}>
           <Text style={styles.textStyle}>Change Image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonStyle}
+          onPress={() => choosePhoto()}>
+          <Text style={styles.textStyle}>Use Camera</Text>
         </TouchableOpacity>
         <View style={{...styles.wrapform, marginTop: 20}}>
           <Text style={{color: COLOR_DISABLE}}>Product Name</Text>
@@ -171,7 +217,12 @@ const EditProduct = ({route, navigation}) => {
 
 export default EditProduct;
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: windowWidth * 0.04,
+  },
   title: {
     fontSize: 34,
     fontFamily: FONT_BOLD,

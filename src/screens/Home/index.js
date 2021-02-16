@@ -15,17 +15,30 @@ import {API_URL} from '@env';
 
 const Home = ({navigation}) => {
   const [card, setCard] = useState([]);
+  const [newCard, setNewCard] = useState([]);
   useEffect(() => {
     // code to run on component mount
     getData();
+    getNewData();
   }, []);
 
   const getData = () => {
     axios
-      .get(`${API_URL}/products?filter=update&limit=3`)
+      .get(`${API_URL}/products?filter=rating&limit=3`)
       .then((res) => {
         const card = res.data.data.products;
         setCard(card);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getNewData = () => {
+    axios
+      .get(`${API_URL}/products?filter=new&limit=3`)
+      .then((res) => {
+        const card = res.data.data.products;
+        setNewCard(card);
       })
       .catch((err) => {
         console.log(err);
@@ -48,13 +61,26 @@ const Home = ({navigation}) => {
                 New
               </Text>
             </TouchableOpacity>
-            <Text style={styles.view}>View all</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Catalog', {title: 'New', keyword: ''})
+              }>
+              <Text style={styles.view}>View all</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>You’ve never seen it before!</Text>
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              {card.map(
-                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+              {newCard.map(
+                ({
+                  prd_id,
+                  prd_name,
+                  prd_brand,
+                  prd_price,
+                  prd_image,
+                  rating_product,
+                  total_review,
+                }) => {
                   return (
                     <Card
                       nav={navigation}
@@ -64,6 +90,8 @@ const Home = ({navigation}) => {
                       brand={prd_brand}
                       price={prd_price}
                       image={JSON.parse(prd_image)}
+                      rating={rating_product}
+                      review={total_review}
                     />
                   );
                 },
@@ -72,13 +100,26 @@ const Home = ({navigation}) => {
           </ScrollView>
           <View>
             <Text style={styles.title}>Popular</Text>
-            <Text style={styles.view}>View all</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Catalog', {title: 'Popular', keyword: ''})
+              }>
+              <Text style={styles.view}>View all</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>You’ve never seen it before!</Text>
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
               {card.map(
-                ({prd_id, prd_name, prd_brand, prd_price, prd_image}) => {
+                ({
+                  prd_id,
+                  prd_name,
+                  prd_brand,
+                  prd_price,
+                  prd_image,
+                  rating_product,
+                  total_review,
+                }) => {
                   return (
                     <Card
                       nav={navigation}
@@ -87,6 +128,8 @@ const Home = ({navigation}) => {
                       brand={prd_brand}
                       price={prd_price}
                       image={JSON.parse(prd_image)}
+                      rating={rating_product}
+                      review={total_review}
                     />
                   );
                 },

@@ -17,10 +17,10 @@ import {
 } from '../../utils/constans';
 import {API_URL} from '@env';
 
-const Card = ({nav, name, brand, price, image, id}) => {
+const Card = ({nav, name, brand, price, image, id, rating, review}) => {
   const url = image[0];
   const img = {uri: `${API_URL}${url}`};
-  console.log(typeof image);
+  //console.log(typeof image);
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
@@ -35,7 +35,39 @@ const Card = ({nav, name, brand, price, image, id}) => {
           style={styles.carpict}
           imageStyle={styles.cardstyle}></ImageBackground>
         <View style={styles.star}>
-          {true && (
+          {rating == null ? (
+            <>
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 1 ? (
+            <>
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 2 ? (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 3 ? (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 4 ? (
             <>
               <IconStarAct />
               <IconStarAct />
@@ -43,7 +75,16 @@ const Card = ({nav, name, brand, price, image, id}) => {
               <IconStarAct />
               <IconStar />
             </>
+          ) : (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+            </>
           )}
+          <Text>({review})</Text>
         </View>
         <Text style={styles.brand}>{brand}</Text>
         <View style={{width: 148}}>
@@ -76,6 +117,7 @@ const styles = StyleSheet.create({
   },
   star: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   brand: {
     fontSize: 11,

@@ -37,7 +37,7 @@ const ListBar = ({nav, id, sellerId, sellerName}) => {
             postRoom();
           }}>
           <View style={styles.ListBar}>
-            <Text style={styles.text}>Chat Seller {sellerId}</Text>
+            <Text style={styles.text}>Ask Seller</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity

@@ -5,7 +5,16 @@ import {IconStar, IconStarAct} from '../../assets';
 import {COLOR_DISABLE} from '../../utils/constans';
 import {API_URL} from '@env';
 
-const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
+const CardCatalog = ({
+  name,
+  brand,
+  price,
+  image,
+  itemId,
+  navigation,
+  rating,
+  review,
+}) => {
   //console.log(image[0]);
   const imgs = {uri: `${API_URL}${image[0]}`};
   const toPrice = (x) => {
@@ -21,12 +30,57 @@ const CardCatalog = ({name, brand, price, image, itemId, navigation}) => {
       <View style={styles.infobag}>
         <Text>{name}</Text>
         <Text>{brand}</Text>
-        <View style={{flexDirection: 'row'}}>
-          <IconStarAct />
-          <IconStarAct />
-          <IconStarAct />
-          <IconStarAct />
-          <IconStar />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {rating == null ? (
+            <>
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 1 ? (
+            <>
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 2 ? (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 3 ? (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+              <IconStar />
+            </>
+          ) : rating <= 4 ? (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+            </>
+          ) : (
+            <>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+            </>
+          )}
+          <Text>({review})</Text>
         </View>
         <Text>Rp {toPrice(price)}</Text>
       </View>

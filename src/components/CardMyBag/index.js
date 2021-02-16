@@ -12,6 +12,7 @@ import {
   plusQty,
   minQty,
 } from '../../utils/redux/action/cartAction';
+import {API_URL} from '@env';
 
 const CardMyBag = ({
   name,
@@ -27,7 +28,7 @@ const CardMyBag = ({
   plusQty,
   minQty,
 }) => {
-  const imgs = {uri: `${img}`};
+  const imgs = {uri: `${API_URL}${img}`};
   const toPrice = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };

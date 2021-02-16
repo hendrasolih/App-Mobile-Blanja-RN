@@ -13,7 +13,7 @@ const Search = ({navigation}) => {
           onPress={() => navigation.goBack()}
         />
         <TextInput
-          placeholder="    Search"
+          placeholder="Search"
           style={styles.searchBar}
           defaultValue={keyword}
           onChangeText={(text) => setKeyword(text)}
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginLeft: 5,
     borderRadius: 23,
+    paddingLeft: 20,
   },
 });

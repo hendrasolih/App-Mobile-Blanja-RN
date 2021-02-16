@@ -31,7 +31,7 @@ const toPrice = (x) => {
 
 const showToastWithGravity = () => {
   ToastAndroid.showWithGravity(
-    'Added To Crat',
+    'Added To Cart',
     ToastAndroid.SHORT,
     ToastAndroid.BOTTOM,
   );
