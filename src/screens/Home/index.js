@@ -6,16 +6,23 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {HomePict, IconBell} from '../../assets';
 import {Card} from '../../components';
-import {COLOR_DISABLE, FONT_BOLD, FONT_LIGHT} from '../../utils/constans';
+import {
+  COLOR_DISABLE,
+  COLOR_MAIN,
+  FONT_BOLD,
+  FONT_LIGHT,
+} from '../../utils/constans';
 import {API_URL} from '@env';
 
 const Home = ({navigation}) => {
   const [card, setCard] = useState([]);
   const [newCard, setNewCard] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     // code to run on component mount
     getData();
@@ -28,6 +35,7 @@ const Home = ({navigation}) => {
       .then((res) => {
         const card = res.data.data.products;
         setCard(card);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -39,6 +47,7 @@ const Home = ({navigation}) => {
       .then((res) => {
         const card = res.data.data.products;
         setNewCard(card);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -71,30 +80,36 @@ const Home = ({navigation}) => {
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              {newCard.map(
-                ({
-                  prd_id,
-                  prd_name,
-                  prd_brand,
-                  prd_price,
-                  prd_image,
-                  rating_product,
-                  total_review,
-                }) => {
-                  return (
-                    <Card
-                      nav={navigation}
-                      key={prd_id}
-                      id={prd_id}
-                      name={prd_name}
-                      brand={prd_brand}
-                      price={prd_price}
-                      image={JSON.parse(prd_image)}
-                      rating={rating_product}
-                      review={total_review}
-                    />
-                  );
-                },
+              {loading ? (
+                newCard.map(
+                  ({
+                    prd_id,
+                    prd_name,
+                    prd_brand,
+                    prd_price,
+                    prd_image,
+                    rating_product,
+                    total_review,
+                  }) => {
+                    return (
+                      <Card
+                        nav={navigation}
+                        key={prd_id}
+                        id={prd_id}
+                        name={prd_name}
+                        brand={prd_brand}
+                        price={prd_price}
+                        image={JSON.parse(prd_image)}
+                        rating={rating_product}
+                        review={total_review}
+                      />
+                    );
+                  },
+                )
+              ) : (
+                <View style={styles.animation}>
+                  <ActivityIndicator size="large" color={COLOR_MAIN} />
+                </View>
               )}
             </View>
           </ScrollView>
@@ -110,30 +125,36 @@ const Home = ({navigation}) => {
           </View>
           <ScrollView horizontal={true}>
             <View style={styles.card}>
-              {card.map(
-                ({
-                  prd_id,
-                  prd_name,
-                  prd_brand,
-                  prd_price,
-                  prd_image,
-                  rating_product,
-                  total_review,
-                }) => {
-                  return (
-                    <Card
-                      nav={navigation}
-                      key={prd_id}
-                      id={prd_id}
-                      name={prd_name}
-                      brand={prd_brand}
-                      price={prd_price}
-                      image={JSON.parse(prd_image)}
-                      rating={rating_product}
-                      review={total_review}
-                    />
-                  );
-                },
+              {loading ? (
+                card.map(
+                  ({
+                    prd_id,
+                    prd_name,
+                    prd_brand,
+                    prd_price,
+                    prd_image,
+                    rating_product,
+                    total_review,
+                  }) => {
+                    return (
+                      <Card
+                        nav={navigation}
+                        key={prd_id}
+                        id={prd_id}
+                        name={prd_name}
+                        brand={prd_brand}
+                        price={prd_price}
+                        image={JSON.parse(prd_image)}
+                        rating={rating_product}
+                        review={total_review}
+                      />
+                    );
+                  },
+                )
+              ) : (
+                <View style={styles.animation}>
+                  <ActivityIndicator size="large" color={COLOR_MAIN} />
+                </View>
               )}
             </View>
           </ScrollView>
@@ -150,6 +171,11 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  animation: {
+    height: windowHeight * 0.2,
+    width: windowWidth * 0.8,
+    justifyContent: 'center',
+  },
   container: {
     marginHorizontal: windowWidth * 0.04,
   },

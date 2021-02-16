@@ -8,6 +8,7 @@ import {
   Text,
   ToastAndroid,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {IconStar, IconStarAct} from '../../assets';
@@ -44,13 +45,14 @@ const DetailPage = ({navigation, route, addToCart}) => {
   const [card, setCard] = useState([]);
   const [pickSize, setPickSize] = useState(0);
   const [pickColor, setPickColor] = useState('color');
+  const [loading, setLoading] = useState(false);
   const level = useSelector((state) => state.auth.level);
   const token = useSelector((state) => state.auth.token);
   const [price, setPrice] = useState('');
   console.log(`level detail page: ${level}`);
   useEffect(() => {
     // code to run on component mount
-    console.log(itemId);
+    //console.log(itemId);
     getProduct(itemId);
     getDataCard();
   }, []);
@@ -75,6 +77,7 @@ const DetailPage = ({navigation, route, addToCart}) => {
             .replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
         );
         setPictures(imgg);
+        setLoading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -98,82 +101,87 @@ const DetailPage = ({navigation, route, addToCart}) => {
   // console.log(`ini color: ${pickColor}`);
   return (
     <>
-      <ScrollView scrollEnabled={true} vertical={true}>
-        <ImageGallery image={pictures} />
-        <View style={styles.container}>
-          <SizeColorPicker
-            id={itemId}
-            changeSize={(pickSize) => setPickSize(pickSize)}
-            pickSize={pickSize}
-            changeColor={(pickColor) => setPickColor(pickColor)}
-            pickColor={pickColor}
-          />
-          <View style={styles.wraptitle}>
-            <Text style={styles.title}>{product.prd_brand}</Text>
-            <Text style={styles.title}>Rp {price}</Text>
-          </View>
-          <Text style={styles.PrdName}>{product.prd_name}</Text>
-          <View style={styles.rating}>
-            <IconStarAct />
-            <IconStarAct />
-            <IconStarAct />
-            <IconStarAct />
-            <IconStar />
-            <Text style={styles.PrdName}> (10)</Text>
-          </View>
-          <Text style={styles.desc}>{product.prd_description}</Text>
-          <ListBar
-            nav={navigation}
-            id={itemId}
-            sellerId={product.user_id}
-            sellerName={product.user_name}
-          />
-          <View style={styles.text}>
-            <Text style={{fontFamily: FONT_BOLD, fontSize: 18}}>
-              You can also like this
-            </Text>
-            <Text
-              style={{
-                fontFamily: FONT_LIGHT,
-                fontSize: 11,
-                color: COLOR_DISABLE,
-              }}>
-              3 items
-            </Text>
-          </View>
-          <ScrollView horizontal={true}>
-            <View style={styles.card}>
-              {card.map(
-                ({
-                  prd_id,
-                  prd_name,
-                  prd_brand,
-                  prd_price,
-                  prd_image,
-                  rating_product,
-                  total_review,
-                }) => {
-                  return (
-                    <Card
-                      nav={navigation}
-                      key={prd_id}
-                      id={prd_id}
-                      name={prd_name}
-                      brand={prd_brand}
-                      price={prd_price}
-                      image={JSON.parse(prd_image)}
-                      rating={rating_product}
-                      review={total_review}
-                    />
-                  );
-                },
-              )}
+      {loading ? (
+        <ScrollView scrollEnabled={true} vertical={true}>
+          <ImageGallery image={pictures} />
+          <View style={styles.container}>
+            <SizeColorPicker
+              id={itemId}
+              changeSize={(pickSize) => setPickSize(pickSize)}
+              pickSize={pickSize}
+              changeColor={(pickColor) => setPickColor(pickColor)}
+              pickColor={pickColor}
+            />
+            <View style={styles.wraptitle}>
+              <Text style={styles.title}>{product.prd_brand}</Text>
+              <Text style={styles.title}>Rp {price}</Text>
             </View>
-          </ScrollView>
-          <View style={{height: 75}}></View>
+            <Text style={styles.PrdName}>{product.prd_name}</Text>
+            <View style={styles.rating}>
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStarAct />
+              <IconStar />
+              <Text style={styles.PrdName}> (10)</Text>
+            </View>
+            <Text style={styles.desc}>{product.prd_description}</Text>
+            <ListBar
+              nav={navigation}
+              id={itemId}
+              sellerId={product.user_id}
+              sellerName={product.user_name}
+            />
+            <View style={styles.text}>
+              <Text style={{fontFamily: FONT_BOLD, fontSize: 18}}>
+                You can also like this
+              </Text>
+              <Text
+                style={{
+                  fontFamily: FONT_LIGHT,
+                  fontSize: 11,
+                  color: COLOR_DISABLE,
+                }}>
+                3 items
+              </Text>
+            </View>
+            <ScrollView horizontal={true}>
+              <View style={styles.card}>
+                {card.map(
+                  ({
+                    prd_id,
+                    prd_name,
+                    prd_brand,
+                    prd_price,
+                    prd_image,
+                    rating_product,
+                    total_review,
+                  }) => {
+                    return (
+                      <Card
+                        nav={navigation}
+                        key={prd_id}
+                        id={prd_id}
+                        name={prd_name}
+                        brand={prd_brand}
+                        price={prd_price}
+                        image={JSON.parse(prd_image)}
+                        rating={rating_product}
+                        review={total_review}
+                      />
+                    );
+                  },
+                )}
+              </View>
+            </ScrollView>
+            <View style={{height: 75}}></View>
+          </View>
+        </ScrollView>
+      ) : (
+        <View style={styles.animation}>
+          <ActivityIndicator size={90} color={COLOR_MAIN} />
         </View>
-      </ScrollView>
-
+      )}
       {level === 'Customer' && (
         <View style={styles.addcart}>
           <TouchableOpacity
@@ -213,6 +221,11 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  animation: {
+    //backgroundColor: 'grey',
+    height: windowHeight * 0.7,
+    justifyContent: 'center',
+  },
   container: {
     marginHorizontal: windowWidth * 0.04,
     marginTop: windowWidth * 0.04,

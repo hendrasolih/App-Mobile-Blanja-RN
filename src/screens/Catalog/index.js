@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {IconFilter} from '../../assets';
@@ -32,6 +33,7 @@ const Catalog = ({navigation, route}) => {
   const [viewall, setViewall] = useState([]);
   const [pageInfo, setPageInfo] = useState({});
   const [page, setPage] = useState([]);
+  const [loading, setLoading] = useState(false);
   const brand = useSelector((state) => state.filter.brand);
   const color = useSelector((state) => state.filter.color);
   const size = useSelector((state) => state.filter.size);
@@ -101,6 +103,7 @@ const Catalog = ({navigation, route}) => {
         console.log('view all');
         setPageInfo(data.data.pageInfo);
         setViewall(data.data.products);
+        setLoading(true);
         console.log(pageInfo.totalPage);
       })
       .catch((err) => {
@@ -219,7 +222,8 @@ const Catalog = ({navigation, route}) => {
       </View>
       <View style={{marginHorizontal: windowWidth * 0.04, marginVertical: 10}}>
         <ScrollView>
-          {viewall.length !== 0 &&
+          {loading ? (
+            viewall.length !== 0 &&
             viewall.map(
               (
                 {
@@ -247,47 +251,54 @@ const Catalog = ({navigation, route}) => {
                   />
                 );
               },
-            )}
+            )
+          ) : (
+            <View style={styles.animation}>
+              <ActivityIndicator size={90} color={COLOR_MAIN} />
+            </View>
+          )}
 
           <View style={styles.pagination}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              {pageInfo.previousPage !== null ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    prevpage();
-                  }}>
-                  <Text>Prev</Text>
-                </TouchableOpacity>
-              ) : (
-                <View />
-              )}
+            {pageInfo.totalPage > 1 && (
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                {pageInfo.previousPage !== null ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      prevpage();
+                    }}>
+                    <Text>Prev</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View />
+                )}
 
-              {Array.from(Array(pageInfo.totalPage)).map((_, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => specpage(index + 1)}>
-                  <Text
-                    style={
-                      index + 1 == pageInfo.currentPage
-                        ? {color: COLOR_MAIN}
-                        : {color: '#000'}
-                    }>
-                    {index + 1}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-              {pageInfo.nextPage !== null ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    nextpage();
-                  }}>
-                  <Text>Next</Text>
-                </TouchableOpacity>
-              ) : (
-                <View />
-              )}
-            </View>
+                {Array.from(Array(pageInfo.totalPage)).map((_, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => specpage(index + 1)}>
+                    <Text
+                      style={
+                        index + 1 == pageInfo.currentPage
+                          ? {color: COLOR_MAIN}
+                          : {color: '#000'}
+                      }>
+                      {index + 1}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                {pageInfo.nextPage !== null ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      nextpage();
+                    }}>
+                    <Text>Next</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <View />
+                )}
+              </View>
+            )}
           </View>
 
           <View style={styles.gap} />
@@ -391,6 +402,11 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  animation: {
+    //backgroundColor: 'grey',
+    height: windowHeight * 0.7,
+    justifyContent: 'center',
+  },
   wrapfilter: {
     flexDirection: 'row',
     justifyContent: 'space-around',
