@@ -39,34 +39,49 @@ const Catalog = ({navigation, route}) => {
   const size = useSelector((state) => state.filter.size);
   const category = useSelector((state) => state.filter.category);
   const isFocused = useIsFocused();
+  let unmounted = false;
   //viewall
   useEffect(() => {
     // code to run on component mount
-    getViewAll();
+
+    if (!unmounted) {
+      getViewAll();
+    }
+    return function () {
+      unmounted = true;
+    };
   }, []);
   //sort
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else {
-      // Your useEffect code here to be run on update
-      if (active == 'Filter') {
-        getFilter();
-      } else if (active == 'Customer review') {
-        getSortWithReview();
+    if (!unmounted) {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
       } else {
-        getSorted();
+        // Your useEffect code here to be run on update
+        if (active == 'Filter') {
+          getFilter();
+        } else if (active == 'Customer review') {
+          getSortWithReview();
+        } else {
+          getSorted();
+        }
       }
     }
-  }, [isFocused, active]);
+
+    return function () {
+      unmounted = true;
+    };
+  }, [isFocused, active, navigation]);
 
   const getSortWithReview = () => {
     axios
       .get(`${API_URL}/products/rating`)
       .then(({data}) => {
-        console.log('Review');
-        setViewall(data.data);
-        setLoading(true);
+        if (!unmounted) {
+          console.log('Review');
+          setViewall(data.data);
+          setLoading(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -78,9 +93,11 @@ const Catalog = ({navigation, route}) => {
       .get(`${API_URL}/products?filter=${active}&limit=10${descend}`)
       .then(({data}) => {
         //console.log(data.data.products);
-        console.log('sort');
-        setViewall(data.data.products);
-        setLoading(true);
+        if (!unmounted) {
+          console.log('sort');
+          setViewall(data.data.products);
+          setLoading(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -102,11 +119,13 @@ const Catalog = ({navigation, route}) => {
         `${API_URL}/products?limit=10&category=${title}&search=${keyword}&filter=name`,
       )
       .then(({data}) => {
-        console.log('view all');
-        setPageInfo(data.data.pageInfo);
-        setViewall(data.data.products);
-        setLoading(true);
-        console.log(pageInfo.totalPage);
+        if (!unmounted) {
+          console.log('view all');
+          setPageInfo(data.data.pageInfo);
+          setViewall(data.data.products);
+          setLoading(true);
+          console.log(pageInfo.totalPage);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -117,8 +136,10 @@ const Catalog = ({navigation, route}) => {
     axios
       .get(`${API_URL}${pageInfo.nextPage}`)
       .then(({data}) => {
-        setPageInfo(data.data.pageInfo);
-        setViewall(data.data.products);
+        if (!unmounted) {
+          setPageInfo(data.data.pageInfo);
+          setViewall(data.data.products);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -129,8 +150,10 @@ const Catalog = ({navigation, route}) => {
     axios
       .get(`${API_URL}${pageInfo.previousPage}`)
       .then(({data}) => {
-        setPageInfo(data.data.pageInfo);
-        setViewall(data.data.products);
+        if (!unmounted) {
+          setPageInfo(data.data.pageInfo);
+          setViewall(data.data.products);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -142,8 +165,10 @@ const Catalog = ({navigation, route}) => {
     axios
       .get(`${API_URL}/products?page=${num}&limit=10`)
       .then(({data}) => {
-        setPageInfo(data.data.pageInfo);
-        setViewall(data.data.products);
+        if (unmounted) {
+          setPageInfo(data.data.pageInfo);
+          setViewall(data.data.products);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -187,8 +212,10 @@ const Catalog = ({navigation, route}) => {
       )
       .then((res) => {
         //console.log(res.data.data.length);
-        setViewall(res.data.data);
-        setLoading(true);
+        if (!unmounted) {
+          setViewall(res.data.data);
+          setLoading(true);
+        }
       })
       .catch((err) => {
         console.log(err);

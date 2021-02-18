@@ -113,7 +113,11 @@ const Chat = ({route}) => {
         justifyContent: 'space-between',
       }}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Zia</Text>
+        <Text style={styles.headerText}>
+          {chatMessages.length !== 0 &&
+            chatMessages.filter((e) => e.senderName !== user_name)[0]
+              .senderName}
+        </Text>
       </View>
       <ScrollView>
         <KeyboardAvoidingView>

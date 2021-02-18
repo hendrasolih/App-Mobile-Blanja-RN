@@ -30,8 +30,11 @@ import {clearCart} from '../../utils/redux/action/cartAction';
 import PushNotification from 'react-native-push-notification';
 import {showNotification} from '../../notif';
 
+//context
+import {useSocket} from '../../utils/Context/SocketProvider';
+
 const Checkout = ({navigation, route, clearCart}) => {
-  //const userid = await AsyncStorage.getItem('userid');
+  const socket = useSocket();
   const user_id = useSelector((state) => state.auth.id);
   const address = useSelector((state) => state.address.address);
   const [shipping, setShipping] = useState('');
@@ -89,6 +92,7 @@ const Checkout = ({navigation, route, clearCart}) => {
         console.log(res.data.msg);
         clearCart();
         showNotification('Notification', 'Checkout Succes', channel);
+        socket.emit('new order', seller_id);
         navigation.navigate('Success');
       })
       .catch((err) => {

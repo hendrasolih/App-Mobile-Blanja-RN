@@ -28,6 +28,7 @@ import {
   AddSize,
   Catalog,
   EditAddress,
+  AddAddress,
 } from '../screens';
 import {BottomNavigator} from '../components';
 import {FONT_BOLD} from '../utils/constans';
@@ -126,6 +127,7 @@ const Router = ({navigation}) => {
         <Stack.Screen
           name="Notification"
           component={Notification}
+          add
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -187,6 +189,21 @@ const Router = ({navigation}) => {
           name="Edit Address"
           component={EditAddress}
           options={{title: 'Edit Address'}}
+        />
+        <Stack.Screen
+          name="AddAddress"
+          component={AddAddress}
+          options={{
+            title: 'Add Address',
+            headerStyle: {
+              backgroundColor: '#ffffff',
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontFamily: FONT_BOLD,
+              fontSize: 18,
+            },
+          }}
         />
       </Stack.Navigator>
     </SocketProvider>

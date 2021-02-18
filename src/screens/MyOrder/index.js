@@ -77,9 +77,16 @@ const MyOrder = () => {
       showNotification('Notification', msg, channel);
       getOrderSeller();
     });
+    socket.on('new order seller', (msg) => {
+      showNotification('Notification', msg, channel);
+      getOrderSeller();
+    });
     return () => {
-      socket.off('chat message');
+      socket.off('sending customer');
       socket.off('sending seller');
+      socket.off('recieved customer');
+      socket.off('recieved seller');
+      socket.off('new order seller');
     };
   }, []);
 
